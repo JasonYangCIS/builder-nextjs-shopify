@@ -19,10 +19,13 @@ export async function POST(req: Request) {
   }
   jar.delete(COOKIE_NAMES.session);
   jar.delete(COOKIE_NAMES.oauthState);
+  // Use 303 See Other so the browser converts the POST → GET on the redirect
+  // target (Shopify's logout endpoint). 307 (the NextResponse.redirect default)
+  // would re-POST and break the flow.
   try {
     const logoutUrl = getLogoutUrl(idToken);
-    return NextResponse.redirect(logoutUrl);
+    return NextResponse.redirect(logoutUrl, 303);
   } catch {
-    return NextResponse.redirect(new URL("/", env.APP_ORIGIN));
+    return NextResponse.redirect(new URL("/", env.APP_ORIGIN), 303);
   }
 }

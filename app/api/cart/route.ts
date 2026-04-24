@@ -24,13 +24,15 @@ export async function GET() {
   try {
     const cart = await getCart(cartId);
     if (!cart) {
+      // Definitive miss — Shopify confirmed the cart no longer exists.
       jar.delete(COOKIE_NAMES.cartId);
       return NextResponse.json({ cart: null });
     }
     return NextResponse.json({ cart });
   } catch {
-    jar.delete(COOKIE_NAMES.cartId);
-    return NextResponse.json({ cart: null });
+    // Transient error (network / 5xx / 429). Keep the cookie so the cart is
+    // recoverable on the next request instead of wiping a valid cart.
+    return NextResponse.json({ cart: null, transient: true }, { status: 503 });
   }
 }
 
@@ -45,7 +47,9 @@ export async function POST(req: Request) {
   const jar = await cookies();
   let cartId = jar.get(COOKIE_NAMES.cartId)?.value;
 
-  // If we have a cart_id, make sure it still exists in Shopify; otherwise clear it.
+  // If we have a cart_id, verify it still exists in Shopify. Only clear the
+  // cookie on a definitive miss; surface transient errors so we don't wipe a
+  // valid cart during a Shopify outage.
   if (cartId) {
     try {
       const existing = await getCart(cartId);
@@ -54,8 +58,10 @@ export async function POST(req: Request) {
         cartId = undefined;
       }
     } catch {
-      jar.delete(COOKIE_NAMES.cartId);
-      cartId = undefined;
+      return NextResponse.json(
+        { error: "Cart lookup failed", transient: true },
+        { status: 503 },
+      );
     }
   }
 
