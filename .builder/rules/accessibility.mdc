@@ -1,0 +1,15 @@
+---
+description: WCAG 2.1 AA conventions enforced in components and routes.
+globs: components/**, app/**
+alwaysApply: false
+---
+
+- Semantic HTML. Exactly one `<h1>` per page. Logical heading order.
+- Builder-registered components expose a `headingLevel` input where appropriate.
+- All interactive elements: visible `:focus-visible` ring (`focus-visible:ring-[3px] focus-visible:ring-ring/50`).
+- Cart drawer is a Radix Dialog → focus trap + return focus on close.
+- `aria-live="polite"` on regions that surface async cart/discount messages.
+- Forms: real `<label>`, `aria-invalid`, `aria-describedby`, `autocomplete`.
+- Image `alt`: from Builder image input or Shopify `image.altText`. Decorative → `alt=""`.
+- Respect `prefers-reduced-motion` (handled in `app/globals.css`).
+- Skip link to `#main-content` in `app/layout.tsx`.

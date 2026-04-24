@@ -1,0 +1,12 @@
+---
+description: SEO: metadata, sitemap, robots, JSON-LD.
+globs: app/**/page.tsx, app/sitemap.ts, app/robots.ts
+alwaysApply: false
+---
+
+- Per-route `generateMetadata` with title / description / canonical / OG / Twitter.
+- Builder pages expose `seoTitle`, `seoDescription`, `ogImage`, `noIndex` inputs.
+- `app/sitemap.ts` merges Shopify products + collections (and Builder pages when added).
+- `app/robots.ts` blocks non-prod (`process.env.NODE_ENV !== "production"`).
+- JSON-LD: `Product` (with `offers`, `availability`) on PDP; `BreadcrumbList` on PDP/PLP; `Organization` in root layout.
+- `next/og` for per-product OG images via `app/api/og/[slug]/route.tsx`.

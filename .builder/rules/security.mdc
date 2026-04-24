@@ -1,0 +1,13 @@
+---
+description: Security: route handlers, webhooks, auth files.
+globs: app/api/**, lib/auth/**, lib/shopify/**, proxy.ts
+alwaysApply: false
+---
+
+- All mutating Route Handlers MUST validate `Origin` matches `APP_ORIGIN` via `verifySameOrigin` (or implement a CSRF double-submit token).
+- All Route Handler bodies parsed with zod; reject 400 on parse failure.
+- Webhooks: HMAC verify with `crypto.timingSafeEqual` on the **raw** request body before any processing.
+- Cookies: `HttpOnly`, `Secure` in prod, `SameSite=Lax`, signed/encrypted with `SESSION_SECRET`.
+- `import "server-only"` at the top of every file in `lib/{shopify,auth,env}`.
+- NEVER log `Authorization`, `Set-Cookie`, or fields matching `/token|secret|password|cookie/i`.
+- No `dangerouslySetInnerHTML` outside `utils/sanitize-html.ts`.

@@ -1,0 +1,12 @@
+---
+description: Customer Account API (PKCE OAuth) flow + encrypted session.
+globs: lib/auth/**, app/api/auth/**, proxy.ts
+alwaysApply: false
+---
+
+- Full PKCE (S256). `state` and `nonce` from `crypto.randomBytes`, single-use, validated in callback.
+- `id_token` should be verified against Shopify JWKS before trust.
+- Tokens encrypted with `jose` JWE (AES-256-GCM) before being stored in the `__session` cookie.
+- Refresh access token when within 60s of expiry; rotate refresh tokens.
+- Open-redirect protection: validate `redirect_to` via `safeInternalPath` against an allow-list of internal paths.
+- Logout → Shopify `/auth/logout` AND clear all auth cookies.

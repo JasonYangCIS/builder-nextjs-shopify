@@ -1,0 +1,14 @@
+---
+description: Four-file folder pattern for all components.
+globs: components/**
+alwaysApply: false
+---
+
+- Folder per component: `components/<Group>/<Name>/`.
+  - `Name.tsx` — default export. Re-export types via `export type { NameProps } from "./Name.types"`.
+  - `Name.types.ts` — interfaces only. Builder optional fields: `string | null`.
+  - `Name.module.scss` — only when Tailwind cannot express the rule; CSS variables only.
+  - `Name.builder.ts` — only when registered with Builder.
+- No `index.ts` barrels. Direct imports: `@/components/shopify/ProductGrid/ProductGrid`.
+- Compose classes with `cn()` from `@/utils/cn`.
+- Group registered components via `utils/register-insert-menu.ts`.
