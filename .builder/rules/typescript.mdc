@@ -1,0 +1,11 @@
+---
+description: TypeScript conventions.
+globs: types/**, components/**/*.types.ts, app/**/*.tsx
+alwaysApply: false
+---
+
+- Strict mode; no `any`; no non-null assertions outside generated code.
+- Builder fields are `string | null`. `slug: string` always required.
+- `import type` for type-only imports.
+- Re-export library types via `VariantProps`.
+- Always `@/` alias.

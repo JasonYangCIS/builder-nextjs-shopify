@@ -1,5 +1,85 @@
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This version (16.x) has breaking changes — APIs, conventions, and file structure may differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
+Notable Next 16 changes used in this repo:
+- `middleware.ts` is **renamed to `proxy.ts`** (file at the project root).
+- `cookies()` and `headers()` from `next/headers` are **async** — always `await`.
+- `revalidateTag(tag, "max")` is the recommended call signature.
 <!-- END:nextjs-agent-rules -->
+
+# Project map + skill/rule index
+
+This is a headless **Builder.io + Shopify** sandbox storefront for `builder-jason.myshopify.com`. Pick the right skill before writing code.
+
+## Where things live
+
+```
+app/                      — Next.js 16 App Router (routes, route handlers)
+  api/                    — server-only Route Handlers (cart, auth, customer, webhooks, og)
+  preview/                — Builder live-preview ONLY here
+components/
+  ui/                     — shadcn/ui primitives (Button, Input, Label, Card, Badge, Dialog)
+  layout/                 — Header, Footer, NavItems, MiniCart, AccountMenu
+  shopify/                — ProductGrid, ProductCard, PriceDisplay, VariantPicker,
+                            QuantityStepper, InventoryBadge, AddToCartButton, CartDrawer,
+                            CartLineItem, DiscountCodeInput, CheckoutButton, LoginButton,
+                            OrderHistoryList, ProductDetail
+  marketing/              — HeroSplit, HeroCentered, AnnouncementBar, FaqList
+  builder/                — RenderBuilderContent, BuilderDesignTokens
+lib/
+  env.ts                  — zod-parsed envs (server-only)
+  shopify/                — Storefront API client + queries + types
+  auth/                   — PKCE, session, customer-token, csrf
+  builder/client.ts       — fetchOneEntry / fetchEntries wrappers
+  cart/useCart.ts         — client SWR hook
+utils/                    — cn, sanitize-html, register-insert-menu, url, date
+styles/tokens.css         — design tokens
+proxy.ts                  — security headers + (future) token refresh
+config.ts                 — { apiKey, models }
+builder-registry.ts       — central RegisteredComponent[] export
+.builder/skills/          — agent skills
+.builder/rules/           — agent rules (mdc)
+docs/skills/              — long-form skill docs
+docs/runbook.md           — dev-store, tokens, webhook setup
+```
+
+## Skills (read the matching one before coding)
+
+| Skill | When |
+|---|---|
+| `builder-io` | Anything touching Builder fetch / render / register / preview. |
+| `design-system` | New UI primitive, tokens, focus rings, insert-menu groups. |
+| `engineering-standards` | TS / folder pattern / boundaries / no-console. |
+| `shopify-commerce` | Cart, inventory, discounts, checkout, Storefront queries. |
+| `shopify-customer-auth` | OAuth (PKCE), session cookie, customer profile/orders. |
+| `security` | New Route Handler, secrets, webhooks, CSP, HTML sanitization. |
+| `testing` | Vitest unit + Playwright + axe smoke. |
+| `skill-creator` | Authoring a new skill. |
+
+## Rules (mdc, scoped via globs)
+
+| Rule | Globs |
+|---|---|
+| `secrets.mdc` (alwaysApply) | `**` |
+| `builder-sdk.mdc` | `app/**/*.{ts,tsx}, components/builder/**, builder-registry.ts, config.ts` |
+| `component-structure.mdc` | `components/**` |
+| `design-system.mdc` | `components/**, styles/**, app/globals.css` |
+| `routing.mdc` | `app/**/*.{ts,tsx}` |
+| `typescript.mdc` | `types/**, components/**/*.types.ts, app/**/*.tsx` |
+| `shopify-commerce.mdc` | `lib/shopify/**, app/api/cart/**, components/shopify/**` |
+| `shopify-customer-auth.mdc` | `lib/auth/**, app/api/auth/**, proxy.ts` |
+| `security.mdc` | `app/api/**, lib/auth/**, lib/shopify/**, proxy.ts` |
+| `accessibility.mdc` | `components/**, app/**` |
+| `seo.mdc` | `app/**/page.tsx, app/sitemap.ts, app/robots.ts` |
+
+## Hard rules (always-on)
+
+- Browser NEVER calls Shopify directly. All Shopify GraphQL is server-only via `lib/shopify/*`.
+- `import "server-only"` at the top of every file in `lib/{shopify,auth,env}`.
+- Mutating Route Handlers verify `Origin` (`verifySameOrigin`) and validate body with zod.
+- Webhooks HMAC-verify with `crypto.timingSafeEqual` on the **raw** body.
+- Cookies are `HttpOnly` + `Secure` (prod) + `SameSite=Lax` + signed/encrypted with `SESSION_SECRET`.
+- All Builder HTML through `utils/sanitize-html.ts`. No raw `dangerouslySetInnerHTML`.
+- Use `RenderBuilderContent` and `config.models.*` — never `<Content>` and never string literals for model names.

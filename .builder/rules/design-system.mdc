@@ -1,0 +1,11 @@
+---
+description: shadcn/Tailwind design tokens, focus rings, semantic colors.
+globs: components/**, styles/**, app/globals.css
+alwaysApply: false
+---
+
+- shadcn/ui (new-york) primitives wrapped in folders per the four-file pattern.
+- No hardcoded hex. Use semantic tokens (`bg-card`, `text-muted-foreground`, …).
+- Focus visible: `focus-visible:ring-[3px] focus-visible:ring-ring/50`.
+- New token → declare in `styles/tokens.css` under `[data-theme]` and expose in `app/globals.css` `@theme inline`.
+- Builder Style tab tokens registered via `BuilderDesignTokens` (side-effect import in `builder-registry.ts`).

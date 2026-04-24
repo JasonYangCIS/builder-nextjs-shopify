@@ -1,0 +1,13 @@
+---
+description: Shopify Storefront API patterns: cart, inventory, discounts, checkout.
+globs: lib/shopify/**, app/api/cart/**, components/shopify/**
+alwaysApply: false
+---
+
+- Browser NEVER calls Shopify directly. All Shopify GraphQL is server-only via `lib/shopify/storefront-client.ts`.
+- All Shopify mutations behind `app/api/cart/*` Route Handlers, body validated with zod.
+- Cart id stored in HttpOnly cookie `cart_id`. Created lazily.
+- Use `availableForSale` + `quantityAvailable`; disable AddToCartButton when sold out.
+- Discount codes via `cartDiscountCodesUpdate`. Surface `userErrors` (e.g. invalid code).
+- Checkout = top-level navigation to `cart.checkoutUrl`.
+- Cache Shopify reads with `next.tags` like `product:<handle>`; webhooks call `revalidateTag`.

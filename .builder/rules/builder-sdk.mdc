@@ -1,0 +1,12 @@
+---
+description: Builder.io Gen-2 SDK usage rules.
+globs: app/**/*.{ts,tsx}, components/builder/**, builder-registry.ts, config.ts
+alwaysApply: false
+---
+
+- Use `RenderBuilderContent`, never `<Content>` directly.
+- Reference models via `config.models.*`, never as string literals.
+- `notFound()` when `fetchOneEntry` returns null on a Builder-only route.
+- `getBuilderSearchParams` only inside `app/preview/page.tsx`.
+- HTML fields → `utils/sanitize-html.ts` (DOMPurify).
+- Re-export Builder field types from `types/*.types.ts` with `string | null`.

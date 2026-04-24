@@ -1,0 +1,13 @@
+---
+description: Next.js 16 App Router conventions for this project.
+globs: app/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+- Routes mount directly under `app/` (no `[locale]`).
+- `[...page]` does NOT match `/`. Root via `app/page.tsx` with `urlPath: "/"`.
+- `export const revalidate = 5` on Builder-connected pages.
+- `generateStaticParams` returns known handles on `[handle]` routes.
+- `cookies()` and `headers()` from `next/headers` are async — always `await`.
+- `getBuilderSearchParams` only on `/preview`.
+- Next.js 16 renamed `middleware.ts` → `proxy.ts`. Use `proxy.ts` only.
