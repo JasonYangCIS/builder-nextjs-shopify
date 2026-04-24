@@ -8,7 +8,12 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
   const sp = await searchParams;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const builderParams = getBuilderSearchParams(sp as any);
-  const model = (sp["model"] as string | undefined) ?? config.models.page;
+  const requested = sp["model"];
+  const allowed = Object.values(config.models) as string[];
+  const model =
+    typeof requested === "string" && allowed.includes(requested)
+      ? requested
+      : config.models.page;
   const content = await fetchOneEntry({
     model,
     apiKey: config.apiKey,

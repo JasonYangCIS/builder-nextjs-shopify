@@ -23,8 +23,13 @@ export async function GET() {
   if (!cartId) return NextResponse.json({ cart: null });
   try {
     const cart = await getCart(cartId);
+    if (!cart) {
+      jar.delete(COOKIE_NAMES.cartId);
+      return NextResponse.json({ cart: null });
+    }
     return NextResponse.json({ cart });
   } catch {
+    jar.delete(COOKIE_NAMES.cartId);
     return NextResponse.json({ cart: null });
   }
 }
@@ -39,6 +44,20 @@ export async function POST(req: Request) {
   }
   const jar = await cookies();
   let cartId = jar.get(COOKIE_NAMES.cartId)?.value;
+
+  // If we have a cart_id, make sure it still exists in Shopify; otherwise clear it.
+  if (cartId) {
+    try {
+      const existing = await getCart(cartId);
+      if (!existing) {
+        jar.delete(COOKIE_NAMES.cartId);
+        cartId = undefined;
+      }
+    } catch {
+      jar.delete(COOKIE_NAMES.cartId);
+      cartId = undefined;
+    }
+  }
 
   if (!cartId) {
     const created = await createCart();

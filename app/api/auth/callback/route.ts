@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { decodeJwt } from "jose";
 import {
   COOKIE_NAMES,
   COOKIE_OPTIONS,
@@ -31,6 +32,14 @@ export async function GET(req: Request) {
 
   try {
     const tokens = await exchangeCodeForToken(code, stored.verifier);
+    // Validate id_token nonce binding (signature verification against
+    // Shopify JWKS is a separate hardening step tracked in next-steps.md).
+    if (tokens.id_token) {
+      const claims = decodeJwt(tokens.id_token);
+      if (claims.nonce !== stored.nonce) {
+        return NextResponse.redirect(new URL("/account?error=nonce", env.APP_ORIGIN));
+      }
+    }
     const session = await encryptSession({
       accessToken: tokens.access_token,
       refreshToken: tokens.refresh_token,

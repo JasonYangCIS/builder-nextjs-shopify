@@ -28,9 +28,11 @@ export default function AccountMenu() {
       <Link href="/account" className="text-sm hover:underline">
         {data.customer?.firstName ?? data.customer?.emailAddress?.emailAddress ?? "Account"}
       </Link>
-      <Button asChild variant="ghost" size="sm">
-        <Link href="/api/auth/logout">Log out</Link>
-      </Button>
+      <form action="/api/auth/logout" method="post">
+        <Button type="submit" variant="ghost" size="sm">
+          Log out
+        </Button>
+      </form>
     </div>
   );
 }

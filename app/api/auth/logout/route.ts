@@ -3,9 +3,13 @@ import { cookies } from "next/headers";
 import { COOKIE_NAMES } from "@/lib/auth/session";
 import { decryptSession } from "@/lib/auth/session";
 import { getLogoutUrl } from "@/lib/auth/customer-token";
+import { verifySameOrigin } from "@/lib/auth/csrf";
 import { env } from "@/lib/env";
 
-export async function GET() {
+export async function POST(req: Request) {
+  if (!verifySameOrigin(req)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const jar = await cookies();
   const sessCookie = jar.get(COOKIE_NAMES.session)?.value;
   let idToken: string | undefined;
