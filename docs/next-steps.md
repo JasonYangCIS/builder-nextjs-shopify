@@ -19,7 +19,7 @@ Tick items as we go. Order matters for items 1–7; Builder content (8–10) and
   - `SHOPIFY_CUSTOMER_ACCOUNT_REDIRECT_URI` = `https://builder-nextjs-app-router-gen-2.vercel.app/api/auth/callback`
   - `NEXT_PUBLIC_BUILDER_API_KEY`
   - `SESSION_SECRET` (fresh)
-  - `APP_ORIGIN` = `https://builder-nextjs-app-router-gen-2.vercel.app` 
+  - `APP_ORIGIN` = `https://builder-nextjs-app-router-gen-2.vercel.app`
   - `SHOPIFY_CUSTOMER_ACCOUNT_API_URL` (when available)
   - `SHOPIFY_WEBHOOK_SECRET` (when available)
 - [ ] **3. Lock to a stable domain.** Either keep the auto-generated `*.vercel.app` URL (above) as the canonical origin, or assign a custom subdomain. Preview deploys get unique URLs that **won't** pass the OAuth allow-list, so OAuth login only works on production.
