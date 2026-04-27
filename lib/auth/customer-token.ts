@@ -17,8 +17,28 @@ function getApiBase(): string {
   return url.replace(/\/$/, "");
 }
 
-export function getAuthorizeUrl(params: { state: string; nonce: string; challenge: string }): string {
+/**
+ * The OAuth authorize/token/logout endpoints for the Customer Account API live
+ * under `https://shopify.com/authentication/{shop_id}/oauth/...`, while the
+ * GraphQL endpoint lives under `https://shopify.com/{shop_id}/account/...`.
+ * `SHOPIFY_CUSTOMER_ACCOUNT_API_URL` is configured as the GraphQL base
+ * (`https://shopify.com/{shop_id}`); derive the auth base from the shop id.
+ */
+function getAuthBase(): string {
   const base = getApiBase();
+  // Match "https://shopify.com/{shop_id}" and rewrite to the authentication host.
+  const match = base.match(/^(https?:\/\/[^/]+)\/(\d+)$/);
+  if (!match) {
+    throw new Error(
+      "SHOPIFY_CUSTOMER_ACCOUNT_API_URL must look like https://shopify.com/{shop_id}",
+    );
+  }
+  const [, origin, shopId] = match;
+  return `${origin}/authentication/${shopId}`;
+}
+
+export function getAuthorizeUrl(params: { state: string; nonce: string; challenge: string }): string {
+  const authBase = getAuthBase();
   const qs = new URLSearchParams({
     client_id: env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID,
     response_type: "code",
@@ -29,11 +49,11 @@ export function getAuthorizeUrl(params: { state: string; nonce: string; challeng
     code_challenge: params.challenge,
     code_challenge_method: "S256",
   });
-  return `${base}/auth/oauth/authorize?${qs.toString()}`;
+  return `${authBase}/oauth/authorize?${qs.toString()}`;
 }
 
 export async function exchangeCodeForToken(code: string, verifier: string): Promise<TokenResponse> {
-  const base = getApiBase();
+  const authBase = getAuthBase();
   const body = new URLSearchParams({
     grant_type: "authorization_code",
     client_id: env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID,
@@ -41,7 +61,7 @@ export async function exchangeCodeForToken(code: string, verifier: string): Prom
     code,
     code_verifier: verifier,
   });
-  const res = await fetch(`${base}/auth/oauth/token`, {
+  const res = await fetch(`${authBase}/oauth/token`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body,
@@ -51,13 +71,13 @@ export async function exchangeCodeForToken(code: string, verifier: string): Prom
 }
 
 export async function refreshAccessToken(refreshToken: string): Promise<TokenResponse> {
-  const base = getApiBase();
+  const authBase = getAuthBase();
   const body = new URLSearchParams({
     grant_type: "refresh_token",
     client_id: env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID,
     refresh_token: refreshToken,
   });
-  const res = await fetch(`${base}/auth/oauth/token`, {
+  const res = await fetch(`${authBase}/oauth/token`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body,
@@ -67,12 +87,12 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
 }
 
 export function getLogoutUrl(idTokenHint?: string): string {
-  const base = getApiBase();
+  const authBase = getAuthBase();
   const qs = new URLSearchParams({
     post_logout_redirect_uri: env.APP_ORIGIN,
   });
   if (idTokenHint) qs.set("id_token_hint", idTokenHint);
-  return `${base}/auth/logout?${qs.toString()}`;
+  return `${authBase}/logout?${qs.toString()}`;
 }
 
 export async function customerFetch<T>(
