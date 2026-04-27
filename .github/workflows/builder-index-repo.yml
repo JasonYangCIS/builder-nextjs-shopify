@@ -1,0 +1,31 @@
+name: builder-index-repo
+on:
+  push:
+    branches: [main]
+    paths:
+      - "components/**"
+      - "builder-registry.ts"
+      - "config.ts"
+      - "styles/tokens.css"
+      - "tailwind.config.*"
+      - "package.json"
+      - ".github/workflows/builder-index-repo.yml"
+  workflow_dispatch:
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Builder.io index-repo
+        env:
+          BUILDER_PUBLIC_KEY: ${{ secrets.BUILDER_PUBLIC_KEY }}
+          BUILDER_PRIVATE_KEY: ${{ secrets.BUILDER_PRIVATE_KEY }}
+          BUILDER_USER_ID: ${{ secrets.BUILDER_USER_ID }}
+        run: npx "@builder.io/dev-tools@latest" index-repo --skipHeader --designSystemName builder-shopify-sandbox

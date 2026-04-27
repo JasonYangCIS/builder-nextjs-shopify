@@ -2,7 +2,7 @@
 
 Working list for the headless Builder.io + Shopify sandbox after the first Vercel deploy.
 
-**Production URL:** https://builder-nextjs-app-router-gen-2.vercel.app/
+**Production URL:** https://builder-nextjs-shopify-sandbox.vercel.app/
 
 Tick items as we go. Order matters for items 1–7; Builder content (8–10) and validation (11–16) can run in parallel.
 
@@ -10,35 +10,35 @@ Tick items as we go. Order matters for items 1–7; Builder content (8–10) and
 
 ## Deploy & domain
 
-- [ ] **1. First deploy.** Push repo → import in Vercel → first deploy with placeholder env vars to obtain the stable URL.
-- [ ] **2. Set production env vars in Vercel.** Copy each value from local `ProposeEnvVariable` history. Generate a **new** `SESSION_SECRET` for prod (don't reuse dev). Set:
+- [x] **1. First deploy.** Push repo → import in Vercel → first deploy with placeholder env vars to obtain the stable URL.
+- [x] **2. Set production env vars in Vercel.** Copy each value from local `ProposeEnvVariable` history. Generate a **new** `SESSION_SECRET` for prod (don't reuse dev). Set:
   - `SHOPIFY_STORE_DOMAIN` = `builder-jason.myshopify.com`
   - `SHOPIFY_STOREFRONT_API_TOKEN`
   - `SHOPIFY_STOREFRONT_API_VERSION` = `2024-10`
   - `SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID`
-  - `SHOPIFY_CUSTOMER_ACCOUNT_REDIRECT_URI` = `https://builder-nextjs-app-router-gen-2.vercel.app/api/auth/callback`
+  - `SHOPIFY_CUSTOMER_ACCOUNT_REDIRECT_URI` = `https://builder-nextjs-shopify-sandbox.vercel.app/api/auth/callback`
   - `NEXT_PUBLIC_BUILDER_API_KEY`
   - `SESSION_SECRET` (fresh)
-  - `APP_ORIGIN` = `https://builder-nextjs-app-router-gen-2.vercel.app`
+  - `APP_ORIGIN` = `https://builder-nextjs-shopify-sandbox.vercel.app`
   - `SHOPIFY_CUSTOMER_ACCOUNT_API_URL` (when available)
   - `SHOPIFY_WEBHOOK_SECRET` (when available)
-- [ ] **3. Lock to a stable domain.** Either keep the auto-generated `*.vercel.app` URL (above) as the canonical origin, or assign a custom subdomain. Preview deploys get unique URLs that **won't** pass the OAuth allow-list, so OAuth login only works on production.
+- [x] **3. Lock to a stable domain.** Either keep the auto-generated `*.vercel.app` URL (above) as the canonical origin, or assign a custom subdomain. Preview deploys get unique URLs that **won't** pass the OAuth allow-list, so OAuth login only works on production.
 
 ## Shopify wiring
 
-- [ ] **4. Add Vercel callback to Customer Account API allow-list.** In Shopify admin → Headless channel → Customer Account API → add `https://builder-nextjs-app-router-gen-2.vercel.app/api/auth/callback` to the redirect-URI allow-list. Keep the `localhost:3000` entry too if you still want to test locally.
-- [ ] **5. Pull `SHOPIFY_CUSTOMER_ACCOUNT_API_URL`** from Shopify Headless channel → set in Vercel → redeploy → smoke-test `/api/auth/login` round-trip.
-- [ ] **6. Create Shopify webhooks** at Settings → Notifications → Webhooks:
-  - `products/update` → `https://builder-nextjs-app-router-gen-2.vercel.app/api/webhooks/shopify`
+- [x] **4. Add Vercel callback to Customer Account API allow-list.** In Shopify admin → Headless channel → Customer Account API → add `https://builder-nextjs-shopify-sandbox.vercel.app/api/auth/callback` to the redirect-URI allow-list. Keep the `localhost:3000` entry too if you still want to test locally.
+- [x] **5. Pull `SHOPIFY_CUSTOMER_ACCOUNT_API_URL`** from Shopify Headless channel → set in Vercel → redeploy → smoke-test `/api/auth/login` round-trip.
+- [x] **6. Create Shopify webhooks** at Settings → Notifications → Webhooks:
+  - `products/update` → `https://builder-nextjs-shopify-sandbox.vercel.app/api/webhooks/shopify`
   - `inventory_levels/update` → same URL
   - (optional) `products/delete`, `collections/update`
   - Copy the shared signing secret from the bottom of the Webhooks section → set `SHOPIFY_WEBHOOK_SECRET` in Vercel → redeploy.
-- [ ] **7. Verify webhook flow.** Edit a product in Shopify; confirm `revalidateTag` invalidates the PDP cache (PDP shows new data on next request without waiting for the 60s revalidate window).
+- [x] **7. Verify webhook flow.** Edit a product in Shopify; confirm `revalidateTag` invalidates the PDP cache (PDP shows new data on next request without waiting for the 60s revalidate window).
 
 ## Builder.io content
 
-- [ ] **8. Create models** in Builder.io: `page`, `product`, `collection`, `navigation`, `footer`, `announcement-bar`. Add a Home `page` entry with `urlPath: "/"`.
-- [ ] **9. Index repo for Builder.** Run `npx @builder.io/dev-tools index-repo` so the editor knows about registered components + design tokens.
+- [x] **8. Create models** in Builder.io: `page`, `product`, `collection`, `navigation`, `footer`, `announcement-bar`. Add a Home `page` entry with `urlPath: "/"`.
+- [x] **9. Index repo for Builder.** Automated via `.github/workflows/builder-index-repo.yml` — runs on pushes to `main` that touch `components/**`, `builder-registry.ts`, `config.ts`, `styles/tokens.css`, or via manual `workflow_dispatch`. Requires repo secrets `BUILDER_PUBLIC_KEY`, `BUILDER_PRIVATE_KEY`, and `BUILDER_USER_ID`.
 - [ ] **10. Build a sample Home page** in Builder.io using `HeroSplit` + `ProductGrid`; verify live preview at `/preview` works inside the Builder editor.
 
 ## Validation
