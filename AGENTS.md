@@ -74,6 +74,21 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `accessibility.mdc` | `components/**, app/**` |
 | `seo.mdc` | `app/**/page.tsx, app/sitemap.ts, app/robots.ts` |
 
+## Builder model wiring
+
+| Model | Kind | Where it's fetched | Notes |
+|---|---|---|---|
+| `page` | page | `app/[...page]/page.tsx` via `getBuilderPage(urlPath)` | Catch-all; root handled separately. |
+| `product` | page | `app/products/[handle]/page.tsx` via `getBuilderProduct(handle)` | Optional Builder section rendered **below** `<ProductDetail />`. Filters by `data.handle`; `urlPath` user attribute set for targeting. Renders nothing if no entry exists. |
+| `collection` | page | _not yet wired_ | Reserved for `app/collections/[handle]/page.tsx` per-handle Builder layout. |
+| `announcement-bar` | section | _not yet wired_ | Reserved for header announcement region. |
+
+When wiring a new model, always:
+1. Add a typed helper to `lib/builder/client.ts` (server-only).
+2. Pass `userAttributes: { urlPath }` so Builder targeting / preview works.
+3. Render with `<RenderBuilderContent content={...} model={config.models.X} />` — never `<Content>` directly.
+4. Reference the model name via `config.models.X`, never a string literal.
+
 ## Hard rules (always-on)
 
 - Browser NEVER calls Shopify directly. All Shopify GraphQL is server-only via `lib/shopify/*`.

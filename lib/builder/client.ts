@@ -18,6 +18,15 @@ export async function getBuilderEntry(model: BuilderModelName, query?: Record<st
   });
 }
 
+export async function getBuilderProduct(handle: string) {
+  return fetchOneEntry({
+    model: config.models.product,
+    apiKey: config.apiKey,
+    userAttributes: { urlPath: `/products/${handle}`, handle },
+    query: { "data.handle": handle },
+  });
+}
+
 export async function listBuilderEntries(model: BuilderModelName, limit = 100) {
   return fetchEntries({
     model,

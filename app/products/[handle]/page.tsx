@@ -3,9 +3,12 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductByHandle, listProductHandles } from "@/lib/shopify/product";
 import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
+import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
+import { getBuilderProduct } from "@/lib/builder/client";
+import { config } from "@/config";
 import { env } from "@/lib/env";
 
-export const revalidate = 60;
+export const revalidate = 5;
 
 export async function generateStaticParams() {
   try {
@@ -36,7 +39,10 @@ export async function generateMetadata(
 
 export default async function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
-  const product = await getProductByHandle(handle);
+  const [product, builderContent] = await Promise.all([
+    getProductByHandle(handle),
+    getBuilderProduct(handle),
+  ]);
   if (!product) notFound();
 
   const variant = product.variants[0];
@@ -69,6 +75,11 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
         </ol>
       </nav>
       <ProductDetail product={product} />
+      {builderContent ? (
+        <section aria-label="Additional product content" className="mt-12">
+          <RenderBuilderContent content={builderContent} model={config.models.product} />
+        </section>
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
