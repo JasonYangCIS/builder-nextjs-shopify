@@ -28,7 +28,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 ## Customer Account API setup (one-time)
 
 1. Shopify admin → Headless channel → enable Customer Account API.
-2. Add `http://localhost:3000/api/auth/callback` to the redirect-URI allow-list.
+2. Add `http://localhost:3000/api/auth/callback` and `https://builder-nextjs-shopify-sandbox.vercel.app/api/auth/callback` to the redirect-URI allow-list.
 3. Copy the API URL and client id into env vars above.
 
 ## Webhooks
