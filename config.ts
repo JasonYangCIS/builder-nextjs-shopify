@@ -8,8 +8,6 @@ export const config = {
     page: "page",
     product: "product",
     collection: "collection",
-    navigation: "navigation",
-    footer: "footer",
     announcementBar: "announcement-bar",
   },
 } as const;
