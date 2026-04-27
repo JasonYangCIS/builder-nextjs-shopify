@@ -14,9 +14,11 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
     typeof requested === "string" && allowed.includes(requested)
       ? requested
       : config.models.page;
+  const urlPath = typeof sp["urlPath"] === "string" ? sp["urlPath"] : "/";
   const content = await fetchOneEntry({
     model,
     apiKey: config.apiKey,
+    userAttributes: { urlPath },
     options: builderParams,
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
