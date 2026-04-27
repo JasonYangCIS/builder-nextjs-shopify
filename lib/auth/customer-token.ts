@@ -27,7 +27,8 @@ function getApiBase(): string {
 function getAuthBase(): string {
   const base = getApiBase();
   // Match "https://shopify.com/{shop_id}" and rewrite to the authentication host.
-  const match = base.match(/^(https?:\/\/[^/]+)\/(\d+)$/);
+  // shop_id is numeric in current Shopify docs; allow alphanumeric+dash defensively.
+  const match = base.match(/^(https?:\/\/[^/]+)\/([\w-]+)$/);
   if (!match) {
     throw new Error(
       "SHOPIFY_CUSTOMER_ACCOUNT_API_URL must look like https://shopify.com/{shop_id}",
