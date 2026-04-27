@@ -26,14 +26,14 @@ Tick items as we go. Order matters for items 1–7; Builder content (8–10) and
 
 ## Shopify wiring
 
-- [ ] **4. Add Vercel callback to Customer Account API allow-list.** In Shopify admin → Headless channel → Customer Account API → add `https://builder-nextjs-shopify-sandbox.vercel.app/api/auth/callback` to the redirect-URI allow-list. Keep the `localhost:3000` entry too if you still want to test locally.
-- [ ] **5. Pull `SHOPIFY_CUSTOMER_ACCOUNT_API_URL`** from Shopify Headless channel → set in Vercel → redeploy → smoke-test `/api/auth/login` round-trip.
-- [ ] **6. Create Shopify webhooks** at Settings → Notifications → Webhooks:
+- [x] **4. Add Vercel callback to Customer Account API allow-list.** In Shopify admin → Headless channel → Customer Account API → add `https://builder-nextjs-shopify-sandbox.vercel.app/api/auth/callback` to the redirect-URI allow-list. Keep the `localhost:3000` entry too if you still want to test locally.
+- [x] **5. Pull `SHOPIFY_CUSTOMER_ACCOUNT_API_URL`** from Shopify Headless channel → set in Vercel → redeploy → smoke-test `/api/auth/login` round-trip.
+- [x] **6. Create Shopify webhooks** at Settings → Notifications → Webhooks:
   - `products/update` → `https://builder-nextjs-shopify-sandbox.vercel.app/api/webhooks/shopify`
   - `inventory_levels/update` → same URL
   - (optional) `products/delete`, `collections/update`
   - Copy the shared signing secret from the bottom of the Webhooks section → set `SHOPIFY_WEBHOOK_SECRET` in Vercel → redeploy.
-- [ ] **7. Verify webhook flow.** Edit a product in Shopify; confirm `revalidateTag` invalidates the PDP cache (PDP shows new data on next request without waiting for the 60s revalidate window).
+- [x] **7. Verify webhook flow.** Edit a product in Shopify; confirm `revalidateTag` invalidates the PDP cache (PDP shows new data on next request without waiting for the 60s revalidate window).
 
 ## Builder.io content
 
