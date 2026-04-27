@@ -25,5 +25,7 @@ jobs:
       - run: npm ci
       - name: Builder.io index-repo
         env:
+          BUILDER_PUBLIC_KEY: ${{ secrets.BUILDER_PUBLIC_KEY }}
           BUILDER_PRIVATE_KEY: ${{ secrets.BUILDER_PRIVATE_KEY }}
+          BUILDER_USER_ID: ${{ secrets.BUILDER_USER_ID }}
         run: npx "@builder.io/dev-tools@latest" index-repo --skipHeader --designSystemName builder-shopify-sandbox
