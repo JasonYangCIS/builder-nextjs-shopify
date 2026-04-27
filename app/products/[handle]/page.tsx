@@ -41,7 +41,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const { handle } = await params;
   const [product, builderContent] = await Promise.all([
     getProductByHandle(handle),
-    getBuilderProduct(handle),
+    getBuilderProduct(handle).catch(() => null),
   ]);
   if (!product) notFound();
 
