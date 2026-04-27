@@ -5,7 +5,14 @@ const EnvSchema = z.object({
   SHOPIFY_STORE_DOMAIN: z.string().min(1),
   SHOPIFY_STOREFRONT_API_TOKEN: z.string().min(1),
   SHOPIFY_STOREFRONT_API_VERSION: z.string().default("2024-10"),
-  SHOPIFY_CUSTOMER_ACCOUNT_API_URL: z.string().url().optional(),
+  SHOPIFY_CUSTOMER_ACCOUNT_API_URL: z
+    .string()
+    .url()
+    .refine(
+      (v) => /^https?:\/\/[^/]+\/[\w-]+\/?$/.test(v),
+      "SHOPIFY_CUSTOMER_ACCOUNT_API_URL must look like https://shopify.com/{shop_id}",
+    )
+    .optional(),
   SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID: z.string().min(1),
   SHOPIFY_CUSTOMER_ACCOUNT_REDIRECT_URI: z.string().url(),
   SHOPIFY_WEBHOOK_SECRET: z.string().min(1).optional(),
