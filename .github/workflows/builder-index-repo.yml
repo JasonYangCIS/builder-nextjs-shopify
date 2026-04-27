@@ -26,4 +26,4 @@ jobs:
       - name: Builder.io index-repo
         env:
           BUILDER_PRIVATE_KEY: ${{ secrets.BUILDER_PRIVATE_KEY }}
-        run: npx --yes @builder.io/dev-tools@latest index-repo --spaceId dd72aab3ec84463bb009ceff00b48475 --force
+        run: npx --yes @builder.io/dev-tools@latest index-repo
