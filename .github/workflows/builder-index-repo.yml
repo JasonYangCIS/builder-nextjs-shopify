@@ -1,0 +1,29 @@
+name: builder-index-repo
+on:
+  push:
+    branches: [main]
+    paths:
+      - "components/**"
+      - "builder-registry.ts"
+      - "config.ts"
+      - "styles/tokens.css"
+      - "tailwind.config.*"
+      - "package.json"
+      - ".github/workflows/builder-index-repo.yml"
+  workflow_dispatch:
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Builder.io index-repo
+        env:
+          BUILDER_PRIVATE_KEY: ${{ secrets.BUILDER_PRIVATE_KEY }}
+        run: npx --yes @builder.io/dev-tools@latest index-repo --spaceId dd72aab3ec84463bb009ceff00b48475 --force
