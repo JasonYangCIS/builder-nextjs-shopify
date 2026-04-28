@@ -1,7 +1,7 @@
 import type { RegisteredComponent } from "@builder.io/sdk-react";
 import "@/components/builder/BuilderDesignTokens/BuilderDesignTokens";
 
-import ProductGrid from "@/components/shopify/ProductGrid/ProductGrid";
+import ProductGridClient from "@/components/shopify/ProductGrid/ProductGridClient";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
@@ -13,7 +13,7 @@ import FaqList from "@/components/marketing/FaqList/FaqList";
 
 export const customComponents: RegisteredComponent[] = [
   {
-    component: ProductGrid,
+    component: ProductGridClient,
     name: "ProductGrid",
     inputs: [
       { name: "heading", type: "string" },
