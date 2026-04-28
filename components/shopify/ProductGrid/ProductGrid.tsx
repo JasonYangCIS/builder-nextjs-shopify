@@ -2,19 +2,27 @@ import { listProducts, getCollection } from "@/lib/shopify/product";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import type { ProductGridProps } from "./ProductGrid.types";
 
+const MAX_LIMIT = 48;
+
 export default async function ProductGrid({
   collectionHandle,
   query,
   limit = 12,
   heading,
 }: ProductGridProps) {
+  const safeLimit = Math.min(MAX_LIMIT, Math.max(1, limit));
   let products: Awaited<ReturnType<typeof listProducts>> = [];
 
-  if (collectionHandle) {
-    const collection = await getCollection(collectionHandle, limit);
-    products = collection?.products ?? [];
-  } else {
-    products = await listProducts({ first: limit, query: query ?? undefined });
+  try {
+    if (collectionHandle) {
+      const collection = await getCollection(collectionHandle, safeLimit);
+      products = collection?.products ?? [];
+    } else {
+      products = await listProducts({ first: safeLimit, query: query ?? undefined });
+    }
+  } catch {
+    // Degrade gracefully — show empty state rather than crashing the page
+    products = [];
   }
 
   return (
