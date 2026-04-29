@@ -426,21 +426,21 @@ export default function SigilForge({
           </p>
         </div>
         <div className={cn(styles.sf__readout, styles.tMono)}>
-          <div className={styles.sf__readout-row}>
+          <div className={styles["sf__readout-row"]}>
             <span>FREQ</span>
             <strong style={{ color: hueObj.glow }}>{freqObj.hz}</strong>
           </div>
-          <div className={styles.sf__readout-row}>
+          <div className={styles["sf__readout-row"]}>
             <span>HUE</span>
             <strong style={{ color: hueObj.glow }}>{hueObj.name}</strong>
           </div>
-          <div className={styles.sf__readout-row}>
+          <div className={styles["sf__readout-row"]}>
             <span>GEOM</span>
             <strong style={{ color: hueObj.glow }}>
               {geometry === "icosa" ? "D20·ICOSA" : geometry === "octa" ? "D8·OCTA" : "D4·TETRA"}
             </strong>
           </div>
-          <div className={styles.sf__readout-row}>
+          <div className={styles["sf__readout-row"]}>
             <span>STATE</span>
             <strong style={{ color: hueObj.glow }}>{autoSpin ? "ORBITING" : "STILL"}</strong>
           </div>
@@ -701,8 +701,8 @@ export default function SigilForge({
         </div>
 
         <aside className={styles.sf__panel}>
-          <div className={styles.sf__panel-block}>
-            <div className={styles.sf__panel-h}>⌁ Frequency</div>
+          <div className={styles["sf__panel-block"]}>
+            <div className={styles["sf__panel-h"]}>⌁ Frequency</div>
             <div className={styles.sf__row}>
               {SF_FREQS.map((f) => (
                 <button
@@ -718,8 +718,8 @@ export default function SigilForge({
             </div>
           </div>
 
-          <div className={styles.sf__panel-block}>
-            <div className={styles.sf__panel-h}>⌁ Hue band</div>
+          <div className={styles["sf__panel-block"]}>
+            <div className={styles["sf__panel-h"]}>⌁ Hue band</div>
             <div className={styles.sf__hues}>
               {SF_HUES.map((h) => (
                 <button
@@ -742,8 +742,8 @@ export default function SigilForge({
             </div>
           </div>
 
-          <div className={styles.sf__panel-block}>
-            <div className={styles.sf__panel-h}>⌁ Lattice</div>
+          <div className={styles["sf__panel-block"]}>
+            <div className={styles["sf__panel-h"]}>⌁ Lattice</div>
             <div className={cn(styles.sf__row, styles["sf__row--3"])}>
               {[
                 { id: "tetra", name: "TETRA", meta: "D4 · 4 faces" },
@@ -763,26 +763,26 @@ export default function SigilForge({
             </div>
           </div>
 
-          <div className={styles.sf__panel-block}>
-            <div className={styles.sf__panel-h}>⌁ Telemetry</div>
+          <div className={styles["sf__panel-block"]}>
+            <div className={styles["sf__panel-h"]}>⌁ Telemetry</div>
             <div className={cn(styles.sf__telem, styles.tMono)}>
-              <div className={styles.sf__telem-row}>
+              <div className={styles["sf__telem-row"]}>
                 <span>vertices</span>
                 <strong>{polyData.vertices.length}</strong>
               </div>
-              <div className={styles.sf__telem-row}>
+              <div className={styles["sf__telem-row"]}>
                 <span>edges</span>
                 <strong>{polyData.edges.length}</strong>
               </div>
-              <div className={styles.sf__telem-row}>
+              <div className={styles["sf__telem-row"]}>
                 <span>faces</span>
                 <strong>{polyData.faceIdx.length}</strong>
               </div>
-              <div className={styles.sf__telem-row}>
+              <div className={styles["sf__telem-row"]}>
                 <span>orbital ψ</span>
                 <strong style={{ color: hueObj.glow }}>{(pulse * 100).toFixed(0)}%</strong>
               </div>
-              <div className={styles.sf__telem-row}>
+              <div className={styles["sf__telem-row"]}>
                 <span>particles</span>
                 <strong>{particleCount}</strong>
               </div>
