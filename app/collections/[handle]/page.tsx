@@ -39,7 +39,7 @@ export default async function CollectionPage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  const content = await getBuilderCollection(handle);
+  const content = await getBuilderCollection(handle).catch(() => null);
   if (!content) notFound();
   return <RenderBuilderContent content={content} model={config.models.collection} />;
 }

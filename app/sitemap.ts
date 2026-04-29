@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
-import { listProductHandles, listCollectionHandles } from "@/lib/shopify/product";
+import { listProductHandles } from "@/lib/shopify/product";
+import { listBuilderCollectionHandles } from "@/lib/builder/client";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const origin = process.env.APP_ORIGIN ?? "http://localhost:3000";
   let products: string[] = [];
   let collections: string[] = [];
   try { products = await listProductHandles(250); } catch {}
-  try { collections = await listCollectionHandles(250); } catch {}
+  try { collections = await listBuilderCollectionHandles(250); } catch {}
 
   const now = new Date();
   return [
