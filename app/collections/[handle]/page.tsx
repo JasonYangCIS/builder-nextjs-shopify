@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBuilderCollection } from "@/lib/builder/client";
+import { getBuilderCollection, listBuilderCollectionHandles } from "@/lib/builder/client";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
 import { config } from "@/config";
 
 export const revalidate = 5;
 export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const handles = await listBuilderCollectionHandles(100);
+    return handles.map((handle) => ({ handle }));
+  } catch {
+    return [];
+  }
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ handle: string }> },
