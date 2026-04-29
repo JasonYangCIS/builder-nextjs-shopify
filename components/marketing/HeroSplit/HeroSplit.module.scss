@@ -1,9 +1,9 @@
 .eyebrowRule {
+  display: inline-block;
   width: 28px;
   height: 1px;
   background: var(--cyan-3);
   box-shadow: var(--glow-cyan-sm);
-  display: inline-block;
 }
 
 .heading {
@@ -14,19 +14,60 @@
   text-transform: uppercase;
 }
 
+.headingAccent {
+  color: var(--violet-2);
+  text-shadow: var(--glow-violet-sm);
+}
+
 .body {
   max-width: 480px;
   font-size: var(--t-lg);
-  color: var(--ink-1);
   line-height: 1.6;
+  color: var(--ink-1);
 }
 
-.ctaWrap {
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
   margin-top: 8px;
 }
 
 .imageFrame {
   aspect-ratio: 4 / 5;
+}
+
+.fieldReportFrame {
+  padding: var(--s-5);
+  background: linear-gradient(
+    180deg,
+    rgba(120, 60, 180, 0.18) 0%,
+    rgba(40, 20, 80, 0.35) 100%
+  );
+  border: 1px solid var(--violet-line);
+}
+
+.frameLabel {
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-4);
+  z-index: 2;
+  color: var(--ink-2);
+}
+
+.frameFoot {
+  position: absolute;
+  right: var(--s-4);
+  bottom: var(--s-3);
+  left: var(--s-4);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-2);
+}
+
+.frameFootRight {
+  color: var(--violet-2);
 }
 
 .scanlines {
