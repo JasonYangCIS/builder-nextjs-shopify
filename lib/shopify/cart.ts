@@ -36,6 +36,7 @@ export async function createCart(): Promise<{ cart: Cart | null; userErrors: Use
     query: CART_CREATE,
     variables: {},
     revalidate: false,
+    retry: false,
   });
   return { cart: normalize(data.cartCreate.cart), userErrors: data.cartCreate.userErrors };
 }
@@ -57,6 +58,7 @@ export async function addCartLines(
     query: CART_LINES_ADD,
     variables: { cartId, lines },
     revalidate: false,
+    retry: false,
   });
   return { cart: normalize(data.cartLinesAdd.cart), userErrors: data.cartLinesAdd.userErrors };
 }
@@ -69,6 +71,7 @@ export async function updateCartLines(
     query: CART_LINES_UPDATE,
     variables: { cartId, lines },
     revalidate: false,
+    retry: false,
   });
   return { cart: normalize(data.cartLinesUpdate.cart), userErrors: data.cartLinesUpdate.userErrors };
 }
@@ -78,6 +81,7 @@ export async function removeCartLines(cartId: string, lineIds: string[]) {
     query: CART_LINES_REMOVE,
     variables: { cartId, lineIds },
     revalidate: false,
+    retry: false,
   });
   return { cart: normalize(data.cartLinesRemove.cart), userErrors: data.cartLinesRemove.userErrors };
 }
@@ -87,6 +91,7 @@ export async function updateDiscountCodes(cartId: string, discountCodes: string[
     query: CART_DISCOUNT_CODES_UPDATE,
     variables: { cartId, discountCodes },
     revalidate: false,
+    retry: false,
   });
   return {
     cart: normalize(data.cartDiscountCodesUpdate.cart),
@@ -99,6 +104,7 @@ export async function updateBuyerIdentity(cartId: string, customerAccessToken: s
     query: CART_BUYER_IDENTITY_UPDATE,
     variables: { cartId, buyerIdentity: { customerAccessToken } },
     revalidate: false,
+    retry: false,
   });
   return {
     cart: normalize(data.cartBuyerIdentityUpdate.cart),

@@ -6,6 +6,14 @@ export interface ShopifyFetchOptions<TVars> {
   variables?: TVars;
   tags?: string[];
   revalidate?: number | false;
+  /**
+   * Whether to retry on transient network errors / 5xx / 429.
+   * Defaults to `true` for safe (read-only) queries. Mutations MUST pass
+   * `retry: false` — the Storefront API does not provide an idempotency key,
+   * so retrying a cart mutation that succeeded server-side but timed out on
+   * the client would duplicate the operation.
+   */
+  retry?: boolean;
 }
 
 export interface ShopifyFetchResult<T> {
@@ -32,16 +40,24 @@ function isRetryableError(err: unknown): boolean {
   );
 }
 
-async function fetchWithRetry(body: string, fetchInit: RequestInit): Promise<Response> {
+async function fetchWithRetry(
+  body: string,
+  fetchInit: RequestInit,
+  retry: boolean,
+): Promise<Response> {
+  const maxAttempts = retry ? MAX_ATTEMPTS : 1;
   let lastErr: unknown;
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     try {
       const res = await fetch(endpoint, { ...fetchInit, body, signal: controller.signal });
       clearTimeout(timer);
       // Retry on transient 5xx / 429
-      if ((res.status >= 500 || res.status === 429) && attempt < MAX_ATTEMPTS) {
+      if ((res.status >= 500 || res.status === 429) && attempt < maxAttempts) {
+        // Cancel the response body so the underlying connection can be released
+        // back to the pool instead of held open until GC.
+        await res.body?.cancel().catch(() => {});
         await new Promise((r) => setTimeout(r, 250 * 2 ** (attempt - 1)));
         continue;
       }
@@ -49,7 +65,7 @@ async function fetchWithRetry(body: string, fetchInit: RequestInit): Promise<Res
     } catch (err) {
       clearTimeout(timer);
       lastErr = err;
-      if (attempt >= MAX_ATTEMPTS || !isRetryableError(err)) throw err;
+      if (attempt >= maxAttempts || !isRetryableError(err)) throw err;
       await new Promise((r) => setTimeout(r, 250 * 2 ** (attempt - 1)));
     }
   }
@@ -61,15 +77,20 @@ export async function shopifyFetch<T, V = Record<string, unknown>>({
   variables,
   tags,
   revalidate = 60,
+  retry = true,
 }: ShopifyFetchOptions<V>): Promise<ShopifyFetchResult<T>> {
-  const res = await fetchWithRetry(JSON.stringify({ query, variables }), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Shopify-Storefront-Access-Token": env.SHOPIFY_STOREFRONT_API_TOKEN,
+  const res = await fetchWithRetry(
+    JSON.stringify({ query, variables }),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Storefront-Access-Token": env.SHOPIFY_STOREFRONT_API_TOKEN,
+      },
+      next: tags || revalidate ? { tags, revalidate: revalidate === false ? undefined : revalidate } : undefined,
     },
-    next: tags || revalidate ? { tags, revalidate: revalidate === false ? undefined : revalidate } : undefined,
-  });
+    retry,
+  );
 
   if (!res.ok) {
     throw new Error(`Shopify Storefront error: ${res.status} ${res.statusText}`);
