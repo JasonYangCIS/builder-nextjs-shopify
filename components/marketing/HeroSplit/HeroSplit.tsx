@@ -50,7 +50,7 @@ export default function HeroSplit({
   const imageBlock = imageUrl ? (
     <div
       className={cn(
-        "relative overflow-hidden x-frame",
+        "relative x-frame",
         styles.imageFrame,
         hasFrameChrome && styles.fieldReportFrame,
       )}
@@ -62,18 +62,20 @@ export default function HeroSplit({
         <span className={cn("t-eyebrow", styles.frameLabel)}>{frameLabel}</span>
       )}
 
-      <Image
-        src={imageUrl}
-        alt={imageAlt ?? ""}
-        fill
-        sizes="(min-width: 768px) 50vw, 100vw"
-        className="object-cover"
-        priority
-      />
-      <div
-        aria-hidden="true"
-        className={cn("absolute inset-0 pointer-events-none", styles.scanlines)}
-      />
+      <div className={cn("relative overflow-hidden", styles.innerImage)}>
+        <Image
+          src={imageUrl}
+          alt={imageAlt ?? ""}
+          fill
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-cover"
+          priority
+        />
+        <div
+          aria-hidden="true"
+          className={cn("absolute inset-0 pointer-events-none", styles.scanlines)}
+        />
+      </div>
 
       {(frameFootLeft || frameFootRight) && (
         <div className={styles.frameFoot}>

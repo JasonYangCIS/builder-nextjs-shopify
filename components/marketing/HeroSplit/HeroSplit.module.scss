@@ -34,7 +34,16 @@
 }
 
 .imageFrame {
+  display: flex;
+  flex-direction: column;
   aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.innerImage {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
 }
 
 .fieldReportFrame {
@@ -45,10 +54,6 @@
     rgba(40, 20, 80, 0.35) 100%
   );
   border: 1px solid var(--violet-line);
-
-  > img {
-    z-index: 0;
-  }
 }
 
 .frameLabel {
