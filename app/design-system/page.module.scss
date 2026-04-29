@@ -167,3 +167,10 @@
   letter-spacing: 0.08em;
   margin-bottom: 2px;
 }
+
+/* ── Component showcase frame ──────────────────────────────── */
+.componentFrame {
+  padding: var(--s-6);
+  border: 1px dashed var(--border);
+  background: var(--card);
+}
