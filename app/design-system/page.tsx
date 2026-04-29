@@ -8,6 +8,7 @@ import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
 import AnnouncementBar from "@/components/marketing/AnnouncementBar/AnnouncementBar";
 import FaqList from "@/components/marketing/FaqList/FaqList";
+import SigilForge from "@/components/marketing/SigilForge/SigilForge";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
@@ -399,6 +400,14 @@ export default function DesignSystemPage() {
               <DiscountCodeInput />
             </div>
           </div>
+        </div>
+      </Section>
+
+      {/* ── Interactive artifact ──────────────────────────────── */}
+      <Section title="Interactive Artifact" num="11">
+        <div className="flex flex-col gap-4">
+          <p className="t-eyebrow">SigilForge</p>
+          <SigilForge />
         </div>
       </Section>
 

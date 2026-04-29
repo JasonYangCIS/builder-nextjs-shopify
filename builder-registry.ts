@@ -10,6 +10,7 @@ import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
 import AnnouncementBar from "@/components/marketing/AnnouncementBar/AnnouncementBar";
 import FaqList from "@/components/marketing/FaqList/FaqList";
+import SigilForge from "@/components/marketing/SigilForge/SigilForge";
 
 export const customComponents: RegisteredComponent[] = [
   {
@@ -100,5 +101,15 @@ export const customComponents: RegisteredComponent[] = [
     component: OrderHistoryList,
     name: "OrderHistoryList",
     inputs: [],
+  },
+  {
+    component: SigilForge,
+    name: "SigilForge",
+    inputs: [
+      { name: "eyebrow", type: "string", defaultValue: "⌁ § Sigil Forge / interactive artifact" },
+      { name: "heading", type: "string", defaultValue: "Drag to commune." },
+      { name: "headingAccent", type: "string", defaultValue: "commune", helperText: "Substring of heading rendered with cyan glow accent" },
+      { name: "body", type: "longText", defaultValue: "A live xenotechnical sigil — drawn from the same lattice as every artifact in the catalogue.\nDrag to rotate. Scroll to lean closer. Cycle the frequency." },
+    ],
   },
 ];
