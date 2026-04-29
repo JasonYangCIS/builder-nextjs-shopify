@@ -95,10 +95,10 @@ export default function Header() {
           gap: 6px;
           padding: 7px 14px;
           font-family: var(--font-orbitron), var(--font-sans);
-          font-size: 10px;
-          letter-spacing: 0.2em;
+          font-size: 11px;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: var(--ink-1);
+          color: var(--ink-0);
           text-decoration: none;
           border: 1px solid transparent;
           transition: color 0.16s, border-color 0.16s, background 0.16s, box-shadow 0.16s;
@@ -111,8 +111,8 @@ export default function Header() {
         }
         .nav-link__num {
           font-family: var(--font-jetbrains), monospace;
-          font-size: 8px;
-          color: var(--ink-2);
+          font-size: 10px;
+          color: var(--ink-1);
           letter-spacing: 0.1em;
         }
       `}</style>
