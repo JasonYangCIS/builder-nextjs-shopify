@@ -4,7 +4,18 @@ import Badge from "@/components/ui/Badge/Badge";
 import Input from "@/components/ui/Input/Input";
 import Label from "@/components/ui/Label/Label";
 import Card from "@/components/ui/Card/Card";
+import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
+import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
+import AnnouncementBar from "@/components/marketing/AnnouncementBar/AnnouncementBar";
+import FaqList from "@/components/marketing/FaqList/FaqList";
+import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
+import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
+import LoginButton from "@/components/shopify/LoginButton/LoginButton";
+import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCodeInput";
 import styles from "./page.module.scss";
+
+const PLACEHOLDER_IMAGE =
+  "https://cdn.builder.io/api/v1/image/assets%2F2ba2a4f70b3344978de5230adda60dd3%2F06376fd985e8499fb5b004850080dd09?format=webp&width=800&height=1200";
 
 export const metadata: Metadata = {
   title: "Design Codex",
@@ -264,6 +275,130 @@ export default function DesignSystemPage() {
               <span className={`t-mono ${styles.spacePx}`}>{px}</span>
             </div>
           ))}
+        </div>
+      </Section>
+
+      {/* ── Marketing components ──────────────────────────────── */}
+      <Section title="Marketing Components" num="09">
+        <div className="flex flex-col gap-12">
+          <div>
+            <p className="t-eyebrow mb-4">AnnouncementBar</p>
+            <AnnouncementBar
+              message="Free transit on all xenospheric relay orders over $200"
+              href="/collections/relay"
+            />
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">HeroCentered</p>
+            <div className={styles.componentFrame}>
+              <HeroCentered
+                eyebrow="XENOSPHERE / TRANSMISSION / VOL. 01"
+                heading="Signal Acquired"
+                body="Centered marketing hero with eyebrow, headline, body, and a primary call-to-action."
+                ctaLabel="Begin Descent"
+                ctaHref="#"
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">HeroSplit — default (image right)</p>
+            <div className={styles.componentFrame}>
+              <HeroSplit
+                eyebrow="FIELD REPORT 013"
+                heading="Resonant alloys for the descent."
+                body="Two-column hero with image and CTA. Demonstrates the default right-aligned image position."
+                ctaLabel="Acquire Artifact"
+                ctaHref="#"
+                imageUrl={PLACEHOLDER_IMAGE}
+                imageAlt="Placeholder artifact"
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">HeroSplit — field report (image left, accent + secondary CTA)</p>
+            <div className={styles.componentFrame}>
+              <HeroSplit
+                eyebrow="FIELD REPORT 014 — LIMITED"
+                heading="The Nocturne drop is calibrated for Ridge Line."
+                headingAccent="Nocturne"
+                body="Resonant violet inlays harvested from Bagnetic Hadespeex deposits in sector 7741."
+                ctaLabel="Acquire Nocturne →"
+                ctaHref="#"
+                secondaryCtaLabel="Read full report"
+                secondaryCtaHref="#"
+                imagePosition="left"
+                imageUrl={PLACEHOLDER_IMAGE}
+                imageAlt="Nocturne board"
+                frameLabel="+ FIELD REPORT 014"
+                frameFootLeft="NOCTURNE BLADE"
+                frameFootRight="// 352"
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">FaqList</p>
+            <FaqList
+              heading="Transmission FAQ"
+              items={[
+                {
+                  question: "What is the XENOSPHERE relay?",
+                  answerHtml: "<p>A bioluminescent network broadcasting on frequencies beyond human range.</p>",
+                },
+                {
+                  question: "How are artifacts authenticated?",
+                  answerHtml: "<p>Each artifact is logged against its field report and sector coordinates.</p>",
+                },
+                {
+                  question: "Can I return a depleted relic?",
+                  answerHtml: "<p>Depleted relics may be exchanged within 30 cycles of acquisition.</p>",
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </Section>
+
+      {/* ── Commerce primitives ───────────────────────────────── */}
+      <Section title="Commerce Primitives" num="10">
+        <div className="flex flex-col gap-10">
+          <div>
+            <p className="t-eyebrow mb-4">PriceDisplay</p>
+            <div className="flex flex-wrap items-center gap-8">
+              <PriceDisplay price={{ amount: "129.00", currencyCode: "USD" }} />
+              <PriceDisplay
+                price={{ amount: "89.00", currencyCode: "USD" }}
+                compareAtPrice={{ amount: "129.00", currencyCode: "USD" }}
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">InventoryBadge — variants</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <InventoryBadge availableForSale quantityAvailable={42} />
+              <InventoryBadge availableForSale quantityAvailable={3} lowStockThreshold={5} />
+              <InventoryBadge availableForSale={false} quantityAvailable={0} />
+            </div>
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">LoginButton</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <LoginButton />
+              <LoginButton label="Enter the relay" />
+            </div>
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">DiscountCodeInput</p>
+            <div className={styles.componentFrame}>
+              <DiscountCodeInput />
+            </div>
+          </div>
         </div>
       </Section>
 

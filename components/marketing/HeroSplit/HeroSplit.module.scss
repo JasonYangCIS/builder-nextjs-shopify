@@ -1,35 +1,96 @@
 .eyebrowRule {
+  display: inline-block;
   width: 28px;
   height: 1px;
   background: var(--cyan-3);
   box-shadow: var(--glow-cyan-sm);
-  display: inline-block;
+}
+
+.textColumn {
+  min-width: 0;
+  container-type: inline-size;
 }
 
 .heading {
-  font-size: clamp(40px, 6.4vw, 88px);
+  max-width: 100%;
+  font-size: clamp(40px, 12cqi, 88px);
   letter-spacing: 0.03em;
   line-height: 0.95;
   color: var(--ink-0);
   text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.headingAccent {
+  color: var(--violet-2);
+  text-shadow: var(--glow-violet-sm);
 }
 
 .body {
   max-width: 480px;
   font-size: var(--t-lg);
-  color: var(--ink-1);
   line-height: 1.6;
+  color: var(--ink-1);
 }
 
-.ctaWrap {
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
   margin-top: 8px;
 }
 
 .imageFrame {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
   aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.innerImage {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}
+
+.fieldReportFrame {
+  padding: var(--s-10) var(--s-5);
+  background: linear-gradient(
+    180deg,
+    rgba(120, 60, 180, 0.18) 0%,
+    rgba(40, 20, 80, 0.35) 100%
+  );
+  border: 1px solid var(--violet-line);
+}
+
+.frameLabel {
+  position: absolute;
+  top: var(--s-3);
+  left: var(--s-4);
+  z-index: 3;
+  color: var(--ink-0);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.frameFoot {
+  position: absolute;
+  right: var(--s-4);
+  bottom: var(--s-3);
+  left: var(--s-4);
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-0);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.frameFootRight {
+  color: var(--violet-3);
 }
 
 .scanlines {
+  z-index: 1;
   background-image: repeating-linear-gradient(
     0deg,
     rgba(255, 255, 255, 0.012) 0 1px,
