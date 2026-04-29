@@ -74,9 +74,12 @@ export default function MobileMenu() {
           bottom: 0,
           zIndex: 50,
           width: "min(320px, 90vw)",
-          background: "radial-gradient(120% 60% at 100% 0%, rgba(61,217,214,0.10), transparent 60%) #1a2740",
+          backgroundColor: "#1a2740",
+          backgroundImage:
+            "radial-gradient(120% 60% at 100% 0%, rgba(61,217,214,0.12), transparent 60%)",
           borderLeft: "1px solid var(--cyan-line)",
-          boxShadow: "-2px 0 0 0 rgba(61,217,214,0.25), -24px 0 80px rgba(0,0,0,0.8)",
+          boxShadow:
+            "-2px 0 0 0 rgba(61,217,214,0.25), -24px 0 80px rgba(0,0,0,0.8)",
           transform: open ? "translateX(0)" : "translateX(100%)",
           transition: "transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
           display: "flex",
@@ -135,10 +138,8 @@ export default function MobileMenu() {
                     textDecoration: "none",
                     color: isActive ? "var(--cyan-3)" : "var(--ink-0)",
                     border: "1px solid",
-                    borderColor: isActive ? "var(--cyan-line)" : "rgba(184, 200, 212, 0.12)",
-                    background: isActive
-                      ? "rgba(61,217,214,0.10)"
-                      : "rgba(13, 20, 32, 0.85)",
+                    borderColor: isActive ? "var(--cyan-line)" : "transparent",
+                    background: isActive ? "rgba(61,217,214,0.10)" : "transparent",
                     boxShadow: isActive ? "var(--glow-cyan-sm)" : "none",
                     clipPath: "var(--chamfer-sm)",
                     transition: "all 0.16s",
