@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { cn } from "@/utils/cn";
 import type { ProductVariant } from "@/lib/shopify/types";
 import type { VariantPickerProps } from "./VariantPicker.types";
+import styles from "./VariantPicker.module.scss";
 
 function findVariant(
   variants: ProductVariant[],
@@ -28,11 +28,19 @@ export default function VariantPicker({ product, onSelect }: VariantPickerProps)
     onSelect?.(selected);
   }, [selected, onSelect]);
 
+  const isDefaultOnly =
+    product.options.length === 1 &&
+    product.options[0].name === "Title" &&
+    product.options[0].values.length === 1 &&
+    product.options[0].values[0] === "Default Title";
+
+  if (isDefaultOnly) return null;
+
   return (
     <div className="flex flex-col gap-4">
       {product.options.map((option) => (
-        <fieldset key={option.name} className="flex flex-col gap-2">
-          <legend className="text-sm font-medium">{option.name}</legend>
+        <fieldset key={option.name} className={`flex flex-col gap-2 ${styles.fieldset}`}>
+          <legend className={`t-eyebrow ${styles.legend}`}>{option.name}</legend>
           <div className="flex flex-wrap gap-2">
             {option.values.map((value) => {
               const isSelected = selections[option.name] === value;
@@ -41,13 +49,9 @@ export default function VariantPicker({ product, onSelect }: VariantPickerProps)
                   type="button"
                   key={value}
                   onClick={() => setSelections((s) => ({ ...s, [option.name]: value }))}
-                  className={cn(
-                    "rounded-md border px-3 py-1.5 text-sm transition-colors focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-ring/50",
-                    isSelected
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-input bg-background hover:bg-accent",
-                  )}
                   aria-pressed={isSelected}
+                  data-selected={isSelected ? "true" : "false"}
+                  className={`t-mono ${styles.option}`}
                 >
                   {value}
                 </button>

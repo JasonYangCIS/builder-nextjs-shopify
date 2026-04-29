@@ -1,0 +1,61 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--card);
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+  text-decoration: none;
+  color: var(--foreground);
+  overflow: hidden;
+
+  &:hover {
+    border-color: var(--cyan-line);
+    box-shadow: var(--glow-cyan-sm);
+  }
+}
+
+.imageWrap {
+  aspect-ratio: 4 / 5;
+  background: var(--void-3);
+}
+
+.fallback {
+  background: radial-gradient(120% 80% at 50% 0%, rgba(61, 217, 214, 0.15), transparent 60%),
+    var(--void-3);
+}
+
+.fallbackGlyph {
+  color: var(--cyan-3);
+  opacity: 0.4;
+  font-size: 32px;
+}
+
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.012) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.info {
+  border-top: 1px solid var(--border);
+}
+
+.kicker {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--ink-2);
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--ink-0);
+}

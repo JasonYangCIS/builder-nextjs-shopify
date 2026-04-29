@@ -1,7 +1,7 @@
 "use client";
 import useSWR from "swr";
 import Link from "next/link";
-import Button from "@/components/ui/Button/Button";
+import styles from "./AccountMenu.module.scss";
 
 interface MeResponse {
   authenticated: boolean;
@@ -16,23 +16,39 @@ const fetcher = async (url: string): Promise<MeResponse> => {
 
 export default function AccountMenu() {
   const { data } = useSWR<MeResponse>("/api/customer", fetcher, { revalidateOnFocus: false });
+
   if (!data?.authenticated) {
     return (
-      <Button asChild variant="ghost" size="sm">
-        <Link href="/api/auth/login">Log in</Link>
-      </Button>
+      <Link href="/api/auth/login" className={styles.iconBtn} aria-label="Log in">
+        <UserIcon />
+      </Link>
     );
   }
+
+  const name =
+    data.customer?.firstName ??
+    data.customer?.emailAddress?.emailAddress ??
+    "Account";
+
   return (
     <div className="flex items-center gap-2">
-      <Link href="/account" className="text-sm hover:underline">
-        {data.customer?.firstName ?? data.customer?.emailAddress?.emailAddress ?? "Account"}
+      <Link href="/account" className={styles.nameLink}>
+        {name}
       </Link>
       <form action="/api/auth/logout" method="post">
-        <Button type="submit" variant="ghost" size="sm">
-          Log out
-        </Button>
+        <button type="submit" className={styles.exitBtn}>
+          [ Exit ]
+        </button>
       </form>
     </div>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
+    </svg>
   );
 }

@@ -1,3 +1,5 @@
+import styles from "./AnnouncementBar.module.scss";
+
 export interface AnnouncementBarProps {
   message?: string | null;
   href?: string | null;
@@ -5,10 +7,20 @@ export interface AnnouncementBarProps {
 
 export default function AnnouncementBar({ message, href }: AnnouncementBarProps) {
   if (!message) return null;
+
   const content = (
-    <span className="block bg-primary px-4 py-2 text-center text-sm text-primary-foreground">
-      {message}
-    </span>
+    <div className={`flex items-center justify-center gap-4 ${styles.bar}`}>
+      <span className={styles.glyph}>⌁</span>
+      <span>{message}</span>
+      <span className={styles.glyph}>⌁</span>
+    </div>
   );
-  return href ? <a href={href}>{content}</a> : content;
+
+  return href ? (
+    <a href={href} className={styles.link}>
+      {content}
+    </a>
+  ) : (
+    content
+  );
 }

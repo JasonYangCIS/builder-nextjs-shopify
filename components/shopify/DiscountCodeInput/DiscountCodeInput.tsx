@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input/Input";
 import Label from "@/components/ui/Label/Label";
 import { useCart } from "@/lib/cart/useCart";
+import styles from "./DiscountCodeInput.module.scss";
 
 export default function DiscountCodeInput() {
   const { cart, mutate } = useCart();
@@ -47,32 +48,29 @@ export default function DiscountCodeInput() {
           id="discount-code"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Enter code"
+          placeholder="ENTER CODE"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "discount-error" : undefined}
         />
-        <Button type="submit" disabled={pending || !code.trim()}>
+        <Button type="submit" size="sm" disabled={pending || !code.trim()}>
           Apply
         </Button>
       </div>
       {error && (
-        <p id="discount-error" role="alert" className="text-sm text-destructive">
+        <p id="discount-error" role="alert" className={`t-mono ${styles.error}`}>
           {error}
         </p>
       )}
       {codes.length > 0 && (
-        <ul className="flex flex-wrap gap-2 text-sm" aria-label="Applied codes">
+        <ul className="flex flex-wrap gap-2" aria-label="Applied codes">
           {codes.map((c) => (
-            <li
-              key={c.code}
-              className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-secondary-foreground"
-            >
+            <li key={c.code} className={`inline-flex items-center gap-2 t-mono ${styles.chip}`}>
               <span>{c.code}</span>
               <button
                 type="button"
                 onClick={() => apply(codes.filter((x) => x.code !== c.code).map((x) => x.code))}
                 aria-label={`Remove ${c.code}`}
-                className="text-muted-foreground hover:text-foreground"
+                className={styles.chipRemove}
               >
                 ×
               </button>

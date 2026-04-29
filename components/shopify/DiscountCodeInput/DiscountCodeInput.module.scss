@@ -1,0 +1,24 @@
+.error {
+  font-size: var(--t-xs);
+  color: var(--xenosphere-danger);
+  letter-spacing: 0.1em;
+}
+
+.chip {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  padding: 3px 8px;
+  border: 1px solid var(--cyan-line);
+  background: var(--cyan-soft);
+  color: var(--cyan-3);
+  clip-path: var(--chamfer-sm);
+}
+
+.chipRemove {
+  background: none;
+  border: none;
+  color: var(--cyan-2);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}

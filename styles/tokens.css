@@ -1,46 +1,112 @@
-/* Design tokens. Reference these via Tailwind 4 `@theme inline` in app/globals.css. */
-:root,
-[data-theme="light"] {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
-  --radius: 0.5rem;
-}
+/* Design tokens — XENOSPHERE design system (dark-only).
+   Mapped to Tailwind 4 @theme inline in app/globals.css. */
 
-[data-theme="dark"] {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.274 0.006 286.033);
-  --input: oklch(0.274 0.006 286.033);
-  --ring: oklch(0.442 0.017 285.786);
+:root {
+  /* ── XENOSPHERE raw palette ─────────────────────────────── */
+  --void-0:       #06090f;
+  --void-1:       #0a1018;
+  --void-2:       #0d1420;
+  --void-3:       #131c2e;
+  --void-4:       #1a2740;
+
+  --terrain-1:    #2a1420;
+  --terrain-2:    #5b2a3a;
+  --terrain-3:    #7d3c4d;
+
+  --cyan-1:       #1a8a8c;
+  --cyan-2:       #3dd9d6;
+  --cyan-3:       #7af0ee;
+  --cyan-soft:    rgba(61, 217, 214, 0.14);
+  --cyan-line:    rgba(61, 217, 214, 0.35);
+
+  --violet-1:     #5e2db5;
+  --violet-2:     #a76bff;
+  --violet-3:     #d6a8ff;
+  --violet-soft:  rgba(167, 107, 255, 0.14);
+  --violet-line:  rgba(167, 107, 255, 0.35);
+
+  --amber-1:      #d97f3a;
+
+  --ink-0:        #eaf6f5;
+  --ink-1:        #b8c8d4;
+  --ink-2:        #6e7e90;
+  --ink-3:        #4a5668;
+  --ink-glow:     #7af0ee;
+
+  --xenosphere-success:  #4ee0a8;
+  --xenosphere-danger:   #ff5a7a;
+
+  /* ── Tailwind-mapped semantic tokens ───────────────────── */
+  --background:             var(--void-1);
+  --foreground:             var(--ink-0);
+  --card:                   var(--void-2);
+  --card-foreground:        var(--ink-0);
+  --popover:                var(--void-3);
+  --popover-foreground:     var(--ink-0);
+  --primary:                var(--cyan-2);
+  --primary-foreground:     var(--void-0);
+  --secondary:              var(--void-3);
+  --secondary-foreground:   var(--ink-1);
+  --muted:                  var(--void-4);
+  --muted-foreground:       var(--ink-2);
+  --accent:                 var(--violet-2);
+  --accent-foreground:      var(--void-0);
+  --destructive:            var(--xenosphere-danger);
+  --destructive-foreground: var(--void-0);
+  --border:                 var(--void-4);
+  --input:                  var(--void-3);
+  --ring:                   var(--cyan-2);
+  --radius:                 2px;
+
+  /* ── Typography ────────────────────────────────────────── */
+  --font-display: 'Orbitron', 'Arial Narrow', sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* ── Type scale ────────────────────────────────────────── */
+  --t-2xs: 11px;
+  --t-xs:  12px;
+  --t-sm:  14px;
+  --t-md:  16px;
+  --t-lg:  20px;
+  --t-xl:  24px;
+  --t-2xl: 30px;
+  --t-3xl: 40px;
+  --t-4xl: 52px;
+  --t-5xl: 72px;
+
+  /* ── Spacing ────────────────────────────────────────────── */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-20: 80px;
+
+  /* ── Radii ──────────────────────────────────────────────── */
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   14px;
+  --r-pill: 999px;
+
+  /* ── Shadows & glows ───────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
+  --glow-cyan-sm:   0 0 12px rgba(61, 217, 214, 0.35);
+  --glow-cyan-md:   0 0 24px rgba(61, 217, 214, 0.45), 0 0 48px rgba(61, 217, 214, 0.18);
+  --glow-cyan-lg:   0 0 32px rgba(61, 217, 214, 0.55), 0 0 80px rgba(61, 217, 214, 0.25);
+  --glow-violet-sm: 0 0 12px rgba(167, 107, 255, 0.35);
+  --glow-violet-md: 0 0 24px rgba(167, 107, 255, 0.45), 0 0 48px rgba(167, 107, 255, 0.18);
+  --inset-glow:     inset 0 0 24px rgba(61, 217, 214, 0.08);
+
+  /* ── Chamfer clip-path ──────────────────────────────────── */
+  --chamfer: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  --chamfer-sm: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
 }

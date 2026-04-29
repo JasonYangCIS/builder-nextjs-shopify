@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import { formatDate, formatMoney } from "@/utils/date";
+import styles from "./OrderHistoryList.module.scss";
 
 interface OrderRow {
   id: string;
@@ -20,22 +21,30 @@ const fetcher = async (url: string) => {
 
 export default function OrderHistoryList() {
   const { data, isLoading } = useSWR("/api/customer?orders=1", fetcher);
-  if (isLoading) return <p className="text-muted-foreground">Loading orders…</p>;
-  if (data?.unauthenticated) return <p className="text-muted-foreground">Please log in to view your orders.</p>;
-  if (!data?.orders.length) return <p className="text-muted-foreground">No orders yet.</p>;
+
+  if (isLoading) {
+    return <p className={`t-mono ${styles.scanText}`}>Loading transmissions...</p>;
+  }
+  if (data?.unauthenticated) {
+    return <p className={`t-mono ${styles.authText}`}>Authentication required.</p>;
+  }
+  if (!data?.orders.length) {
+    return <p className={`t-mono ${styles.scanText}`}>⌁ No transmissions logged</p>;
+  }
+
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className={`flex flex-col gap-0 ${styles.list}`}>
       {data.orders.map((o) => (
-        <li key={o.id} className="rounded-lg border p-4">
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">{o.name}</span>
-            <span className="text-sm text-muted-foreground">{formatDate(o.processedAt)}</span>
+        <li key={o.id} className={`p-4 ${styles.row}`}>
+          <div className="flex items-center justify-between gap-4">
+            <span className={`t-display ${styles.orderName}`}>{o.name}</span>
+            <span className={`t-mono ${styles.orderDate}`}>{formatDate(o.processedAt)}</span>
           </div>
-          <div className="mt-2 flex items-center justify-between text-sm">
-            <span>
-              {o.financialStatus ?? "—"} · {o.fulfillmentStatus ?? "Unfulfilled"}
+          <div className="mt-2 flex items-center justify-between gap-4">
+            <span className={`t-mono ${styles.orderStatus}`}>
+              {o.financialStatus ?? "—"} · {o.fulfillmentStatus ?? "Pending"}
             </span>
-            <span className="font-medium">
+            <span className={`t-display ${styles.orderAmount}`}>
               {formatMoney(o.totalPrice.amount, o.totalPrice.currencyCode)}
             </span>
           </div>

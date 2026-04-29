@@ -33,6 +33,7 @@ export interface Product {
   priceRange: { minVariantPrice: Money; maxVariantPrice: Money };
   variants: ProductVariant[];
   tags: string[];
+  productType: string;
   availableForSale: boolean;
 }
 

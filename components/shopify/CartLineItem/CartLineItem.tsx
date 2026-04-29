@@ -1,12 +1,11 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
-import Button from "@/components/ui/Button/Button";
 import QuantityStepper from "@/components/shopify/QuantityStepper/QuantityStepper";
 import { formatMoney } from "@/utils/date";
 import { useCart } from "@/lib/cart/useCart";
 import type { CartLine } from "@/lib/shopify/types";
+import styles from "./CartLineItem.module.scss";
 
 export interface CartLineItemProps {
   line: CartLine;
@@ -38,33 +37,45 @@ export default function CartLineItem({ line }: CartLineItemProps) {
   }
 
   return (
-    <li className="flex gap-4 border-b py-4">
-      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-muted">
+    <li className={`flex gap-3 py-4 ${styles.row}`}>
+      <div className={`relative shrink-0 overflow-hidden ${styles.thumb}`}>
         {merch.image && (
           <Image
             src={merch.image.url}
             alt={merch.image.altText ?? merch.product.title}
             fill
-            sizes="80px"
+            sizes="64px"
             className="object-cover"
           />
         )}
       </div>
+
       <div className="flex flex-1 flex-col gap-1">
-        <Link href={`/products/${merch.product.handle}`} className="font-medium hover:underline">
+        <Link href={`/products/${merch.product.handle}`} className={`t-display ${styles.title}`}>
           {merch.product.title}
         </Link>
-        <p className="text-sm text-muted-foreground">{merch.title}</p>
-        <div className="mt-2 flex items-center justify-between gap-2">
+        {merch.title !== "Default Title" && (
+          <p className={`t-mono ${styles.variant}`}>{merch.title}</p>
+        )}
+        <div className="flex items-center justify-between gap-2 mt-2">
           <QuantityStepper value={line.quantity} max={max} onChange={update} />
-          <span className="font-medium">
+          <span className={`t-display ${styles.amount}`}>
             {formatMoney(line.cost.totalAmount.amount, line.cost.totalAmount.currencyCode)}
           </span>
         </div>
       </div>
-      <Button variant="ghost" size="icon" onClick={remove} aria-label="Remove item">
-        <Trash2 className="h-4 w-4" />
-      </Button>
+
+      <button onClick={remove} aria-label="Remove item" className={styles.removeBtn}>
+        <TrashIcon />
+      </button>
     </li>
+  );
+}
+
+function TrashIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+    </svg>
   );
 }

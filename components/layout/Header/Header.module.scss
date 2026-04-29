@@ -1,0 +1,80 @@
+.header {
+  background: rgba(6, 9, 15, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.navGrid {
+  grid-template-columns: auto 1fr auto;
+  height: 60px;
+  gap: 16px;
+}
+
+.brandLink {
+  color: var(--ink-0);
+}
+
+.brandTitle {
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--ink-0);
+}
+
+.brandSub {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--cyan-3);
+  margin-top: 1px;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-family: var(--font-orbitron), var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-0);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition:
+    color 0.16s,
+    border-color 0.16s,
+    background 0.16s,
+    box-shadow 0.16s;
+  clip-path: var(--chamfer-sm);
+
+  &:hover {
+    color: var(--ink-0);
+    border-color: var(--cyan-line);
+    background: rgba(61, 217, 214, 0.06);
+  }
+}
+
+.navLinkNum {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 10px;
+  color: var(--ink-1);
+  letter-spacing: 0.1em;
+}
+
+.ticker {
+  border-top: 1px solid var(--border);
+  background: rgba(6, 9, 15, 0.5);
+  padding: 5px 24px;
+  gap: 20px;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-1);
+  white-space: nowrap;
+}
+
+.tickerAccent {
+  color: var(--cyan-3);
+}

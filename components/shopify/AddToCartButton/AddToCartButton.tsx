@@ -41,11 +41,19 @@ export default function AddToCartButton({
 
   return (
     <div className={className}>
-      <Button onClick={handleClick} disabled={disabled} aria-busy={pending}>
-        {!availableForSale ? "Sold out" : pending ? "Adding…" : (label ?? "Add to cart")}
+      <Button onClick={handleClick} disabled={disabled} aria-busy={pending} size="lg" className="w-full">
+        {!availableForSale
+          ? "Artifact depleted"
+          : pending
+            ? "Acquiring..."
+            : (label ?? "Acquire artifact")}
       </Button>
       {error && (
-        <p role="alert" className="mt-2 text-sm text-destructive">
+        <p
+          role="alert"
+          className="t-mono"
+          style={{ marginTop: "8px", fontSize: "var(--t-xs)", color: "var(--xenosphere-danger)", letterSpacing: "0.1em" }}
+        >
           {error}
         </p>
       )}
