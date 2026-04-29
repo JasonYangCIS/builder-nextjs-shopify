@@ -9,12 +9,15 @@ import { config } from "@/config";
 import { env } from "@/lib/env";
 
 export const revalidate = 5;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {
     const handles = await listProductHandles(50);
     return handles.map((handle) => ({ handle }));
   } catch {
+    // If the handle list itself fails at build time, fall back to ISR-only.
+    // Individual product fetches have their own retry/timeout in shopifyFetch.
     return [];
   }
 }
