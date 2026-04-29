@@ -30,12 +30,8 @@ export default function MobileMenu() {
         aria-expanded={open}
         aria-controls="mobile-nav"
         onClick={() => setOpen((v) => !v)}
-        className="md:hidden"
+        className="flex flex-col items-center justify-center md:hidden"
         style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           gap: "5px",
           width: "38px",
           height: "38px",
