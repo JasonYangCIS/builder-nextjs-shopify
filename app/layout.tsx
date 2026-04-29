@@ -53,9 +53,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </main>
           <Footer />
         </div>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        {/* Render JSON-LD as raw HTML to avoid React 19's script-element warning.
+            Crawlers parse this from the DOM; it doesn't need to execute. */}
+        <div
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `<script type="application/ld+json">${JSON.stringify(orgJsonLd)}</script>`,
+          }}
         />
       </body>
     </html>

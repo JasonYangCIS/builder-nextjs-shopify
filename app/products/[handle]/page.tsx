@@ -80,9 +80,12 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           <RenderBuilderContent content={builderContent} model={config.models.product} />
         </section>
       ) : null}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      {/* Render JSON-LD as raw HTML to avoid React 19's script-element warning. */}
+      <div
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: `<script type="application/ld+json">${JSON.stringify(productJsonLd)}</script>`,
+        }}
       />
     </>
   );
