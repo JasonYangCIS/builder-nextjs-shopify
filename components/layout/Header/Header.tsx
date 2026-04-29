@@ -1,6 +1,13 @@
 import Link from "next/link";
 import CartDrawer from "@/components/shopify/CartDrawer/CartDrawer";
 import AccountMenu from "@/components/layout/AccountMenu/AccountMenu";
+import MobileMenu from "@/components/layout/MobileMenu/MobileMenu";
+
+const NAV_LINKS = [
+  { href: "/collections/all", label: "Catalogue",    num: "01" },
+  { href: "/design-system",   label: "Design Codex", num: "02" },
+  { href: "/account",         label: "Account",       num: "03" },
+];
 
 export default function Header() {
   return (
@@ -14,8 +21,8 @@ export default function Header() {
     >
       {/* Nav bar */}
       <div
-        className="mx-auto grid max-w-7xl items-center gap-8 px-4 md:px-14"
-        style={{ gridTemplateColumns: "auto 1fr auto", height: "60px" }}
+        className="mx-auto grid max-w-7xl items-center px-4 md:px-14"
+        style={{ gridTemplateColumns: "auto 1fr auto", height: "60px", gap: "16px" }}
       >
         {/* Brand */}
         <Link href="/" className="flex items-center gap-3 no-underline" style={{ color: "var(--ink-0)" }}>
@@ -28,7 +35,7 @@ export default function Header() {
               BUILDER SHOP
             </span>
             <span
-              className="t-mono"
+              className="t-mono hidden sm:block"
               style={{ fontSize: "8px", letterSpacing: "0.2em", color: "var(--cyan-3)", marginTop: "1px" }}
             >
               ∇ POWERED BY XENOSPHERE
@@ -36,12 +43,9 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* Primary nav */}
+        {/* Desktop primary nav */}
         <nav aria-label="Primary" className="hidden justify-center gap-1 md:flex">
-          {[
-            { href: "/collections/all", label: "Catalogue", num: "01" },
-            { href: "/account",         label: "Account",   num: "02" },
-          ].map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href} className="nav-link">
               <span className="nav-link__num">{link.num}</span>
               <span>{link.label}</span>
@@ -53,10 +57,11 @@ export default function Header() {
         <div className="flex items-center gap-1">
           <AccountMenu />
           <CartDrawer />
+          <MobileMenu />
         </div>
       </div>
 
-      {/* Ticker */}
+      {/* Ticker — desktop only */}
       <div
         className="hidden overflow-hidden md:flex"
         style={{
