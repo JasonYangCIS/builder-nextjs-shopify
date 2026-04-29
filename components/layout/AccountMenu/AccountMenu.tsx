@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import Link from "next/link";
+import styles from "./AccountMenu.module.scss";
 
 interface MeResponse {
   authenticated: boolean;
@@ -18,30 +19,8 @@ export default function AccountMenu() {
 
   if (!data?.authenticated) {
     return (
-      <Link href="/api/auth/login" className="xeno-icon-btn" aria-label="Log in">
+      <Link href="/api/auth/login" className={styles.iconBtn} aria-label="Log in">
         <UserIcon />
-        <style>{`
-          .xeno-icon-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--ink-1);
-            cursor: pointer;
-            transition: color 0.16s, border-color 0.16s, background 0.16s, box-shadow 0.16s;
-            clip-path: var(--chamfer-sm);
-            text-decoration: none;
-          }
-          .xeno-icon-btn:hover {
-            color: var(--cyan-3);
-            border-color: var(--cyan-line);
-            background: rgba(61, 217, 214, 0.06);
-            box-shadow: var(--glow-cyan-sm);
-          }
-        `}</style>
       </Link>
     );
   }
@@ -53,37 +32,11 @@ export default function AccountMenu() {
 
   return (
     <div className="flex items-center gap-2">
-      <Link
-        href="/account"
-        style={{
-          fontSize: "var(--t-xs)",
-          fontFamily: "var(--font-mono)",
-          letterSpacing: "0.12em",
-          color: "var(--ink-1)",
-          textDecoration: "none",
-          textTransform: "uppercase",
-        }}
-      >
+      <Link href="/account" className={styles.nameLink}>
         {name}
       </Link>
       <form action="/api/auth/logout" method="post">
-        <button
-          type="submit"
-          style={{
-            background: "transparent",
-            border: "none",
-            padding: 0,
-            fontSize: "var(--t-xs)",
-            fontFamily: "var(--font-mono)",
-            letterSpacing: "0.1em",
-            color: "var(--ink-2)",
-            cursor: "pointer",
-            textTransform: "uppercase",
-            transition: "color 0.16s",
-          }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--cyan-3)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--ink-2)"; }}
-        >
+        <button type="submit" className={styles.exitBtn}>
           [ Exit ]
         </button>
       </form>

@@ -7,6 +7,7 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
     descriptionHtml
     availableForSale
     tags
+    productType
     options { name values }
     priceRange {
       minVariantPrice { amount currencyCode }

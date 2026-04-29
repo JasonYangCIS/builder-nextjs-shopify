@@ -77,11 +77,11 @@ export default function DesignSystemPage() {
           <div>
             <p className="t-eyebrow mb-4">Display — Orbitron</p>
             {[
-              { size: "var(--t-5xl)", label: "5XL / 64px" },
-              { size: "var(--t-4xl)", label: "4XL / 48px" },
-              { size: "var(--t-3xl)", label: "3XL / 36px" },
-              { size: "var(--t-2xl)", label: "2XL / 28px" },
-              { size: "var(--t-xl)",  label: "XL / 22px" },
+              { size: "var(--t-5xl)", label: "5XL / 72px" },
+              { size: "var(--t-4xl)", label: "4XL / 52px" },
+              { size: "var(--t-3xl)", label: "3XL / 40px" },
+              { size: "var(--t-2xl)", label: "2XL / 30px" },
+              { size: "var(--t-xl)",  label: "XL / 24px" },
             ].map(({ size, label }) => (
               <div key={size} className="flex items-baseline gap-6 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
                 <span className="t-display" style={{ fontSize: size, letterSpacing: "0.06em", lineHeight: 1.1, color: "var(--ink-0)", flex: 1 }}>
@@ -96,10 +96,10 @@ export default function DesignSystemPage() {
           <div>
             <p className="t-eyebrow mb-4">Body — Inter</p>
             {[
-              { size: "var(--t-lg)", weight: 400, label: "LG / 18px Regular" },
-              { size: "var(--t-md)", weight: 400, label: "MD / 15px Regular" },
-              { size: "var(--t-sm)", weight: 400, label: "SM / 13px Regular" },
-              { size: "var(--t-xs)", weight: 400, label: "XS / 11px Regular" },
+              { size: "var(--t-lg)", weight: 400, label: "LG / 20px Regular" },
+              { size: "var(--t-md)", weight: 400, label: "MD / 16px Regular" },
+              { size: "var(--t-sm)", weight: 400, label: "SM / 14px Regular" },
+              { size: "var(--t-xs)", weight: 400, label: "XS / 12px Regular" },
             ].map(({ size, weight, label }) => (
               <div key={label} className="flex items-baseline gap-6 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
                 <span style={{ fontSize: size, fontWeight: weight, color: "var(--ink-1)", flex: 1 }}>
@@ -114,9 +114,9 @@ export default function DesignSystemPage() {
           <div>
             <p className="t-eyebrow mb-4">Mono — JetBrains Mono</p>
             {[
-              { size: "var(--t-sm)", label: "SM / 13px" },
-              { size: "var(--t-xs)", label: "XS / 11px" },
-              { size: "var(--t-2xs)", label: "2XS / 10px" },
+              { size: "var(--t-sm)", label: "SM / 14px" },
+              { size: "var(--t-xs)", label: "XS / 12px" },
+              { size: "var(--t-2xs)", label: "2XS / 11px" },
             ].map(({ size, label }) => (
               <div key={label} className="flex items-baseline gap-6 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
                 <span className="t-mono" style={{ fontSize: size, color: "var(--cyan-3)", flex: 1 }}>
