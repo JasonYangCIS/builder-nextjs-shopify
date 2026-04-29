@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Orbitron, Inter, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
+import SilenceScriptTagWarning from "@/components/util/SilenceScriptTagWarning/SilenceScriptTagWarning";
 import "./globals.css";
 
 const inter = Inter({
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} h-full`}
     >
       <body>
+        <SilenceScriptTagWarning />
         <div className="atmosphere" aria-hidden="true" />
         <div className="site-shell">
           <a className="skip-link" href="#main-content">Skip to content</a>
