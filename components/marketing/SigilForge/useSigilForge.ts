@@ -24,11 +24,17 @@ import type { Phase, Rotation, Shard } from "./SigilForge.types";
  *  – persisted detonation count
  *  – pointer + wheel handlers
  * ──────────────────────────────────────────────────────── */
+/* SSR-safe "we're on the client now" flag without setState-in-effect. */
+const subscribeNoop = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function useSigilForge() {
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(
+    subscribeNoop,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   const [hue, setHue] = React.useState<HueId>("cyan");
   const [freq, setFreq] = React.useState<FreqId>("mid");
@@ -41,7 +47,8 @@ export function useSigilForge() {
   const [phase, setPhase] = React.useState<Phase>("idle");
   const [shards, setShards] = React.useState<Shard[]>([]);
   const [detTick, setDetTick] = React.useState(0);
-  const [discoveries, setDiscoveries] = React.useState(0);
+  /* Bumped after each detonation so `discoveries` re-reads localStorage. */
+  const [discoveriesBump, setDiscoveriesBump] = React.useState(0);
 
   const dragRef = React.useRef<{
     active: boolean;
@@ -51,18 +58,28 @@ export function useSigilForge() {
   }>({ active: false, lx: 0, ly: 0 });
   const rafRef = React.useRef(0);
   const phaseRef = React.useRef<Phase>("idle");
-  phaseRef.current = phase;
+
+  /* Mirror `phase` into a ref so the RAF loop can read the latest value
+     without re-subscribing. Update happens after commit, never during render. */
+  React.useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   const hueObj: Hue = SF_HUES.find((h) => h.id === hue) ?? SF_HUES[0];
   const freqObj: Freq = SF_FREQS.find((f) => f.id === freq) ?? SF_FREQS[1];
 
-  /* Load persisted detonation count after mount. */
-  React.useEffect(() => {
+  /* Persisted detonation count — read from localStorage on demand.
+     `discoveriesBump` is intentionally a recomputation trigger, not a value. */
+  const discoveries = React.useMemo(() => {
+    void discoveriesBump;
+    if (!mounted) return 0;
     try {
       const v = parseInt(localStorage.getItem(SF_STORAGE_KEY) || "0", 10);
-      if (!Number.isNaN(v)) setDiscoveries(v);
-    } catch {}
-  }, []);
+      return Number.isNaN(v) ? 0 : v;
+    } catch {
+      return 0;
+    }
+  }, [mounted, discoveriesBump]);
 
   const detonate = React.useCallback(() => {
     setPhase("detonating");
@@ -87,13 +104,12 @@ export function useSigilForge() {
     setShards(next);
     window.setTimeout(() => {
       setPhase("wreckage");
-      setDiscoveries((d) => {
-        const nd = d + 1;
-        try {
-          localStorage.setItem(SF_STORAGE_KEY, String(nd));
-        } catch {}
-        return nd;
-      });
+      try {
+        const prev =
+          parseInt(localStorage.getItem(SF_STORAGE_KEY) || "0", 10) || 0;
+        localStorage.setItem(SF_STORAGE_KEY, String(prev + 1));
+      } catch {}
+      setDiscoveriesBump((b) => b + 1);
     }, 1900);
   }, []);
 
