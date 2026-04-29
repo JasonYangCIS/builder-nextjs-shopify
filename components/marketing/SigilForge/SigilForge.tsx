@@ -160,6 +160,11 @@ export default function SigilForge({
   headingAccent = "commune",
   body = "A live xenotechnical sigil — drawn from the same lattice as every artifact in the catalogue.\nDrag to rotate. Scroll to lean closer. Cycle the frequency.",
 }: SigilForgeProps) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [hue, setHue] = React.useState<string>("cyan");
   const [freq, setFreq] = React.useState<string>("mid");
   const [geometry, setGeometry] = React.useState<string>("icosa");
@@ -230,6 +235,7 @@ export default function SigilForge({
 
   // animation tick
   React.useEffect(() => {
+    if (!mounted) return;
     let last = performance.now();
     const loop = (t: number) => {
       const dt = Math.min(64, t - last);
@@ -297,7 +303,7 @@ export default function SigilForge({
     };
     rafRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [autoSpin, freqObj.speedMul, detonate]);
+  }, [autoSpin, freqObj.speedMul, detonate, mounted]);
 
   const reboot = () => {
     setPhase("rebooting");
@@ -447,7 +453,10 @@ export default function SigilForge({
         </div>
       </div>
 
-      <div className={styles.sf__body}>
+      <div className={styles.sf__body} suppressHydrationWarning>
+        {!mounted ? (
+          <div className={styles.sf__stage} aria-hidden="true" style={stageStyle} />
+        ) : (<>
         <div
           className={styles.sf__stage}
           ref={stageRef}
@@ -812,6 +821,7 @@ export default function SigilForge({
             </button>
           </div>
         </aside>
+        </>)}
       </div>
     </section>
   );
