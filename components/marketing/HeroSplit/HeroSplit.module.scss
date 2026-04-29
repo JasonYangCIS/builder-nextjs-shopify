@@ -36,6 +36,7 @@
 .imageFrame {
   display: flex;
   flex-direction: column;
+  max-width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
 }
