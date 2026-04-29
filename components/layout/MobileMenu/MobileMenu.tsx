@@ -36,11 +36,13 @@ export default function MobileMenu() {
           width: "38px",
           height: "38px",
           background: "transparent",
-          border: "1px solid var(--border)",
+          borderWidth: "1px",
+          borderStyle: "solid",
+          borderColor: open ? "var(--cyan-line)" : "var(--border)",
           cursor: "pointer",
           clipPath: "var(--chamfer-sm)",
           transition: "border-color 0.16s, box-shadow 0.16s",
-          ...(open && { borderColor: "var(--cyan-line)", boxShadow: "var(--glow-cyan-sm)" }),
+          boxShadow: open ? "var(--glow-cyan-sm)" : "none",
         }}
       >
         <HamburgerIcon open={open} />
@@ -72,8 +74,7 @@ export default function MobileMenu() {
           bottom: 0,
           zIndex: 50,
           width: "min(320px, 90vw)",
-          backgroundColor: "#131c2e",
-          backgroundImage: "radial-gradient(120% 60% at 100% 0%, rgba(61,217,214,0.10), transparent 60%)",
+          background: "radial-gradient(120% 60% at 100% 0%, rgba(61,217,214,0.10), transparent 60%) #1a2740",
           borderLeft: "1px solid var(--cyan-line)",
           boxShadow: "-2px 0 0 0 rgba(61,217,214,0.25), -24px 0 80px rgba(0,0,0,0.8)",
           transform: open ? "translateX(0)" : "translateX(100%)",
