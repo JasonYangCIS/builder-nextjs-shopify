@@ -27,10 +27,32 @@ export async function getBuilderProduct(handle: string) {
   });
 }
 
+export async function getBuilderCollection(handle: string) {
+  return fetchOneEntry({
+    model: config.models.collection,
+    apiKey: config.apiKey,
+    userAttributes: { urlPath: `/collections/${handle}`, handle },
+    query: { "data.handle": handle },
+  });
+}
+
 export async function listBuilderEntries(model: BuilderModelName, limit = 100) {
   return fetchEntries({
     model,
     apiKey: config.apiKey,
     limit,
   });
+}
+
+export async function listBuilderCollectionHandles(limit = 100): Promise<string[]> {
+  const entries = await fetchEntries({
+    model: config.models.collection,
+    apiKey: config.apiKey,
+    limit,
+    fields: "data.handle",
+  });
+  const handles = (entries ?? [])
+    .map((e) => (e?.data as { handle?: string } | undefined)?.handle)
+    .filter((h): h is string => typeof h === "string" && h.length > 0);
+  return Array.from(new Set(handles));
 }
