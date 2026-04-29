@@ -4,19 +4,20 @@ import * as React from "react";
 import styles from "./SigilForge.module.scss";
 import { SF_GEOMETRIES } from "./SigilForge.constants";
 import { getPolyhedron } from "./SigilForge.geometry";
+import { ForgeHeader } from "./parts/ForgeHeader";
 import {
-  ChargeMeter,
-  ControlPanel,
-  ForgeHeader,
-  ShardField,
-  SigilSvg,
   StageAtmos,
   StageChips,
   StageCorners,
   StageHint,
-  WarningBanner,
-  WreckageOverlay,
-} from "./SigilForge.parts";
+  StageScan,
+} from "./parts/StageChrome";
+import { SigilSvg } from "./parts/SigilSvg";
+import { ChargeMeter } from "./parts/ChargeMeter";
+import { WarningBanner } from "./parts/WarningBanner";
+import { ShardField } from "./parts/ShardField";
+import { WreckageOverlay } from "./parts/WreckageOverlay";
+import { ControlPanel } from "./parts/ControlPanel";
 import type { SigilForgeProps } from "./SigilForge.types";
 import { useSigilForge } from "./useSigilForge";
 
@@ -117,7 +118,7 @@ export default function SigilForge({
 
               {s.phase === "rebooting" && <div className={styles.sf__reboot} />}
 
-              <div className={styles.sf__scan} />
+              <StageScan />
             </div>
 
             <ControlPanel
