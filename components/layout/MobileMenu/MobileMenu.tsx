@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,7 +12,11 @@ const NAV_LINKS = [
 
 export default function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+
+  // Mount marker for portal (avoid SSR mismatch)
+  useEffect(() => { setMounted(true); }, []);
 
   // Close when route changes
   useEffect(() => { setOpen(false); }, [pathname]);
@@ -48,46 +53,49 @@ export default function MobileMenu() {
         <HamburgerIcon open={open} />
       </button>
 
-      {/* Backdrop */}
-      {open && (
-        <div
-          aria-hidden="true"
-          onClick={() => setOpen(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 45,
-            background: "rgba(6, 9, 15, 0.7)",
-            backdropFilter: "blur(4px)",
-            WebkitBackdropFilter: "blur(4px)",
-          }}
-        />
-      )}
+      {/* Backdrop + drawer rendered in a portal to escape any ancestor that
+          creates a containing block for `position: fixed` (transform / filter /
+          backdrop-filter / will-change / contain). The header uses
+          backdrop-filter, which is enough on some engines to trap the drawer
+          inside the shell. Portaling to <body> bypasses that entirely. */}
+      {mounted && createPortal(
+        <>
+          {open && (
+            <div
+              aria-hidden="true"
+              onClick={() => setOpen(false)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 9998,
+                background: "rgba(6, 9, 15, 0.7)",
+                backdropFilter: "blur(4px)",
+                WebkitBackdropFilter: "blur(4px)",
+              }}
+            />
+          )}
 
-      {/* Slide-in panel */}
-      <nav
-        id="mobile-nav"
-        aria-label="Mobile navigation"
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 50,
-          width: "min(320px, 90vw)",
-          background: "rgba(6, 9, 15, 0.95)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderLeft: "1px solid var(--cyan-line)",
-          boxShadow:
-            "-2px 0 0 0 rgba(61,217,214,0.25), -24px 0 80px rgba(0,0,0,0.8)",
-          transform: open ? "translateX(0)" : "translateX(100%)",
-          transition: "transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
-          display: "flex",
-          flexDirection: "column",
-          padding: "24px",
-        }}
-      >
+          <nav
+            id="mobile-nav"
+            aria-label="Mobile navigation"
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 9999,
+              width: "min(320px, 90vw)",
+              background: "rgba(6, 9, 15, 0.96)",
+              borderLeft: "1px solid var(--cyan-line)",
+              boxShadow:
+                "-2px 0 0 0 rgba(61,217,214,0.25), -24px 0 80px rgba(0,0,0,0.8)",
+              transform: open ? "translateX(0)" : "translateX(100%)",
+              transition: "transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
+              display: "flex",
+              flexDirection: "column",
+              padding: "24px",
+            }}
+          >
         {/* Panel header */}
         <div
           className="flex items-center justify-between"
@@ -179,7 +187,10 @@ export default function MobileMenu() {
           ⌁ XENOSPHERE DESIGN SYSTEM<br />
           <span style={{ color: "var(--ink-2)", opacity: 0.6 }}>VOL. 01</span>
         </div>
-      </nav>
+          </nav>
+        </>,
+        document.body,
+      )}
     </>
   );
 }
