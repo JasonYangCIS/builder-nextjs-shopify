@@ -305,22 +305,22 @@ function Section({ title, num, children }: { title: string; num: string; childre
 function ColorGroup({ label, swatches }: { label: string; swatches: { name: string; hex: string; label: string }[] }) {
   return (
     <div>
-      <p className="t-eyebrow mb-3">{label}</p>
-      <div className="flex flex-wrap gap-3">
+      <p className="t-eyebrow mb-4">{label}</p>
+      <div className="flex flex-wrap gap-4">
         {swatches.map(({ name, hex, label: swatchLabel }) => (
-          <div key={name} style={{ width: "120px" }}>
+          <div key={name} style={{ width: "160px" }}>
             <div
               style={{
                 width: "100%",
-                height: "48px",
+                height: "72px",
                 background: hex,
                 border: "1px solid var(--border)",
-                marginBottom: "6px",
+                marginBottom: "10px",
               }}
             />
-            <p className="t-mono" style={{ fontSize: "8px", color: "var(--ink-1)", letterSpacing: "0.1em" }}>{name}</p>
-            <p className="t-mono" style={{ fontSize: "8px", color: "var(--ink-2)", letterSpacing: "0.08em" }}>{hex}</p>
-            <p className="t-mono" style={{ fontSize: "8px", color: "var(--ink-2)", letterSpacing: "0.08em" }}>{swatchLabel}</p>
+            <p className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-0)", letterSpacing: "0.1em", marginBottom: "2px" }}>{name}</p>
+            <p className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-1)", letterSpacing: "0.08em", marginBottom: "2px" }}>{hex}</p>
+            <p className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-1)", letterSpacing: "0.08em" }}>{swatchLabel}</p>
           </div>
         ))}
       </div>
