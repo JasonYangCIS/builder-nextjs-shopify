@@ -1,4 +1,5 @@
 "use client";
+import styles from "./QuantityStepper.module.scss";
 
 export interface QuantityStepperProps {
   value: number;
@@ -18,12 +19,7 @@ export default function QuantityStepper({
   ariaLabel = "Quantity",
 }: QuantityStepperProps) {
   return (
-    <div
-      className="inline-flex items-center"
-      role="group"
-      aria-label={ariaLabel}
-      style={{ border: "1px solid var(--border)", clipPath: "var(--chamfer-sm)" }}
-    >
+    <div className={`inline-flex items-center ${styles.group}`} role="group" aria-label={ariaLabel}>
       <StepperBtn
         onClick={() => onChange(Math.max(min, value - 1))}
         disabled={disabled || value <= min}
@@ -31,22 +27,7 @@ export default function QuantityStepper({
       >
         –
       </StepperBtn>
-      <span
-        className="t-mono"
-        aria-live="polite"
-        style={{
-          minWidth: "32px",
-          height: "32px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "var(--t-sm)",
-          color: "var(--ink-0)",
-          borderLeft: "1px solid var(--border)",
-          borderRight: "1px solid var(--border)",
-          letterSpacing: "0.1em",
-        }}
-      >
+      <span className={`t-mono ${styles.value}`} aria-live="polite">
         {value}
       </span>
       <StepperBtn
@@ -77,26 +58,7 @@ function StepperBtn({
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      style={{
-        width: "32px",
-        height: "32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "transparent",
-        border: "none",
-        color: disabled ? "var(--ink-3)" : "var(--ink-1)",
-        cursor: disabled ? "not-allowed" : "pointer",
-        fontSize: "16px",
-        fontFamily: "var(--font-mono)",
-        transition: "color 0.16s, background 0.16s",
-      }}
-      onMouseEnter={(e) => {
-        if (!disabled) (e.currentTarget as HTMLElement).style.color = "var(--cyan-3)";
-      }}
-      onMouseLeave={(e) => {
-        if (!disabled) (e.currentTarget as HTMLElement).style.color = "var(--ink-1)";
-      }}
+      className={styles.btn}
     >
       {children}
     </button>

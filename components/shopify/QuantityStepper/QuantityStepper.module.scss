@@ -1,0 +1,43 @@
+.group {
+  border: 1px solid var(--border);
+  clip-path: var(--chamfer-sm);
+}
+
+.value {
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--t-sm);
+  color: var(--ink-0);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  letter-spacing: 0.1em;
+}
+
+.btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--ink-1);
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--font-mono);
+  transition:
+    color 0.16s,
+    background 0.16s;
+
+  &:hover:not(:disabled) {
+    color: var(--cyan-3);
+  }
+
+  &:disabled {
+    color: var(--ink-3);
+    cursor: not-allowed;
+  }
+}

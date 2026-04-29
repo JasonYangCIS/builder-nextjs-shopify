@@ -4,6 +4,7 @@ import Badge from "@/components/ui/Badge/Badge";
 import Input from "@/components/ui/Input/Input";
 import Label from "@/components/ui/Label/Label";
 import Card from "@/components/ui/Card/Card";
+import styles from "./page.module.scss";
 
 export const metadata: Metadata = {
   title: "Design Codex",
@@ -17,17 +18,14 @@ export default function DesignSystemPage() {
       {/* ── Page hero ─────────────────────────────────────────── */}
       <section>
         <div className="t-eyebrow mb-4 flex items-center gap-3">
-          <span style={{ width: 28, height: 1, background: "var(--cyan-3)", boxShadow: "var(--glow-cyan-sm)", display: "inline-block" }} />
+          <span className={styles.heroEyebrowRule} />
           XENOSPHERE / DESIGN CODEX / VOL. 01
         </div>
-        <h1
-          className="t-display"
-          style={{ fontSize: "clamp(40px, 7vw, 80px)", lineHeight: 0.95, letterSpacing: "0.04em", color: "var(--ink-0)" }}
-        >
+        <h1 className={`t-display ${styles.heroHeading}`}>
           Design<br />
-          <span style={{ color: "var(--cyan-3)", textShadow: "var(--glow-cyan-md)" }}>System</span>
+          <span className={styles.heroAccent}>System</span>
         </h1>
-        <p style={{ marginTop: 16, maxWidth: 480, color: "var(--ink-1)", fontSize: "var(--t-lg)", lineHeight: 1.6 }}>
+        <p className={styles.heroBody}>
           Tokens, typography, and components for the XENOSPHERE aesthetic.
         </p>
       </section>
@@ -73,7 +71,6 @@ export default function DesignSystemPage() {
       {/* ── Typography ────────────────────────────────────────── */}
       <Section title="Typography" num="02">
         <div className="flex flex-col gap-10">
-          {/* Display */}
           <div>
             <p className="t-eyebrow mb-4">Display — Orbitron</p>
             {[
@@ -83,16 +80,15 @@ export default function DesignSystemPage() {
               { size: "var(--t-2xl)", label: "2XL / 30px" },
               { size: "var(--t-xl)",  label: "XL / 24px" },
             ].map(({ size, label }) => (
-              <div key={size} className="flex items-baseline gap-6 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
-                <span className="t-display" style={{ fontSize: size, letterSpacing: "0.06em", lineHeight: 1.1, color: "var(--ink-0)", flex: 1 }}>
+              <div key={size} className={`flex items-baseline gap-6 py-3 ${styles.typeRow}`}>
+                <span className={`t-display ${styles.typeDisplay}`} style={{ fontSize: size }}>
                   Alien Terrain
                 </span>
-                <span className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", flexShrink: 0 }}>{label}</span>
+                <span className={`t-mono ${styles.typeLabel}`}>{label}</span>
               </div>
             ))}
           </div>
 
-          {/* Body */}
           <div>
             <p className="t-eyebrow mb-4">Body — Inter</p>
             {[
@@ -101,16 +97,15 @@ export default function DesignSystemPage() {
               { size: "var(--t-sm)", weight: 400, label: "SM / 14px Regular" },
               { size: "var(--t-xs)", weight: 400, label: "XS / 12px Regular" },
             ].map(({ size, weight, label }) => (
-              <div key={label} className="flex items-baseline gap-6 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
-                <span style={{ fontSize: size, fontWeight: weight, color: "var(--ink-1)", flex: 1 }}>
+              <div key={label} className={`flex items-baseline gap-6 py-3 ${styles.typeRow}`}>
+                <span className={styles.typeBody} style={{ fontSize: size, fontWeight: weight }}>
                   The void whispers in frequencies beyond human range.
                 </span>
-                <span className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", flexShrink: 0 }}>{label}</span>
+                <span className={`t-mono ${styles.typeLabel}`}>{label}</span>
               </div>
             ))}
           </div>
 
-          {/* Mono */}
           <div>
             <p className="t-eyebrow mb-4">Mono — JetBrains Mono</p>
             {[
@@ -118,11 +113,11 @@ export default function DesignSystemPage() {
               { size: "var(--t-xs)", label: "XS / 12px" },
               { size: "var(--t-2xs)", label: "2XS / 11px" },
             ].map(({ size, label }) => (
-              <div key={label} className="flex items-baseline gap-6 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
-                <span className="t-mono" style={{ fontSize: size, color: "var(--cyan-3)", flex: 1 }}>
+              <div key={label} className={`flex items-baseline gap-6 py-3 ${styles.typeRow}`}>
+                <span className={`t-mono ${styles.typeMono}`} style={{ fontSize: size }}>
                   SYS-4471 ◈ XENOSPHERE ⌁ BIOLUMINESCENT SIGNAL ACTIVE
                 </span>
-                <span className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", flexShrink: 0 }}>{label}</span>
+                <span className={`t-mono ${styles.typeLabel}`}>{label}</span>
               </div>
             ))}
           </div>
@@ -187,8 +182,12 @@ export default function DesignSystemPage() {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="ds-error">Error state</Label>
-            <Input id="ds-error" placeholder="Invalid signal" aria-invalid="true"
-              style={{ borderColor: "var(--xenosphere-danger)" }} />
+            <Input
+              id="ds-error"
+              placeholder="Invalid signal"
+              aria-invalid="true"
+              className={styles.errorInput}
+            />
           </div>
         </div>
       </Section>
@@ -196,36 +195,27 @@ export default function DesignSystemPage() {
       {/* ── Cards ─────────────────────────────────────────────── */}
       <Section title="Cards" num="06">
         <div className="grid gap-4 sm:grid-cols-3">
-          {/* Default */}
           <Card className="p-6">
             <p className="t-eyebrow mb-2">Standard panel</p>
-            <p style={{ color: "var(--ink-1)", fontSize: "var(--t-sm)", lineHeight: 1.6 }}>
-              Default card using <code style={{ color: "var(--cyan-3)", fontFamily: "var(--font-mono)" }}>--card</code> background with border.
+            <p className={styles.cardBody}>
+              Default card using <code className={styles.cardCode}>--card</code> background with border.
             </p>
           </Card>
 
-          {/* Cyan glow */}
-          <Card
-            className="p-6"
-            style={{ borderColor: "var(--cyan-line)", boxShadow: "var(--glow-cyan-sm)", position: "relative", overflow: "hidden" }}
-          >
+          <Card className={`p-6 ${styles.cardCyan}`}>
             <span className="corner-tl" />
             <span className="corner-br" />
-            <p className="t-eyebrow mb-2" style={{ color: "var(--cyan-3)" }}>Cyan frame</p>
-            <p style={{ color: "var(--ink-1)", fontSize: "var(--t-sm)", lineHeight: 1.6 }}>
+            <p className={`t-eyebrow mb-2 ${styles.cardEyebrowCyan}`}>Cyan frame</p>
+            <p className={styles.cardBody}>
               Glow border with corner brackets and inner shadow.
             </p>
           </Card>
 
-          {/* Violet glow */}
-          <Card
-            className="p-6"
-            style={{ borderColor: "var(--violet-line)", boxShadow: "var(--glow-violet-sm)", position: "relative", overflow: "hidden" }}
-          >
+          <Card className={`p-6 ${styles.cardViolet}`}>
             <span className="corner-tl corner-tl--violet" />
             <span className="corner-br corner-br--violet" />
-            <p className="t-eyebrow mb-2" style={{ color: "var(--violet-3)" }}>Violet frame</p>
-            <p style={{ color: "var(--ink-1)", fontSize: "var(--t-sm)", lineHeight: 1.6 }}>
+            <p className={`t-eyebrow mb-2 ${styles.cardEyebrowViolet}`}>Violet frame</p>
+            <p className={styles.cardBody}>
               Secondary accent variant using violet glow tokens.
             </p>
           </Card>
@@ -245,14 +235,10 @@ export default function DesignSystemPage() {
           ].map(({ label, shadow, border }) => (
             <div
               key={label}
-              style={{
-                padding: "24px",
-                background: "var(--card)",
-                border: `1px solid ${border}`,
-                boxShadow: shadow,
-              }}
+              className={styles.glowTile}
+              style={{ border: `1px solid ${border}`, boxShadow: shadow }}
             >
-              <p className="t-eyebrow" style={{ fontSize: "9px" }}>{label}</p>
+              <p className={`t-eyebrow ${styles.glowTileLabel}`}>{label}</p>
             </div>
           ))}
         </div>
@@ -273,9 +259,9 @@ export default function DesignSystemPage() {
             { token: "--s-16", px: "64px" },
           ].map(({ token, px }) => (
             <div key={token} className="flex items-center gap-4">
-              <span className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", width: "80px", flexShrink: 0 }}>{token}</span>
-              <div style={{ height: "12px", width: px, background: "var(--cyan-2)", opacity: 0.7, flexShrink: 0 }} />
-              <span className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)" }}>{px}</span>
+              <span className={`t-mono ${styles.spaceToken}`}>{token}</span>
+              <div className={styles.spaceBar} style={{ width: px }} />
+              <span className={`t-mono ${styles.spacePx}`}>{px}</span>
             </div>
           ))}
         </div>
@@ -290,11 +276,9 @@ function Section({ title, num, children }: { title: string; num: string; childre
   return (
     <section>
       <div className="flex items-center gap-4 mb-8">
-        <span className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--cyan-3)", letterSpacing: "0.22em" }}>§ {num}</span>
-        <h2 className="t-display" style={{ fontSize: "var(--t-2xl)", letterSpacing: "0.06em", color: "var(--ink-0)" }}>
-          {title}
-        </h2>
-        <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+        <span className={`t-mono ${styles.sectionNum}`}>§ {num}</span>
+        <h2 className={`t-display ${styles.sectionHeading}`}>{title}</h2>
+        <div className={styles.sectionRule} />
       </div>
       {children}
     </section>
@@ -308,19 +292,11 @@ function ColorGroup({ label, swatches }: { label: string; swatches: { name: stri
       <p className="t-eyebrow mb-4">{label}</p>
       <div className="flex flex-wrap gap-4">
         {swatches.map(({ name, hex, label: swatchLabel }) => (
-          <div key={name} style={{ width: "160px" }}>
-            <div
-              style={{
-                width: "100%",
-                height: "72px",
-                background: hex,
-                border: "1px solid var(--border)",
-                marginBottom: "10px",
-              }}
-            />
-            <p className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-0)", letterSpacing: "0.1em", marginBottom: "2px" }}>{name}</p>
-            <p className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-1)", letterSpacing: "0.08em", marginBottom: "2px" }}>{hex}</p>
-            <p className="t-mono" style={{ fontSize: "var(--t-xs)", color: "var(--ink-1)", letterSpacing: "0.08em" }}>{swatchLabel}</p>
+          <div key={name} className={styles.swatch}>
+            <div className={styles.swatchTile} style={{ background: hex }} />
+            <p className={`t-mono ${styles.swatchName}`}>{name}</p>
+            <p className={`t-mono ${styles.swatchMeta}`}>{hex}</p>
+            <p className={`t-mono ${styles.swatchMeta}`}>{swatchLabel}</p>
           </div>
         ))}
       </div>

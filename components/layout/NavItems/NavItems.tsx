@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./NavItems.module.scss";
 
 export interface NavItem {
   label: string | null;
@@ -13,20 +14,7 @@ export default function NavItems({ items }: { items?: NavItem[] | null }) {
         {items.map((item) =>
           item.label && item.href ? (
             <li key={`${item.label}-${item.href}`}>
-              <Link
-                href={item.href}
-                className="t-mono"
-                style={{
-                  fontSize: "var(--t-xs)",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "var(--ink-2)",
-                  textDecoration: "none",
-                  transition: "color 0.14s",
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--cyan-3)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--ink-2)"; }}
-              >
+              <Link href={item.href} className={`t-mono ${styles.link}`}>
                 {item.label}
               </Link>
             </li>

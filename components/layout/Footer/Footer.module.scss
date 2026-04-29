@@ -1,0 +1,79 @@
+.footer {
+  border-top: 1px solid var(--border);
+}
+
+.dividerGlow {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan-line), transparent);
+}
+
+.shell {
+  background: rgba(6, 9, 15, 0.6);
+}
+
+.brandTitle {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--ink-0);
+}
+
+.brandText {
+  font-size: var(--t-sm);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+.brandAccent {
+  color: var(--cyan-3);
+}
+
+.eyebrow {
+  margin-bottom: 4px;
+}
+
+.navLink {
+  color: var(--ink-2);
+  font-size: var(--t-sm);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.16s;
+
+  &:hover {
+    color: var(--cyan-3);
+  }
+}
+
+.statusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--xenosphere-success);
+  box-shadow: 0 0 8px var(--xenosphere-success);
+}
+
+.statusLabel {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.12em;
+}
+
+.bottomBar {
+  border-top: 1px solid var(--border);
+}
+
+.bottomText {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.16em;
+}
+
+.bottomTextRight {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.12em;
+}

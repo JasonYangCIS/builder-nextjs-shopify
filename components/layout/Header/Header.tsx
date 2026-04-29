@@ -2,6 +2,7 @@ import Link from "next/link";
 import CartDrawer from "@/components/shopify/CartDrawer/CartDrawer";
 import AccountMenu from "@/components/layout/AccountMenu/AccountMenu";
 import MobileMenu from "@/components/layout/MobileMenu/MobileMenu";
+import styles from "./Header.module.scss";
 
 const NAV_LINKS = [
   { href: "/collections/all", label: "Catalogue",    num: "01" },
@@ -11,34 +12,15 @@ const NAV_LINKS = [
 
 export default function Header() {
   return (
-    <header
-      className="sticky top-0 z-40 w-full"
-      style={{
-        background: "rgba(6, 9, 15, 0.82)",
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
-        borderBottom: "1px solid var(--border)",
-      }}
-    >
+    <header className={`sticky top-0 z-40 w-full ${styles.header}`}>
       {/* Nav bar */}
-      <div
-        className="mx-auto grid max-w-7xl items-center px-4 md:px-14"
-        style={{ gridTemplateColumns: "auto 1fr auto", height: "60px", gap: "16px" }}
-      >
+      <div className={`mx-auto grid max-w-7xl items-center px-4 md:px-14 ${styles.navGrid}`}>
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-3 no-underline" style={{ color: "var(--ink-0)" }}>
+        <Link href="/" className={`flex items-center gap-3 no-underline ${styles.brandLink}`}>
           <CrystalIcon />
           <div className="flex flex-col">
-            <span
-              className="t-display"
-              style={{ fontSize: "13px", letterSpacing: "0.22em", color: "var(--ink-0)" }}
-            >
-              BUILDER SHOP
-            </span>
-            <span
-              className="t-mono hidden sm:block"
-              style={{ fontSize: "8px", letterSpacing: "0.2em", color: "var(--cyan-3)", marginTop: "1px" }}
-            >
+            <span className={`t-display ${styles.brandTitle}`}>BUILDER SHOP</span>
+            <span className={`t-mono hidden sm:block ${styles.brandSub}`}>
               ∇ POWERED BY XENOSPHERE
             </span>
           </div>
@@ -47,8 +29,8 @@ export default function Header() {
         {/* Desktop primary nav */}
         <nav aria-label="Primary" className="hidden justify-center gap-1 md:flex">
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className="nav-link">
-              <span className="nav-link__num">{link.num}</span>
+            <Link key={link.href} href={link.href} className={styles.navLink}>
+              <span className={styles.navLinkNum}>{link.num}</span>
               <span>{link.label}</span>
             </Link>
           ))}
@@ -63,60 +45,16 @@ export default function Header() {
       </div>
 
       {/* Ticker — desktop only */}
-      <div
-        className="hidden overflow-hidden md:flex"
-        style={{
-          borderTop: "1px solid var(--border)",
-          background: "rgba(6, 9, 15, 0.5)",
-          padding: "5px 24px",
-          gap: "20px",
-          justifyContent: "center",
-          fontFamily: "var(--font-mono)",
-          fontSize: "10px",
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "var(--ink-1)",
-          whiteSpace: "nowrap",
-        }}
-      >
-        <span style={{ color: "var(--cyan-3)" }}>⌁ LIVE</span>
+      <div className={`hidden overflow-hidden md:flex ${styles.ticker}`}>
+        <span className={styles.tickerAccent}>⌁ LIVE</span>
         <span>Free interstellar shipping on orders over $150</span>
-        <span style={{ color: "var(--cyan-3)" }}>◈</span>
+        <span className={styles.tickerAccent}>◈</span>
         <span>All boards rated for zero-gravity terrain</span>
-        <span style={{ color: "var(--cyan-3)" }}>◈</span>
+        <span className={styles.tickerAccent}>◈</span>
         <span>New drop: Void Serpent series available now</span>
-        <span style={{ color: "var(--cyan-3)" }}>◈</span>
+        <span className={styles.tickerAccent}>◈</span>
         <span>Secure Shopify checkout</span>
       </div>
-
-      <style>{`
-        .nav-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 7px 14px;
-          font-family: var(--font-orbitron), var(--font-sans);
-          font-size: 11px;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--ink-0);
-          text-decoration: none;
-          border: 1px solid transparent;
-          transition: color 0.16s, border-color 0.16s, background 0.16s, box-shadow 0.16s;
-          clip-path: var(--chamfer-sm);
-        }
-        .nav-link:hover {
-          color: var(--ink-0);
-          border-color: var(--cyan-line);
-          background: rgba(61, 217, 214, 0.06);
-        }
-        .nav-link__num {
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 10px;
-          color: var(--ink-1);
-          letter-spacing: 0.1em;
-        }
-      `}</style>
     </header>
   );
 }

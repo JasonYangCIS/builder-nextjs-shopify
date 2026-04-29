@@ -1,0 +1,48 @@
+.scanText {
+  color: var(--ink-2);
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.authText {
+  color: var(--ink-2);
+  font-size: var(--t-sm);
+}
+
+.list {
+  border: 1px solid var(--border);
+}
+
+.row {
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.orderName {
+  font-size: var(--t-sm);
+  letter-spacing: 0.08em;
+  color: var(--ink-0);
+}
+
+.orderDate {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
+}
+
+.orderStatus {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.orderAmount {
+  font-size: var(--t-sm);
+  color: var(--cyan-3);
+  letter-spacing: 0.06em;
+}

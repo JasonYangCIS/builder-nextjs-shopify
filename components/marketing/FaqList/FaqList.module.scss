@@ -1,0 +1,43 @@
+.heading {
+  font-size: var(--t-2xl);
+  letter-spacing: 0.06em;
+  color: var(--ink-0);
+}
+
+.list {
+  border: 1px solid var(--border);
+}
+
+.item {
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.summary {
+  color: var(--ink-0);
+
+  &:hover {
+    background: rgba(61, 217, 214, 0.04);
+  }
+}
+
+.question {
+  font-size: var(--t-sm);
+  letter-spacing: 0.06em;
+}
+
+.indicator {
+  font-family: var(--font-mono);
+  font-size: var(--t-lg);
+  color: var(--cyan-3);
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+
+  .item[open] & {
+    transform: rotate(45deg);
+  }
+}

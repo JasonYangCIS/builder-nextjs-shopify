@@ -3,6 +3,7 @@ import useSWR from "swr";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import type { Product } from "@/lib/shopify/types";
 import type { ProductGridProps } from "./ProductGrid.types";
+import styles from "./ProductGrid.module.scss";
 
 const fetcher = async (url: string): Promise<{ products: Product[] }> => {
   const res = await fetch(url);
@@ -26,26 +27,17 @@ export default function ProductGridClient({
     <section className="flex flex-col gap-6">
       {heading && (
         <div className="flex items-center gap-4">
-          <h2
-            className="t-display"
-            style={{ fontSize: "var(--t-xl)", letterSpacing: "0.06em", color: "var(--ink-0)" }}
-          >
-            {heading}
-          </h2>
-          <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+          <h2 className={`t-display ${styles.heading}`}>{heading}</h2>
+          <div className={styles.headingRule} />
         </div>
       )}
 
       {isLoading && (
-        <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-xs)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
-          Scanning sector...
-        </p>
+        <p className={`t-mono ${styles.scanText}`}>Scanning sector...</p>
       )}
 
       {data && data.products.length === 0 && !isLoading && (
-        <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-xs)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
-          // No artifacts found
-        </p>
+        <p className={`t-mono ${styles.scanText}`}>// No artifacts found</p>
       )}
 
       {data && data.products.length > 0 && (

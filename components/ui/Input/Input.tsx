@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { cn } from "@/utils/cn";
 import type { InputProps } from "./Input.types";
+import styles from "./Input.module.scss";
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => (
   <input
@@ -15,9 +16,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, type, ...pr
       "focus-visible:outline-hidden focus-visible:border-[var(--cyan-line)] focus-visible:[box-shadow:var(--glow-cyan-sm)]",
       "disabled:cursor-not-allowed disabled:opacity-50",
       "font-mono tracking-wide",
+      styles.input,
       className,
     )}
-    style={{ borderRadius: "var(--r-xs)", fontFamily: "var(--font-mono)" }}
     {...props}
   />
 ));

@@ -1,0 +1,43 @@
+.row {
+  border-bottom: 1px solid var(--border);
+}
+
+.thumb {
+  width: 64px;
+  height: 64px;
+  background: var(--void-3);
+  border: 1px solid var(--border);
+}
+
+.title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-0);
+  text-decoration: none;
+}
+
+.variant {
+  font-size: var(--t-xs);
+  color: var(--ink-2);
+  letter-spacing: 0.1em;
+}
+
+.amount {
+  font-size: var(--t-sm);
+  color: var(--cyan-3);
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: flex-start;
+  transition: color 0.16s;
+
+  &:hover {
+    color: var(--xenosphere-danger);
+  }
+}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/ui/Button/Button";
+import styles from "./HeroSplit.module.scss";
 
 export interface HeroSplitProps {
   eyebrow?: string | null;
@@ -25,53 +26,23 @@ export default function HeroSplit({
 }: HeroSplitProps) {
   const Heading = headingLevel ?? "h1";
   return (
-    <section
-      className="grid items-stretch gap-12 py-16 md:grid-cols-2"
-    >
-      {/* Copy */}
+    <section className="grid items-stretch gap-12 py-16 md:grid-cols-2">
       <div className="flex flex-col justify-center gap-5">
         {eyebrow && (
-          <div
-            className="t-eyebrow flex items-center gap-3"
-          >
-            <span
-              aria-hidden="true"
-              style={{ width: "28px", height: "1px", background: "var(--cyan-3)", boxShadow: "var(--glow-cyan-sm)", display: "inline-block" }}
-            />
+          <div className="t-eyebrow flex items-center gap-3">
+            <span aria-hidden="true" className={styles.eyebrowRule} />
             {eyebrow}
           </div>
         )}
 
         {heading && (
-          <Heading
-            className="t-display"
-            style={{
-              fontSize: "clamp(40px, 6.4vw, 88px)",
-              letterSpacing: "0.03em",
-              lineHeight: 0.95,
-              color: "var(--ink-0)",
-              textTransform: "uppercase",
-            }}
-          >
-            {heading}
-          </Heading>
+          <Heading className={`t-display ${styles.heading}`}>{heading}</Heading>
         )}
 
-        {body && (
-          <p
-            style={{
-              maxWidth: "480px",
-              fontSize: "var(--t-lg)",
-              color: "var(--ink-1)",
-              lineHeight: 1.6,
-            }}
-          >
-            {body}
-          </p>
-        )}
+        {body && <p className={styles.body}>{body}</p>}
 
         {ctaLabel && ctaHref && (
-          <div style={{ marginTop: "8px" }}>
+          <div className={styles.ctaWrap}>
             <Button asChild size="lg">
               <Link href={ctaHref}>{ctaLabel}</Link>
             </Button>
@@ -79,12 +50,8 @@ export default function HeroSplit({
         )}
       </div>
 
-      {/* Image */}
       {imageUrl && (
-        <div
-          className="relative overflow-hidden x-frame"
-          style={{ aspectRatio: "4/5" }}
-        >
+        <div className={`relative overflow-hidden x-frame ${styles.imageFrame}`}>
           <span className="corner-tl" aria-hidden="true" />
           <span className="corner-br" aria-hidden="true" />
           <Image
@@ -95,14 +62,9 @@ export default function HeroSplit({
             className="object-cover"
             priority
           />
-          {/* Scan-line overlay */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 3px)",
-              mixBlendMode: "overlay",
-            }}
+            className={`absolute inset-0 pointer-events-none ${styles.scanlines}`}
           />
         </div>
       )}

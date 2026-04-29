@@ -1,0 +1,39 @@
+.eyebrowRule {
+  width: 28px;
+  height: 1px;
+  background: var(--cyan-3);
+  box-shadow: var(--glow-cyan-sm);
+  display: inline-block;
+}
+
+.heading {
+  font-size: clamp(40px, 6.4vw, 88px);
+  letter-spacing: 0.03em;
+  line-height: 0.95;
+  color: var(--ink-0);
+  text-transform: uppercase;
+}
+
+.body {
+  max-width: 480px;
+  font-size: var(--t-lg);
+  color: var(--ink-1);
+  line-height: 1.6;
+}
+
+.ctaWrap {
+  margin-top: 8px;
+}
+
+.imageFrame {
+  aspect-ratio: 4 / 5;
+}
+
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.012) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+}

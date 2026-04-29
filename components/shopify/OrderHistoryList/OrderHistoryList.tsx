@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import { formatDate, formatMoney } from "@/utils/date";
+import styles from "./OrderHistoryList.module.scss";
 
 interface OrderRow {
   id: string;
@@ -22,60 +23,28 @@ export default function OrderHistoryList() {
   const { data, isLoading } = useSWR("/api/customer?orders=1", fetcher);
 
   if (isLoading) {
-    return (
-      <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-xs)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
-        Loading transmissions...
-      </p>
-    );
+    return <p className={`t-mono ${styles.scanText}`}>Loading transmissions...</p>;
   }
   if (data?.unauthenticated) {
-    return (
-      <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-sm)" }}>
-        Authentication required.
-      </p>
-    );
+    return <p className={`t-mono ${styles.authText}`}>Authentication required.</p>;
   }
   if (!data?.orders.length) {
-    return (
-      <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-xs)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
-        // No transmissions logged
-      </p>
-    );
+    return <p className={`t-mono ${styles.scanText}`}>// No transmissions logged</p>;
   }
 
   return (
-    <ul className="flex flex-col gap-0" style={{ border: "1px solid var(--border)" }}>
-      {data.orders.map((o, i) => (
-        <li
-          key={o.id}
-          className="p-4"
-          style={{ borderBottom: i < data.orders.length - 1 ? "1px solid var(--border)" : "none" }}
-        >
+    <ul className={`flex flex-col gap-0 ${styles.list}`}>
+      {data.orders.map((o) => (
+        <li key={o.id} className={`p-4 ${styles.row}`}>
           <div className="flex items-center justify-between gap-4">
-            <span
-              className="t-display"
-              style={{ fontSize: "var(--t-sm)", letterSpacing: "0.08em", color: "var(--ink-0)" }}
-            >
-              {o.name}
-            </span>
-            <span
-              className="t-mono"
-              style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", letterSpacing: "0.1em" }}
-            >
-              {formatDate(o.processedAt)}
-            </span>
+            <span className={`t-display ${styles.orderName}`}>{o.name}</span>
+            <span className={`t-mono ${styles.orderDate}`}>{formatDate(o.processedAt)}</span>
           </div>
           <div className="mt-2 flex items-center justify-between gap-4">
-            <span
-              className="t-mono"
-              style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", letterSpacing: "0.1em", textTransform: "uppercase" }}
-            >
+            <span className={`t-mono ${styles.orderStatus}`}>
               {o.financialStatus ?? "—"} · {o.fulfillmentStatus ?? "Pending"}
             </span>
-            <span
-              className="t-display"
-              style={{ fontSize: "var(--t-sm)", color: "var(--cyan-3)", letterSpacing: "0.06em" }}
-            >
+            <span className={`t-display ${styles.orderAmount}`}>
               {formatMoney(o.totalPrice.amount, o.totalPrice.currencyCode)}
             </span>
           </div>

@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input/Input";
 import Label from "@/components/ui/Label/Label";
 import { useCart } from "@/lib/cart/useCart";
+import styles from "./DiscountCodeInput.module.scss";
 
 export default function DiscountCodeInput() {
   const { cart, mutate } = useCart();
@@ -56,37 +57,20 @@ export default function DiscountCodeInput() {
         </Button>
       </div>
       {error && (
-        <p
-          id="discount-error"
-          role="alert"
-          className="t-mono"
-          style={{ fontSize: "var(--t-xs)", color: "var(--xenosphere-danger)", letterSpacing: "0.1em" }}
-        >
+        <p id="discount-error" role="alert" className={`t-mono ${styles.error}`}>
           {error}
         </p>
       )}
       {codes.length > 0 && (
         <ul className="flex flex-wrap gap-2" aria-label="Applied codes">
           {codes.map((c) => (
-            <li
-              key={c.code}
-              className="inline-flex items-center gap-2 t-mono"
-              style={{
-                fontSize: "9px",
-                letterSpacing: "0.14em",
-                padding: "3px 8px",
-                border: "1px solid var(--cyan-line)",
-                background: "var(--cyan-soft)",
-                color: "var(--cyan-3)",
-                clipPath: "var(--chamfer-sm)",
-              }}
-            >
+            <li key={c.code} className={`inline-flex items-center gap-2 t-mono ${styles.chip}`}>
               <span>{c.code}</span>
               <button
                 type="button"
                 onClick={() => apply(codes.filter((x) => x.code !== c.code).map((x) => x.code))}
                 aria-label={`Remove ${c.code}`}
-                style={{ background: "none", border: "none", color: "var(--cyan-2)", cursor: "pointer", padding: "0", lineHeight: 1 }}
+                className={styles.chipRemove}
               >
                 ×
               </button>

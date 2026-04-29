@@ -1,6 +1,7 @@
 import { listProducts, getCollection } from "@/lib/shopify/product";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import type { ProductGridProps } from "./ProductGrid.types";
+import styles from "./ProductGrid.module.scss";
 
 const MAX_LIMIT = 48;
 
@@ -28,13 +29,8 @@ export default async function ProductGrid({
     <section className="flex flex-col gap-6">
       {heading && (
         <div className="flex items-center gap-4">
-          <h2
-            className="t-display"
-            style={{ fontSize: "var(--t-xl)", letterSpacing: "0.06em", color: "var(--ink-0)" }}
-          >
-            {heading}
-          </h2>
-          <div style={{ flex: 1, height: "1px", background: "var(--border)" }} />
+          <h2 className={`t-display ${styles.heading}`}>{heading}</h2>
+          <div className={styles.headingRule} />
           <span className="t-eyebrow">
             {products.length} artifact{products.length !== 1 ? "s" : ""}
           </span>
@@ -42,9 +38,7 @@ export default async function ProductGrid({
       )}
 
       {products.length === 0 && (
-        <p style={{ color: "var(--ink-2)", fontFamily: "var(--font-mono)", fontSize: "var(--t-sm)", letterSpacing: "0.1em" }}>
-          // NO ARTIFACTS FOUND IN THIS SECTOR
-        </p>
+        <p className={styles.empty}>// NO ARTIFACTS FOUND IN THIS SECTOR</p>
       )}
 
       {products.length > 0 && (
