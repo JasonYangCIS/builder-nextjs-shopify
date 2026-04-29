@@ -38,21 +38,26 @@
 }
 
 .fieldReportFrame {
-  padding: var(--s-5);
+  padding: var(--s-10) var(--s-5);
   background: linear-gradient(
     180deg,
     rgba(120, 60, 180, 0.18) 0%,
     rgba(40, 20, 80, 0.35) 100%
   );
   border: 1px solid var(--violet-line);
+
+  > img {
+    z-index: 0;
+  }
 }
 
 .frameLabel {
   position: absolute;
   top: var(--s-3);
   left: var(--s-4);
-  z-index: 2;
-  color: var(--ink-2);
+  z-index: 3;
+  color: var(--ink-0);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
 .frameFoot {
@@ -60,17 +65,19 @@
   right: var(--s-4);
   bottom: var(--s-3);
   left: var(--s-4);
-  z-index: 2;
+  z-index: 3;
   display: flex;
   justify-content: space-between;
-  color: var(--ink-2);
+  color: var(--ink-0);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
 .frameFootRight {
-  color: var(--violet-2);
+  color: var(--violet-3);
 }
 
 .scanlines {
+  z-index: 1;
   background-image: repeating-linear-gradient(
     0deg,
     rgba(255, 255, 255, 0.012) 0 1px,

@@ -15,7 +15,7 @@ import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCo
 import styles from "./page.module.scss";
 
 const PLACEHOLDER_IMAGE =
-  "https://cdn.builder.io/api/v1/image/assets%2F2ba2a4f70b3344978de5230adda60dd3%2F41c00bb44d264008a84516af276a49d7?format=webp&width=800";
+  "https://cdn.builder.io/api/v1/image/assets%2F2ba2a4f70b3344978de5230adda60dd3%2F06376fd985e8499fb5b004850080dd09?format=webp&width=800&height=1200";
 
 export const metadata: Metadata = {
   title: "Design Codex",
