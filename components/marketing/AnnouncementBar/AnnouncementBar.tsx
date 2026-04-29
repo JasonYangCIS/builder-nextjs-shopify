@@ -5,10 +5,32 @@ export interface AnnouncementBarProps {
 
 export default function AnnouncementBar({ message, href }: AnnouncementBarProps) {
   if (!message) return null;
+
   const content = (
-    <span className="block bg-primary px-4 py-2 text-center text-sm text-primary-foreground">
-      {message}
-    </span>
+    <div
+      className="flex items-center justify-center gap-4"
+      style={{
+        padding: "6px 24px",
+        background: "rgba(6, 9, 15, 0.7)",
+        borderBottom: "1px solid var(--cyan-line)",
+        fontFamily: "var(--font-mono)",
+        fontSize: "9px",
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: "var(--ink-2)",
+      }}
+    >
+      <span style={{ color: "var(--cyan-3)" }}>⌁</span>
+      <span>{message}</span>
+      <span style={{ color: "var(--cyan-3)" }}>⌁</span>
+    </div>
   );
-  return href ? <a href={href}>{content}</a> : content;
+
+  return href ? (
+    <a href={href} style={{ display: "block", textDecoration: "none" }}>
+      {content}
+    </a>
+  ) : (
+    content
+  );
 }

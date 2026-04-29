@@ -1,6 +1,4 @@
 "use client";
-import { Minus, Plus } from "lucide-react";
-import Button from "@/components/ui/Button/Button";
 
 export interface QuantityStepperProps {
   value: number;
@@ -20,28 +18,87 @@ export default function QuantityStepper({
   ariaLabel = "Quantity",
 }: QuantityStepperProps) {
   return (
-    <div className="inline-flex items-center gap-2" role="group" aria-label={ariaLabel}>
-      <Button
-        variant="outline"
-        size="icon"
+    <div
+      className="inline-flex items-center"
+      role="group"
+      aria-label={ariaLabel}
+      style={{ border: "1px solid var(--border)", clipPath: "var(--chamfer-sm)" }}
+    >
+      <StepperBtn
         onClick={() => onChange(Math.max(min, value - 1))}
         disabled={disabled || value <= min}
         aria-label="Decrease quantity"
       >
-        <Minus className="h-4 w-4" />
-      </Button>
-      <span className="min-w-[2ch] text-center tabular-nums" aria-live="polite">
+        –
+      </StepperBtn>
+      <span
+        className="t-mono"
+        aria-live="polite"
+        style={{
+          minWidth: "32px",
+          height: "32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "var(--t-sm)",
+          color: "var(--ink-0)",
+          borderLeft: "1px solid var(--border)",
+          borderRight: "1px solid var(--border)",
+          letterSpacing: "0.1em",
+        }}
+      >
         {value}
       </span>
-      <Button
-        variant="outline"
-        size="icon"
+      <StepperBtn
         onClick={() => onChange(Math.min(max, value + 1))}
         disabled={disabled || value >= max}
         aria-label="Increase quantity"
       >
-        <Plus className="h-4 w-4" />
-      </Button>
+        +
+      </StepperBtn>
     </div>
+  );
+}
+
+function StepperBtn({
+  children,
+  disabled,
+  onClick,
+  "aria-label": ariaLabel,
+}: {
+  children: React.ReactNode;
+  disabled?: boolean;
+  onClick: () => void;
+  "aria-label": string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      style={{
+        width: "32px",
+        height: "32px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "transparent",
+        border: "none",
+        color: disabled ? "var(--ink-3)" : "var(--ink-1)",
+        cursor: disabled ? "not-allowed" : "pointer",
+        fontSize: "16px",
+        fontFamily: "var(--font-mono)",
+        transition: "color 0.16s, background 0.16s",
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) (e.currentTarget as HTMLElement).style.color = "var(--cyan-3)";
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) (e.currentTarget as HTMLElement).style.color = "var(--ink-1)";
+      }}
+    >
+      {children}
+    </button>
   );
 }

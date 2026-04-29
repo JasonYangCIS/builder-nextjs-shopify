@@ -1,7 +1,6 @@
 "use client";
 import { forwardRef } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 export const Dialog = DialogPrimitive.Root;
@@ -15,7 +14,8 @@ export const DialogOverlay = forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/50", className)}
+    className={cn("fixed inset-0 z-50", className)}
+    style={{ background: "rgba(6, 9, 15, 0.75)", backdropFilter: "blur(4px)" }}
     {...props}
   />
 ));
@@ -29,18 +29,45 @@ export const DialogContent = forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      className={cn(
-        "fixed right-0 top-0 z-50 h-full w-full max-w-md border-l bg-background p-6 shadow-lg",
-        className,
-      )}
+      className={cn("fixed right-0 top-0 z-50 h-full w-full max-w-md p-6", className)}
+      style={{
+        background: "var(--void-2)",
+        borderLeft: "1px solid var(--border)",
+        boxShadow: "-16px 0 64px rgba(0,0,0,0.6)",
+      }}
       {...props}
     >
       {children}
       <DialogPrimitive.Close
         aria-label="Close"
-        className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        className="absolute right-4 top-4"
+        style={{
+          width: "32px",
+          height: "32px",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "transparent",
+          border: "1px solid var(--border)",
+          color: "var(--ink-2)",
+          cursor: "pointer",
+          transition: "color 0.16s, border-color 0.16s, box-shadow 0.16s",
+          clipPath: "var(--chamfer-sm)",
+        }}
+        onMouseEnter={(e) => {
+          const el = e.currentTarget as HTMLElement;
+          el.style.color = "var(--cyan-3)";
+          el.style.borderColor = "var(--cyan-line)";
+          el.style.boxShadow = "var(--glow-cyan-sm)";
+        }}
+        onMouseLeave={(e) => {
+          const el = e.currentTarget as HTMLElement;
+          el.style.color = "var(--ink-2)";
+          el.style.borderColor = "var(--border)";
+          el.style.boxShadow = "none";
+        }}
       >
-        <X className="h-4 w-4" />
+        <CloseIcon />
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
@@ -51,3 +78,11 @@ export const DialogTitle = DialogPrimitive.Title;
 export const DialogDescription = DialogPrimitive.Description;
 
 export default Dialog;
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d="m6 6 12 12M18 6 6 18" />
+    </svg>
+  );
+}

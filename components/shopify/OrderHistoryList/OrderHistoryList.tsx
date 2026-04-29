@@ -20,22 +20,62 @@ const fetcher = async (url: string) => {
 
 export default function OrderHistoryList() {
   const { data, isLoading } = useSWR("/api/customer?orders=1", fetcher);
-  if (isLoading) return <p className="text-muted-foreground">Loading orders…</p>;
-  if (data?.unauthenticated) return <p className="text-muted-foreground">Please log in to view your orders.</p>;
-  if (!data?.orders.length) return <p className="text-muted-foreground">No orders yet.</p>;
+
+  if (isLoading) {
+    return (
+      <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-xs)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
+        Loading transmissions...
+      </p>
+    );
+  }
+  if (data?.unauthenticated) {
+    return (
+      <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-sm)" }}>
+        Authentication required.
+      </p>
+    );
+  }
+  if (!data?.orders.length) {
+    return (
+      <p className="t-mono" style={{ color: "var(--ink-2)", fontSize: "var(--t-xs)", letterSpacing: "0.18em", textTransform: "uppercase" }}>
+        // No transmissions logged
+      </p>
+    );
+  }
+
   return (
-    <ul className="flex flex-col gap-4">
-      {data.orders.map((o) => (
-        <li key={o.id} className="rounded-lg border p-4">
-          <div className="flex items-center justify-between">
-            <span className="font-semibold">{o.name}</span>
-            <span className="text-sm text-muted-foreground">{formatDate(o.processedAt)}</span>
-          </div>
-          <div className="mt-2 flex items-center justify-between text-sm">
-            <span>
-              {o.financialStatus ?? "—"} · {o.fulfillmentStatus ?? "Unfulfilled"}
+    <ul className="flex flex-col gap-0" style={{ border: "1px solid var(--border)" }}>
+      {data.orders.map((o, i) => (
+        <li
+          key={o.id}
+          className="p-4"
+          style={{ borderBottom: i < data.orders.length - 1 ? "1px solid var(--border)" : "none" }}
+        >
+          <div className="flex items-center justify-between gap-4">
+            <span
+              className="t-display"
+              style={{ fontSize: "var(--t-sm)", letterSpacing: "0.08em", color: "var(--ink-0)" }}
+            >
+              {o.name}
             </span>
-            <span className="font-medium">
+            <span
+              className="t-mono"
+              style={{ fontSize: "var(--t-xs)", color: "var(--ink-3)", letterSpacing: "0.1em" }}
+            >
+              {formatDate(o.processedAt)}
+            </span>
+          </div>
+          <div className="mt-2 flex items-center justify-between gap-4">
+            <span
+              className="t-mono"
+              style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", letterSpacing: "0.1em", textTransform: "uppercase" }}
+            >
+              {o.financialStatus ?? "—"} · {o.fulfillmentStatus ?? "Pending"}
+            </span>
+            <span
+              className="t-display"
+              style={{ fontSize: "var(--t-sm)", color: "var(--cyan-3)", letterSpacing: "0.06em" }}
+            >
               {formatMoney(o.totalPrice.amount, o.totalPrice.currencyCode)}
             </span>
           </div>

@@ -25,19 +25,68 @@ export default function HeroSplit({
 }: HeroSplitProps) {
   const Heading = headingLevel ?? "h1";
   return (
-    <section className="grid items-center gap-8 py-12 md:grid-cols-2">
-      <div className="flex flex-col gap-4">
-        {eyebrow && <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">{eyebrow}</p>}
-        {heading && <Heading className="text-4xl font-semibold tracking-tight md:text-5xl">{heading}</Heading>}
-        {body && <p className="text-lg text-muted-foreground">{body}</p>}
+    <section
+      className="grid items-stretch gap-12 py-16 md:grid-cols-2"
+    >
+      {/* Copy */}
+      <div className="flex flex-col justify-center gap-5">
+        {eyebrow && (
+          <div
+            className="t-eyebrow flex items-center gap-3"
+          >
+            <span
+              aria-hidden="true"
+              style={{ width: "28px", height: "1px", background: "var(--cyan-3)", boxShadow: "var(--glow-cyan-sm)", display: "inline-block" }}
+            />
+            {eyebrow}
+          </div>
+        )}
+
+        {heading && (
+          <Heading
+            className="t-display"
+            style={{
+              fontSize: "clamp(40px, 6.4vw, 88px)",
+              letterSpacing: "0.03em",
+              lineHeight: 0.95,
+              color: "var(--ink-0)",
+              textTransform: "uppercase",
+            }}
+          >
+            {heading}
+          </Heading>
+        )}
+
+        {body && (
+          <p
+            style={{
+              maxWidth: "480px",
+              fontSize: "var(--t-lg)",
+              color: "var(--ink-1)",
+              lineHeight: 1.6,
+            }}
+          >
+            {body}
+          </p>
+        )}
+
         {ctaLabel && ctaHref && (
-          <Button asChild className="w-fit">
-            <Link href={ctaHref}>{ctaLabel}</Link>
-          </Button>
+          <div style={{ marginTop: "8px" }}>
+            <Button asChild size="lg">
+              <Link href={ctaHref}>{ctaLabel}</Link>
+            </Button>
+          </div>
         )}
       </div>
+
+      {/* Image */}
       {imageUrl && (
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
+        <div
+          className="relative overflow-hidden x-frame"
+          style={{ aspectRatio: "4/5" }}
+        >
+          <span className="corner-tl" aria-hidden="true" />
+          <span className="corner-br" aria-hidden="true" />
           <Image
             src={imageUrl}
             alt={imageAlt ?? ""}
@@ -45,6 +94,15 @@ export default function HeroSplit({
             sizes="(min-width: 768px) 50vw, 100vw"
             className="object-cover"
             priority
+          />
+          {/* Scan-line overlay */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 3px)",
+              mixBlendMode: "overlay",
+            }}
           />
         </div>
       )}

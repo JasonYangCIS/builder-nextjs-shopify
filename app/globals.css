@@ -2,34 +2,33 @@
 @import "../styles/tokens.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
+  --color-background:            var(--background);
+  --color-foreground:            var(--foreground);
+  --color-card:                  var(--card);
+  --color-card-foreground:       var(--card-foreground);
+  --color-popover:               var(--popover);
+  --color-popover-foreground:    var(--popover-foreground);
+  --color-primary:               var(--primary);
+  --color-primary-foreground:    var(--primary-foreground);
+  --color-secondary:             var(--secondary);
+  --color-secondary-foreground:  var(--secondary-foreground);
+  --color-muted:                 var(--muted);
+  --color-muted-foreground:      var(--muted-foreground);
+  --color-accent:                var(--accent);
+  --color-accent-foreground:     var(--accent-foreground);
+  --color-destructive:           var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --radius-md: var(--radius);
+  --color-border:                var(--border);
+  --color-input:                 var(--input);
+  --color-ring:                  var(--ring);
+  --font-sans:                   var(--font-inter);
+  --font-mono:                   var(--font-jetbrains);
+  --font-display:                var(--font-orbitron);
+  --radius-md:                   var(--radius);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -37,13 +36,61 @@
   }
 }
 
+/* ── Base ─────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), var(--font-body), system-ui, sans-serif;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Skip link */
+/* ── Atmosphere background ────────────────────────────────── */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(91, 42, 58, 0.55), transparent 60%),
+    radial-gradient(900px 500px at 95% 10%, rgba(167, 107, 255, 0.18), transparent 60%),
+    radial-gradient(1400px 800px at 50% 110%, rgba(61, 217, 214, 0.14), transparent 60%),
+    var(--void-1);
+}
+
+.atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.015) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+.site-shell {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ── Skip link ────────────────────────────────────────────── */
 .skip-link {
   position: absolute;
   top: -40px;
@@ -52,7 +99,117 @@ body {
   color: var(--primary-foreground);
   padding: 8px 12px;
   z-index: 100;
+  font-family: var(--font-display), var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
-.skip-link:focus {
-  top: 0;
+.skip-link:focus { top: 0; }
+
+/* ── Corner bracket decorations ───────────────────────────── */
+.corner-tl,
+.corner-br {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
 }
+.corner-tl {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid var(--cyan-3);
+  border-left: 1.5px solid var(--cyan-3);
+}
+.corner-br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid var(--cyan-3);
+  border-right: 1.5px solid var(--cyan-3);
+}
+.corner-tl--violet { border-top-color: var(--violet-3); border-left-color: var(--violet-3); }
+.corner-br--violet { border-bottom-color: var(--violet-3); border-right-color: var(--violet-3); }
+
+/* ── Chamfer clip-path ────────────────────────────────────── */
+.chamfer     { clip-path: var(--chamfer); }
+.chamfer-sm  { clip-path: var(--chamfer-sm); }
+
+/* ── Typography utilities ─────────────────────────────────── */
+.t-display {
+  font-family: var(--font-display), var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.t-mono {
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.02em;
+}
+.t-eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--t-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-glow);
+}
+.t-meta {
+  color: var(--ink-2);
+  font-size: var(--t-sm);
+}
+
+/* ── Glow utilities ───────────────────────────────────────── */
+.glow-text-cyan   { color: var(--cyan-3); text-shadow: var(--glow-cyan-md); }
+.glow-text-violet { color: var(--violet-3); text-shadow: var(--glow-violet-md); }
+.glow-border-cyan { border-color: var(--cyan-line) !important; box-shadow: var(--glow-cyan-sm); }
+
+/* ── X-Frame (bordered panel with corners) ────────────────── */
+.x-frame {
+  position: relative;
+  border: 1px solid var(--cyan-line);
+  background: var(--void-2);
+}
+.x-frame--violet {
+  border-color: var(--violet-line);
+}
+
+/* ── Divider with signal ──────────────────────────────────── */
+.signal-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-3);
+  font-family: var(--font-mono), monospace;
+  font-size: var(--t-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.signal-divider::before,
+.signal-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Prose override for product descriptions ──────────────── */
+.xeno-prose {
+  color: var(--ink-1);
+  font-size: var(--t-sm);
+  line-height: 1.7;
+}
+.xeno-prose h1, .xeno-prose h2, .xeno-prose h3 {
+  font-family: var(--font-display), var(--font-sans);
+  color: var(--ink-0);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.xeno-prose p { margin-bottom: 1em; }
+.xeno-prose a { color: var(--cyan-3); }
+.xeno-prose strong { color: var(--ink-0); font-weight: 600; }
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--void-1); }
+::-webkit-scrollbar-thumb { background: var(--void-4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan-1); }
