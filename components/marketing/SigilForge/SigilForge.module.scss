@@ -81,6 +81,8 @@
   position: relative;
   aspect-ratio: 1.15 / 1;
   min-height: 520px;
+  max-width: 100%;
+  min-width: 0;
   background: radial-gradient(
       120% 80% at 50% 50%,
       rgba(13, 20, 32, 0),
