@@ -38,7 +38,7 @@ export default async function ProductGrid({
       )}
 
       {products.length === 0 && (
-        <p className={styles.empty}>// NO ARTIFACTS FOUND IN THIS SECTOR</p>
+        <p className={styles.empty}>⌁ NO ARTIFACTS FOUND IN THIS SECTOR</p>
       )}
 
       {products.length > 0 && (

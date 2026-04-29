@@ -29,7 +29,7 @@ export default function OrderHistoryList() {
     return <p className={`t-mono ${styles.authText}`}>Authentication required.</p>;
   }
   if (!data?.orders.length) {
-    return <p className={`t-mono ${styles.scanText}`}>// No transmissions logged</p>;
+    return <p className={`t-mono ${styles.scanText}`}>⌁ No transmissions logged</p>;
   }
 
   return (

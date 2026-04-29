@@ -37,7 +37,7 @@ export default function ProductGridClient({
       )}
 
       {data && data.products.length === 0 && !isLoading && (
-        <p className={`t-mono ${styles.scanText}`}>// No artifacts found</p>
+        <p className={`t-mono ${styles.scanText}`}>⌁ No artifacts found</p>
       )}
 
       {data && data.products.length > 0 && (
