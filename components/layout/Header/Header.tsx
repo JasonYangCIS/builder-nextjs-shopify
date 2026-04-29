@@ -16,6 +16,7 @@ export default function Header() {
       style={{
         background: "rgba(6, 9, 15, 0.82)",
         backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
         borderBottom: "1px solid var(--border)",
       }}
     >

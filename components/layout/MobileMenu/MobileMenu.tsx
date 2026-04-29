@@ -59,6 +59,7 @@ export default function MobileMenu() {
             zIndex: 45,
             background: "rgba(6, 9, 15, 0.7)",
             backdropFilter: "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
           }}
         />
       )}
@@ -74,9 +75,9 @@ export default function MobileMenu() {
           bottom: 0,
           zIndex: 50,
           width: "min(320px, 90vw)",
-          backgroundColor: "#1a2740",
-          backgroundImage:
-            "radial-gradient(120% 60% at 100% 0%, rgba(61,217,214,0.12), transparent 60%)",
+          background: "rgba(6, 9, 15, 0.95)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
           borderLeft: "1px solid var(--cyan-line)",
           boxShadow:
             "-2px 0 0 0 rgba(61,217,214,0.25), -24px 0 80px rgba(0,0,0,0.8)",
