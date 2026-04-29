@@ -47,6 +47,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <SilenceScriptTagWarning />
         <div className="atmosphere" aria-hidden="true" />
+        <div className="glyph-strip glyph-strip--left" aria-hidden="true">
+          <div className="glyph-strip__inner">
+            {"⌁ ▰ ◉ ⟁ ⌬ ⊹ ✦ ⟁ ▰ ⌁ ◉ ⌬ ✦ ⟁ ⌁ ⊹ ▰ ◉ ⌬ ⟁ ✦ ⌁ ▰ ◉ ⟁ ⌬ ⊹ ✦ ⟁ ▰ ⌁ ◉ ⌬ ✦ ⟁ ⌁ ⊹ ▰ ◉ ⌬ ⟁ ✦ ".repeat(2)}
+          </div>
+        </div>
         <div className="site-shell">
           <a className="skip-link" href="#main-content">Skip to content</a>
           <Header />
