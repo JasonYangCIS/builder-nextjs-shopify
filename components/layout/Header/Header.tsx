@@ -62,13 +62,14 @@ export default function Header() {
         style={{
           borderTop: "1px solid var(--border)",
           background: "rgba(6, 9, 15, 0.5)",
-          padding: "5px 56px",
-          gap: "24px",
+          padding: "5px 24px",
+          gap: "20px",
+          justifyContent: "center",
           fontFamily: "var(--font-mono)",
-          fontSize: "9px",
-          letterSpacing: "0.22em",
+          fontSize: "10px",
+          letterSpacing: "0.18em",
           textTransform: "uppercase",
-          color: "var(--ink-2)",
+          color: "var(--ink-1)",
           whiteSpace: "nowrap",
         }}
       >
