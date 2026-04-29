@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getProductByHandle, listProductHandles } from "@/lib/shopify/product";
+import { getProductByHandle } from "@/lib/shopify/product";
 import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
 import { getBuilderProduct } from "@/lib/builder/client";
@@ -9,14 +9,13 @@ import { config } from "@/config";
 import { env } from "@/lib/env";
 
 export const revalidate = 5;
+export const dynamicParams = true;
 
+// Skip prerendering at build time — Shopify fetches from the Vercel build
+// environment have been hitting ETIMEDOUT. Pages render on-demand via ISR
+// (see `revalidate` above) the first time they are requested.
 export async function generateStaticParams() {
-  try {
-    const handles = await listProductHandles(50);
-    return handles.map((handle) => ({ handle }));
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 export async function generateMetadata(
