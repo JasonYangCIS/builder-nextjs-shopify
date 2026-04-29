@@ -217,6 +217,43 @@ textarea::placeholder {
   opacity: 1;
 }
 
+/* ── Glyph strip (animated left sliver accent) ───────────── */
+.glyph-strip {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: rgba(61, 217, 214, 0.35);
+  letter-spacing: 0.4em;
+  writing-mode: vertical-rl;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  user-select: none;
+}
+
+.glyph-strip__inner {
+  display: block;
+  padding: 60px 0;
+  white-space: nowrap;
+  animation: glyph-drift 90s linear infinite;
+}
+
+.glyph-strip--left {
+  left: 0;
+  border-right: 1px solid rgba(61, 217, 214, 0.15);
+}
+
+@keyframes glyph-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
 /* ── Scrollbar ───────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--void-1); }
