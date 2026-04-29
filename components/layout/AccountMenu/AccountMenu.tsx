@@ -76,13 +76,13 @@ export default function AccountMenu() {
             fontSize: "var(--t-xs)",
             fontFamily: "var(--font-mono)",
             letterSpacing: "0.1em",
-            color: "var(--ink-3)",
+            color: "var(--ink-2)",
             cursor: "pointer",
             textTransform: "uppercase",
             transition: "color 0.16s",
           }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--cyan-3)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--ink-3)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--ink-2)"; }}
         >
           [ Exit ]
         </button>

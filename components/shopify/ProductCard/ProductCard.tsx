@@ -72,7 +72,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Product num / handle hint */}
         <div
           className="t-mono"
-          style={{ fontSize: "9px", letterSpacing: "0.18em", color: "var(--ink-3)", textTransform: "uppercase" }}
+          style={{ fontSize: "9px", letterSpacing: "0.18em", color: "var(--ink-2)", textTransform: "uppercase" }}
         >
           {product.productType || "ARTIFACT"}
         </div>

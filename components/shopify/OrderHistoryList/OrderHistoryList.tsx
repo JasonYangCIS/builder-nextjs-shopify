@@ -60,7 +60,7 @@ export default function OrderHistoryList() {
             </span>
             <span
               className="t-mono"
-              style={{ fontSize: "var(--t-xs)", color: "var(--ink-3)", letterSpacing: "0.1em" }}
+              style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", letterSpacing: "0.1em" }}
             >
               {formatDate(o.processedAt)}
             </span>

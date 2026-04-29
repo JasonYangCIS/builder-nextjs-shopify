@@ -15,7 +15,7 @@ export default function PriceDisplay({ price, compareAtPrice, className }: Price
       {isOnSale && (
         <span
           className="t-mono line-through"
-          style={{ fontSize: "var(--t-xs)", color: "var(--ink-3)" }}
+          style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)" }}
           aria-label="Original price"
         >
           {formatMoney(compareAtPrice.amount, compareAtPrice.currencyCode)}

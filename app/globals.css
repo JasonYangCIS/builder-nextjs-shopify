@@ -176,7 +176,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--ink-3);
+  color: var(--ink-2);
   font-family: var(--font-mono), monospace;
   font-size: var(--t-xs);
   letter-spacing: 0.22em;
@@ -207,6 +207,15 @@ body {
 .xeno-prose p { margin-bottom: 1em; }
 .xeno-prose a { color: var(--cyan-3); }
 .xeno-prose strong { color: var(--ink-0); font-weight: 600; }
+
+/* ── Form accessibility ──────────────────────────────────── */
+/* Placeholder text on --input (void-3) bg: ink-2 gives only 4.1:1.
+   Bump to ink-1 (9.9:1) to pass WCAG AA 4.5:1 for normal text. */
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-1);
+  opacity: 1;
+}
 
 /* ── Scrollbar ───────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }

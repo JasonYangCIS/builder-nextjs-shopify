@@ -91,7 +91,7 @@ export default function CartLineItem({ line }: CartLineItemProps) {
         style={{
           background: "transparent",
           border: "none",
-          color: "var(--ink-3)",
+          color: "var(--ink-2)",
           cursor: "pointer",
           padding: "4px",
           display: "flex",
@@ -99,7 +99,7 @@ export default function CartLineItem({ line }: CartLineItemProps) {
           transition: "color 0.16s",
         }}
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--xenosphere-danger)"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--ink-3)"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--ink-2)"; }}
       >
         <TrashIcon />
       </button>

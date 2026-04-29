@@ -93,13 +93,13 @@ export default function Footer() {
         >
           <p
             className="t-mono"
-            style={{ fontSize: "var(--t-xs)", color: "var(--ink-3)", letterSpacing: "0.16em" }}
+            style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", letterSpacing: "0.16em" }}
           >
             © {new Date().getFullYear()} BUILDER SHOP — XENOSPHERE DESIGN SYSTEM
           </p>
           <p
             className="t-mono"
-            style={{ fontSize: "var(--t-xs)", color: "var(--ink-3)", letterSpacing: "0.12em" }}
+            style={{ fontSize: "var(--t-xs)", color: "var(--ink-2)", letterSpacing: "0.12em" }}
           >
             ⌁ VOL. 01
           </p>

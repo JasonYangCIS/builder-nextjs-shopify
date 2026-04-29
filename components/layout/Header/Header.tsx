@@ -68,7 +68,7 @@ export default function Header() {
           fontSize: "9px",
           letterSpacing: "0.22em",
           textTransform: "uppercase",
-          color: "var(--ink-3)",
+          color: "var(--ink-2)",
           whiteSpace: "nowrap",
         }}
       >
@@ -106,7 +106,7 @@ export default function Header() {
         .nav-link__num {
           font-family: var(--font-jetbrains), monospace;
           font-size: 8px;
-          color: var(--ink-3);
+          color: var(--ink-2);
           letter-spacing: 0.1em;
         }
       `}</style>
