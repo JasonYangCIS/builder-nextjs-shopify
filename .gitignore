@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Override any global "parts/" ignore so component sub-folders are tracked
+!**/parts/
+!**/parts/**
