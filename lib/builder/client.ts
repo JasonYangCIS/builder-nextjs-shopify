@@ -32,7 +32,6 @@ export async function getBuilderCollection(handle: string) {
     model: config.models.collection,
     apiKey: config.apiKey,
     userAttributes: { urlPath: `/collections/${handle}`, handle },
-    query: { "data.handle": handle },
   });
 }
 
