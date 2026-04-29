@@ -7,6 +7,21 @@ export interface HeroCenteredProps {
   ctaLabel?: string | null;
   ctaHref?: string | null;
   headingLevel?: "h1" | "h2" | null;
+  eyebrow?: string | null;
+}
+
+/**
+ * Splits the heading so the final word can be styled with the cyan accent,
+ * matching the Design Codex hero treatment.
+ */
+function splitHeading(heading: string): { lead: string; accent: string } {
+  const trimmed = heading.trim();
+  const lastSpace = trimmed.lastIndexOf(" ");
+  if (lastSpace === -1) return { lead: "", accent: trimmed };
+  return {
+    lead: trimmed.slice(0, lastSpace),
+    accent: trimmed.slice(lastSpace + 1),
+  };
 }
 
 export default function HeroCentered({
@@ -15,24 +30,44 @@ export default function HeroCentered({
   ctaLabel,
   ctaHref,
   headingLevel = "h1",
+  eyebrow = "XENOSPHERE / TRANSMISSION / VOL. 01",
 }: HeroCenteredProps) {
   const Heading = headingLevel ?? "h1";
-  return (
-    <section
-      className="relative flex flex-col items-center gap-6 py-20 text-center"
-    >
-      {/* Eyebrow line */}
-      <div
-        aria-hidden="true"
-        style={{
-          width: "1px",
-          height: "40px",
-          background: "linear-gradient(to bottom, transparent, var(--cyan-3))",
-          marginBottom: "-8px",
-        }}
-      />
+  const parts = heading ? splitHeading(heading) : null;
 
-      {heading && (
+  return (
+    <section className="relative flex flex-col items-center gap-6 py-20 text-center">
+      {/* Eyebrow row — matches Design Codex hero */}
+      {eyebrow && (
+        <div
+          className="t-eyebrow flex items-center justify-center gap-3"
+          style={{ color: "var(--ink-1)" }}
+        >
+          <span
+            aria-hidden="true"
+            style={{
+              width: "28px",
+              height: "1px",
+              background: "var(--cyan-3)",
+              boxShadow: "var(--glow-cyan-sm)",
+              display: "inline-block",
+            }}
+          />
+          {eyebrow}
+          <span
+            aria-hidden="true"
+            style={{
+              width: "28px",
+              height: "1px",
+              background: "var(--cyan-3)",
+              boxShadow: "var(--glow-cyan-sm)",
+              display: "inline-block",
+            }}
+          />
+        </div>
+      )}
+
+      {parts && (
         <Heading
           className="t-display"
           style={{
@@ -41,9 +76,23 @@ export default function HeroCentered({
             lineHeight: 0.95,
             color: "var(--ink-0)",
             textTransform: "uppercase",
+            margin: 0,
           }}
         >
-          {heading}
+          {parts.lead && (
+            <>
+              {parts.lead}
+              <br />
+            </>
+          )}
+          <span
+            style={{
+              color: "var(--cyan-3)",
+              textShadow: "var(--glow-cyan-md)",
+            }}
+          >
+            {parts.accent}
+          </span>
         </Heading>
       )}
 
@@ -51,6 +100,7 @@ export default function HeroCentered({
         <p
           style={{
             maxWidth: "560px",
+            marginTop: "8px",
             fontSize: "var(--t-lg)",
             color: "var(--ink-1)",
             lineHeight: 1.6,
@@ -65,17 +115,6 @@ export default function HeroCentered({
           <Link href={ctaHref}>{ctaLabel}</Link>
         </Button>
       )}
-
-      {/* Bottom line */}
-      <div
-        aria-hidden="true"
-        style={{
-          width: "1px",
-          height: "40px",
-          background: "linear-gradient(to top, transparent, var(--cyan-3))",
-          marginTop: "-8px",
-        }}
-      />
     </section>
   );
 }
