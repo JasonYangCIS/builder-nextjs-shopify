@@ -1,0 +1,14 @@
+---
+description: Conventions for app/api/** Route Handlers.
+globs: app/api/**/*.ts
+alwaysApply: false
+---
+
+- Mutating verbs MUST call `verifySameOrigin(req)` from `lib/auth/csrf` before any work; return `403` on failure.
+- Body parsed with `zod` `safeParse`; on failure return `400` with a generic message (never the raw zod error).
+- Use `await cookies()` and `await headers()` — both are async in Next 16.
+- Webhooks: read raw body as text → `crypto.timingSafeEqual` HMAC vs `SHOPIFY_WEBHOOK_SECRET` → THEN `JSON.parse`.
+- Never log or return: `Authorization`, `Set-Cookie`, tokens, or fields matching `/token|secret|password|cookie/i`.
+- Cookies: `HttpOnly`, `SameSite=Lax`, `Secure` in prod, sensitive payloads encrypted via `jose` + `SESSION_SECRET`.
+- Call `revalidateTag(tag, "max")` after Shopify mutations affecting cached reads.
+- Imports from `lib/{shopify,auth,env}` only — never call Shopify or read raw envs from a Route Handler directly.

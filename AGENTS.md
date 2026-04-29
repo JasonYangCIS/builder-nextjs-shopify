@@ -9,6 +9,18 @@ Notable Next 16 changes used in this repo:
 - `revalidateTag(tag, "max")` is the recommended call signature.
 <!-- END:nextjs-agent-rules -->
 
+# Fusion AI orientation (read first)
+
+This repo is consumed by Builder.io Fusion. Before writing code:
+
+1. Read this file end-to-end. Skill/rule tables below tell you which `.builder/skills/<name>/SKILL.md` and `.builder/rules/<name>.mdc` to load for the task.
+2. Any UI work — read `design-system-docs/AGENTS.md` and the matching component MDX in `design-system-docs/<Name>.mdx` BEFORE writing JSX.
+3. The dev server runs automatically. Do not instruct the user to run `npm run dev`, open `localhost`, or touch the terminal — they have no terminal access. Use `DevServerLogs` / `DevServerRestart` instead.
+4. Secrets are governed by `.builder/rules/secrets.mdc` (`alwaysApply: true`). Re-read it before editing any file under `app/`, `components/`, `lib/auth/**`, `lib/shopify/**`, or `proxy.ts`.
+5. Builder model names live in `config.ts`. Never hardcode model strings. Never use `<Content>` directly — always `RenderBuilderContent`.
+6. New Shopify call → `lib/shopify/*`. New auth call → `lib/auth/*`. Both start with `import "server-only"`.
+7. New API route → load the `route-handlers` skill. New Builder-rendered route → load the `builder-page-wiring` skill.
+
 # Project map + skill/rule index
 
 This is a headless **Builder.io + Shopify** sandbox storefront for `builder-jason.myshopify.com`. Pick the right skill before writing code.
@@ -57,6 +69,8 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `security` | New Route Handler, secrets, webhooks, CSP, HTML sanitization. |
 | `testing` | Vitest unit + Playwright + axe smoke. |
 | `skill-creator` | Authoring a new skill. |
+| `route-handlers` | Adding or editing any file under `app/api/**/route.ts`. |
+| `builder-page-wiring` | Adding a new Builder model or a new Builder-rendered route. |
 
 ## Rules (mdc, scoped via globs)
 
@@ -71,6 +85,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `shopify-commerce.mdc` | `lib/shopify/**, app/api/cart/**, components/shopify/**` |
 | `shopify-customer-auth.mdc` | `lib/auth/**, app/api/auth/**, proxy.ts` |
 | `security.mdc` | `app/api/**, lib/auth/**, lib/shopify/**, proxy.ts` |
+| `route-handlers.mdc` | `app/api/**/*.ts` |
 | `accessibility.mdc` | `components/**, app/**` |
 | `seo.mdc` | `app/**/page.tsx, app/sitemap.ts, app/robots.ts` |
 
