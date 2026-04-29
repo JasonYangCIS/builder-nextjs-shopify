@@ -27,6 +27,15 @@ export async function getBuilderProduct(handle: string) {
   });
 }
 
+export async function getBuilderCollection(handle: string) {
+  return fetchOneEntry({
+    model: config.models.collection,
+    apiKey: config.apiKey,
+    userAttributes: { urlPath: `/collections/${handle}`, handle },
+    query: { "data.handle": handle },
+  });
+}
+
 export async function listBuilderEntries(model: BuilderModelName, limit = 100) {
   return fetchEntries({
     model,
