@@ -91,7 +91,7 @@ export default function HeroSplit({
   ) : null;
 
   const textBlock = (
-    <div className="flex flex-col justify-center gap-5">
+    <div className={cn("flex flex-col justify-center gap-5", styles.textColumn)}>
       {eyebrow && (
         <div className="t-eyebrow flex items-center gap-3">
           <span aria-hidden="true" className={styles.eyebrowRule} />

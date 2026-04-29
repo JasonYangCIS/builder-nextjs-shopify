@@ -6,12 +6,20 @@
   box-shadow: var(--glow-cyan-sm);
 }
 
+.textColumn {
+  min-width: 0;
+}
+
 .heading {
+  max-width: 100%;
   font-size: clamp(40px, 6.4vw, 88px);
   letter-spacing: 0.03em;
   line-height: 0.95;
   color: var(--ink-0);
   text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .headingAccent {
