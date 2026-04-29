@@ -133,10 +133,12 @@ export default function MobileMenu() {
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     textDecoration: "none",
-                    color: isActive ? "var(--cyan-3)" : "var(--ink-1)",
+                    color: isActive ? "var(--cyan-3)" : "var(--ink-0)",
                     border: "1px solid",
-                    borderColor: isActive ? "var(--cyan-line)" : "transparent",
-                    background: isActive ? "rgba(61,217,214,0.06)" : "transparent",
+                    borderColor: isActive ? "var(--cyan-line)" : "rgba(184, 200, 212, 0.12)",
+                    background: isActive
+                      ? "rgba(61,217,214,0.10)"
+                      : "rgba(13, 20, 32, 0.85)",
                     boxShadow: isActive ? "var(--glow-cyan-sm)" : "none",
                     clipPath: "var(--chamfer-sm)",
                     transition: "all 0.16s",
