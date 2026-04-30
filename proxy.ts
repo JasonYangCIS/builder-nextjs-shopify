@@ -5,13 +5,15 @@ import { NextResponse, type NextRequest } from "next/server";
  * Adds strict security headers; relaxes CSP on /preview so Builder.io editor can iframe + edit.
  */
 
+const isDev = process.env.NODE_ENV !== "production";
+
 const PRODUCTION_CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://cdn.shopify.com https://cdn.builder.io",
   "font-src 'self' data:",
-  "connect-src 'self' https://cdn.shopify.com https://*.myshopify.com https://shopify.com https://*.builder.io",
+  `connect-src 'self' https://cdn.shopify.com https://*.myshopify.com https://shopify.com https://*.builder.io${isDev ? " ws: wss:" : ""}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self' https://*.myshopify.com https://shop.app",

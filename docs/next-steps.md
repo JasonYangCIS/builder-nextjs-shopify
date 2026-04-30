@@ -39,7 +39,7 @@ Tick items as we go. Order matters for items 1–7; Builder content (8–10) and
 
 - [x] **8. Create models** in Builder.io: `page`, `product`, `collection`, `navigation`, `footer`, `announcement-bar`. Add a Home `page` entry with `urlPath: "/"`.
 - [x] **9. Index repo for Builder.** Automated via `.github/workflows/builder-index-repo.yml` — runs on pushes to `main` that touch `components/**`, `builder-registry.ts`, `config.ts`, `styles/tokens.css`, or via manual `workflow_dispatch`. Requires repo secrets `BUILDER_PUBLIC_KEY`, `BUILDER_PRIVATE_KEY`, and `BUILDER_USER_ID`.
-- [ ] **10. Build a sample Home page** in Builder.io using `HeroSplit` + `ProductGrid`; verify live preview at `/preview` works inside the Builder editor.
+- [x] **10. Build a sample Home page** in Builder.io using `HeroSplit` + `ProductGrid`; verify live preview at `/preview` works inside the Builder editor.
 
 ## Validation
 
