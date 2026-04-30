@@ -76,7 +76,7 @@ export function ControlPanel({
       </PanelBlock>
 
       <PanelBlock heading="⌁ Lattice">
-        <div className={cn(styles.sf__row, styles["sf__row--3"])}>
+        <div className={styles.sf__row}>
           {SF_GEOMETRIES.map((g) => (
             <OptionButton
               key={g.id}

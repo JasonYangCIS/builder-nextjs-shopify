@@ -320,7 +320,7 @@
 
 .sf__hues {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 6px;
 }
 
@@ -730,5 +730,32 @@
   }
   .sf__stage {
     min-height: 420px;
+  }
+  .sf__row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sf__panel-block {
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sf__title {
+    font-size: 32px;
+  }
+  .sf__row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sf__hues {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sf__btn {
+    padding: 8px 10px;
+  }
+  .sf__hue {
+    padding: 10px 8px;
+  }
+  .sf__panel-actions {
+    flex-direction: column;
   }
 }
