@@ -126,7 +126,7 @@ export function useSigilForge() {
 
       if (ph !== "detonating" && ph !== "rebooting" && ph !== "wreckage") {
         setCharge((c) => {
-          const rate = dt / 8000;
+          const rate = dt / 5000;
           const nc = dragRef.current.active
             ? Math.min(1, c + rate)
             : Math.max(0, c - rate);
