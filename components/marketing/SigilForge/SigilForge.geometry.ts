@@ -93,15 +93,63 @@ function buildPentaData(): PolyData {
   return { vertices: verts, faceIdx: facesIdx, edges: edgesFromFaces(facesIdx), R };
 }
 
+function buildHexaData(): PolyData {
+  const R = 95;
+  const verts: Vec3[] = [
+    { x: -R, y: -R, z: -R },
+    { x: R, y: -R, z: -R },
+    { x: R, y: R, z: -R },
+    { x: -R, y: R, z: -R },
+    { x: -R, y: -R, z: R },
+    { x: R, y: -R, z: R },
+    { x: R, y: R, z: R },
+    { x: -R, y: R, z: R },
+  ];
+  const facesIdx = [
+    [0, 1, 2], [0, 2, 3],
+    [4, 6, 5], [4, 7, 6],
+    [0, 4, 5], [0, 5, 1],
+    [2, 6, 7], [2, 7, 3],
+    [1, 5, 6], [1, 6, 2],
+    [0, 3, 7], [0, 7, 4],
+  ];
+  return { vertices: verts, faceIdx: facesIdx, edges: edgesFromFaces(facesIdx), R };
+}
+
+function buildDiamondData(): PolyData {
+  const R = 120;
+  const eqR = R * 0.78;
+  const verts: Vec3[] = [
+    { x: 0, y: -R, z: 0 },
+    { x: 0, y: R, z: 0 },
+  ];
+  for (let i = 0; i < 6; i++) {
+    const angle = (i / 6) * Math.PI * 2;
+    verts.push({ x: Math.cos(angle) * eqR, y: 0, z: Math.sin(angle) * eqR });
+  }
+  const facesIdx: number[][] = [];
+  for (let i = 0; i < 6; i++) {
+    const a = 2 + i;
+    const b = 2 + ((i + 1) % 6);
+    facesIdx.push([0, b, a]);
+    facesIdx.push([1, a, b]);
+  }
+  return { vertices: verts, faceIdx: facesIdx, edges: edgesFromFaces(facesIdx), R };
+}
+
 const ICOSA_DATA = buildIcosaData();
 const OCTA_DATA = buildOctaData();
 const TETRA_DATA = buildTetraData();
 const PENTA_DATA = buildPentaData();
+const HEXA_DATA = buildHexaData();
+const DIAMOND_DATA = buildDiamondData();
 
 export function getPolyhedron(geometry: GeometryId): PolyData {
   if (geometry === "icosa") return ICOSA_DATA;
   if (geometry === "octa") return OCTA_DATA;
   if (geometry === "penta") return PENTA_DATA;
+  if (geometry === "hexa") return HEXA_DATA;
+  if (geometry === "diamond") return DIAMOND_DATA;
   return TETRA_DATA;
 }
 

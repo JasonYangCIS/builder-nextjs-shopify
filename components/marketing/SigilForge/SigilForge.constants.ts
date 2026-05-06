@@ -1,6 +1,6 @@
 /* Static lookup tables for the Sigil Forge artifact. */
 
-export type HueId = "cyan" | "violet" | "amber" | "danger";
+export type HueId = "cyan" | "violet" | "amber" | "danger" | "verdant" | "solar";
 export interface Hue {
   id: HueId;
   name: string;
@@ -18,7 +18,7 @@ export interface Freq {
   particleMul: number;
 }
 
-export type GeometryId = "tetra" | "octa" | "icosa" | "penta";
+export type GeometryId = "tetra" | "octa" | "icosa" | "penta" | "hexa" | "diamond";
 export interface GeometryDef {
   id: GeometryId;
   name: string;
@@ -56,6 +56,20 @@ export const SF_HUES: readonly Hue[] = [
     glow: "#ff8fa3",
     shadow: "rgba(255,90,122,0.55)",
   },
+  {
+    id: "verdant",
+    name: "VERDANT",
+    primary: "#3fd97f",
+    glow: "#82f0a8",
+    shadow: "rgba(63,217,127,0.55)",
+  },
+  {
+    id: "solar",
+    name: "SOLAR",
+    primary: "#ffd24a",
+    glow: "#ffe590",
+    shadow: "rgba(255,210,74,0.55)",
+  },
 ] as const;
 
 export const SF_FREQS: readonly Freq[] = [
@@ -70,6 +84,8 @@ export const SF_GEOMETRIES: readonly GeometryDef[] = [
   { id: "octa", name: "OCTA", meta: "D8 · 8 faces", readout: "D8·OCTA" },
   { id: "icosa", name: "ICOSA", meta: "D20 · 20 faces", readout: "D20·ICOSA" },
   { id: "penta", name: "PENTA", meta: "D10 · 10 faces", readout: "D10·PENTA" },
+  { id: "hexa", name: "HEXA", meta: "D6 · 12 faces", readout: "D6·HEXA" },
+  { id: "diamond", name: "DIAMOND", meta: "D12 · 12 faces", readout: "D12·DIAMOND" },
 ] as const;
 
 export const SF_GLYPHS = "⌁◉▰⟁⊹⊿✦◈◊⬢⬡⟆⟁△▽◇◆";
