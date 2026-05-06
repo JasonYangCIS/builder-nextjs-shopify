@@ -1,6 +1,6 @@
 /* Static lookup tables for the Sigil Forge artifact. */
 
-export type HueId = "cyan" | "violet" | "amber";
+export type HueId = "cyan" | "violet" | "amber" | "danger";
 export interface Hue {
   id: HueId;
   name: string;
@@ -18,7 +18,7 @@ export interface Freq {
   particleMul: number;
 }
 
-export type GeometryId = "tetra" | "octa" | "icosa";
+export type GeometryId = "tetra" | "octa" | "icosa" | "penta";
 export interface GeometryDef {
   id: GeometryId;
   name: string;
@@ -49,6 +49,13 @@ export const SF_HUES: readonly Hue[] = [
     glow: "#f4b06a",
     shadow: "rgba(217,127,58,0.55)",
   },
+  {
+    id: "danger",
+    name: "HAZARD",
+    primary: "#ff5a7a",
+    glow: "#ff8fa3",
+    shadow: "rgba(255,90,122,0.55)",
+  },
 ] as const;
 
 export const SF_FREQS: readonly Freq[] = [
@@ -62,6 +69,7 @@ export const SF_GEOMETRIES: readonly GeometryDef[] = [
   { id: "tetra", name: "TETRA", meta: "D4 · 4 faces", readout: "D4·TETRA" },
   { id: "octa", name: "OCTA", meta: "D8 · 8 faces", readout: "D8·OCTA" },
   { id: "icosa", name: "ICOSA", meta: "D20 · 20 faces", readout: "D20·ICOSA" },
+  { id: "penta", name: "PENTA", meta: "D10 · 10 faces", readout: "D10·PENTA" },
 ] as const;
 
 export const SF_GLYPHS = "⌁◉▰⟁⊹⊿✦◈◊⬢⬡⟆⟁△▽◇◆";

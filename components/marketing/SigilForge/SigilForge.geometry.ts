@@ -72,13 +72,36 @@ function buildTetraData(): PolyData {
   return { vertices: verts, faceIdx: facesIdx, edges: edgesFromFaces(facesIdx), R };
 }
 
+function buildPentaData(): PolyData {
+  const R = 115;
+  const eqR = R * 0.88;
+  const verts: Vec3[] = [
+    { x: 0, y: -R, z: 0 },
+    { x: 0, y: R, z: 0 },
+  ];
+  for (let i = 0; i < 5; i++) {
+    const angle = (i / 5) * Math.PI * 2;
+    verts.push({ x: Math.cos(angle) * eqR, y: 0, z: Math.sin(angle) * eqR });
+  }
+  const facesIdx: number[][] = [];
+  for (let i = 0; i < 5; i++) {
+    const a = 2 + i;
+    const b = 2 + ((i + 1) % 5);
+    facesIdx.push([0, b, a]);
+    facesIdx.push([1, a, b]);
+  }
+  return { vertices: verts, faceIdx: facesIdx, edges: edgesFromFaces(facesIdx), R };
+}
+
 const ICOSA_DATA = buildIcosaData();
 const OCTA_DATA = buildOctaData();
 const TETRA_DATA = buildTetraData();
+const PENTA_DATA = buildPentaData();
 
 export function getPolyhedron(geometry: GeometryId): PolyData {
   if (geometry === "icosa") return ICOSA_DATA;
   if (geometry === "octa") return OCTA_DATA;
+  if (geometry === "penta") return PENTA_DATA;
   return TETRA_DATA;
 }
 
