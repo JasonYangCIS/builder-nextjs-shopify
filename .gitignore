@@ -33,6 +33,7 @@ yarn-error.log*
 
 # env files (do not commit secrets)
 .env
+.envrc
 .env*.local
 .env.development
 .env.production
