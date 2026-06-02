@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 import Badge from "@/components/ui/Badge/Badge";
 import Input from "@/components/ui/Input/Input";
 import Label from "@/components/ui/Label/Label";

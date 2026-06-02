@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 import { cn } from "@/utils/cn";
 import styles from "./HeroSplit.module.scss";
 import type { HeroSplitProps } from "./HeroSplit.types";

@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (

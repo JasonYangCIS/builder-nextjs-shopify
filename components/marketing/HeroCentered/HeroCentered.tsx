@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 import styles from "./HeroCentered.module.scss";
 
 export interface HeroCenteredProps {

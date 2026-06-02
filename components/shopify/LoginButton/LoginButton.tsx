@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 
 export default function LoginButton({ label = "Log in" }: { label?: string | null }) {
   return (
