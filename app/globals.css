@@ -234,6 +234,46 @@ body {
   width: 2.25rem;
 }
 
+/* ── core-ui Badge (styled via data-slot / data-variant) ───── */
+[data-slot="badge"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  clip-path: var(--chamfer-sm);
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+[data-slot="badge"][data-variant="default"] {
+  border-color: var(--cyan-line);
+  background: var(--cyan-soft);
+  color: var(--cyan-3);
+  box-shadow: var(--glow-cyan-sm);
+}
+[data-slot="badge"][data-variant="secondary"] {
+  border-color: var(--violet-line);
+  background: var(--violet-soft);
+  color: var(--violet-3);
+}
+[data-slot="badge"][data-variant="destructive"] {
+  border-color: rgba(255, 90, 122, 0.4);
+  background: rgba(255, 90, 122, 0.1);
+  color: var(--xenosphere-danger);
+}
+[data-slot="badge"][data-variant="outline"] {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted-foreground);
+}
+[data-slot="badge"][data-variant="success"] {
+  border-color: rgba(78, 224, 168, 0.4);
+  background: rgba(78, 224, 168, 0.1);
+  color: var(--xenosphere-success);
+}
+
 /* ── Typography utilities ─────────────────────────────────── */
 .t-display {
   font-family: var(--font-display), var(--font-sans);

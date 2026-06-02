@@ -1,4 +1,4 @@
-import Badge from "@/components/ui/Badge/Badge";
+import { Badge } from "@jasonyangcis/core-ui";
 import { getStockState } from "@/lib/shopify/inventory";
 import type { InventoryBadgeProps } from "./InventoryBadge.types";
 
