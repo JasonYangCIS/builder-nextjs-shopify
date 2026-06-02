@@ -13,7 +13,8 @@ export default function Footer() {
             <span className={`t-display ${styles.brandTitle}`}>BUILDER SHOP</span>
             <p className={styles.brandText}>
               Headless storefront powered by<br />
-              <span className={styles.brandAccent}>Builder.io</span> +{" "}
+              <span className={styles.brandAccent}>Builder.io Publish</span> +{" "}
+              <span className={styles.brandAccent}>Fusion</span> +{" "}
               <span className={styles.brandAccent}>Shopify</span>
             </p>
           </div>
