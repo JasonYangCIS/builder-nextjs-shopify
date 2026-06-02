@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 import { useCart } from "@/lib/cart/useCart";
 
 export default function CheckoutButton({ label = "Proceed to checkout" }: { label?: string | null }) {

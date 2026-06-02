@@ -1,6 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
-import Button from "@/components/ui/Button/Button";
+import { Button } from "@jasonyangcis/core-ui";
 import { useCart } from "@/lib/cart/useCart";
 import type { AddToCartButtonProps } from "./AddToCartButton.types";
 
