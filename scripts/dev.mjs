@@ -55,12 +55,12 @@ function startLib({ pkg, dir }) {
   const destPkg = resolve(cwd, "node_modules", pkg);
   const destDist = resolve(destPkg, "dist");
 
-  if (isSymlink(destPkg)) {
-    console.log(`[dev] ${pkg} is symlinked (workspace); skipping copy-sync.`);
+  if (!existsSync(dir)) {
+    console.warn(`[dev] ${pkg}: ${dir} not found; skipping (app falls back to the installed registry version).`);
     return;
   }
-  if (!existsSync(dir)) {
-    console.warn(`[dev] ${pkg}: ${dir} not found; skipping.`);
+  if (isSymlink(destPkg)) {
+    console.log(`[dev] ${pkg} is symlinked (workspace); skipping copy-sync.`);
     return;
   }
 

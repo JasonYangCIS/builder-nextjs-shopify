@@ -97,6 +97,37 @@ yet: a clean `npm install` re-resolves from the registry and fails with
 - Only bump to `^0.3.0` **after** `core-ui@0.3.0` is actually published via the
   changeset release flow (`changeset version` → `changeset publish`).
 
+## Component-scoped styles
+
+`core-ui` is **headless** — it ships no CSS. Each primitive emits styling hooks
+(`data-slot`, `data-variant`, `data-size`) and the app owns the visuals.
+
+Those visuals are split per component instead of living in one big
+`globals.css`:
+
+- Component CSS lives in `styles/components/*.css` (e.g. `button.css`,
+  `badge.css`), each keyed off the library's `data-*` attributes
+  (`[data-slot="badge"][data-variant="success"]`, `[data-variant][data-size]`).
+- `globals.css` imports them at the top, right after Tailwind and tokens:
+
+  ```css
+  @import "tailwindcss";
+  @import "../styles/tokens.css";
+  @import "../styles/components/button.css";
+  @import "../styles/components/badge.css";
+  ```
+
+  `@import` rules must stay at the very top of the file or the browser drops
+  them.
+
+Rules are still global (plain attribute selectors, not CSS Modules) — the split
+is purely for maintainability. **Add a component:** create
+`styles/components/<name>.css` and add one `@import` line.
+
+> The `data-*` attribute names are the contract between the headless library and
+> these stylesheets. If `core-ui` renames a slot/variant, styles break silently
+> (no type error), so keep the two in sync.
+
 ## Smoke checklist
 
 - [ ] Home page renders Builder content.
