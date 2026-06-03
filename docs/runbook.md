@@ -50,6 +50,53 @@ Cart id is stored in the `cart_id` cookie. Clear it to start a fresh cart:
 document.cookie = "cart_id=; Path=/; Max-Age=0";
 ```
 
+## Local multi-repo development (core-ui)
+
+UI primitives like `Button` and `Badge` live in the sibling repo
+`@jasonyangcis/core-ui` (checked out next to this one at `../core-ui`). The app
+consumes it as a published package, but during local/sandbox development you can
+edit the library and see changes live.
+
+### How the live loop works
+
+The dev command runs `node scripts/dev.mjs` instead of `next dev` directly. For
+each library in that script's `LIBS` list it:
+
+1. copies the library's built `dist/` into `node_modules/<pkg>/dist` on startup
+   (a copy lands **inside** this project so Turbopack resolves it natively — a
+   symlink to the sibling repo is outside the project root and Turbopack rejects
+   it);
+2. runs the library's watch build (`npm run dev` → `rolldown -c -w`) so its
+   `dist/` regenerates on every source change;
+3. re-copies `dist/` into `node_modules` whenever it changes;
+
+then starts `next dev`. Net effect: edit `../core-ui/src` → rebuild → re-sync →
+Next HMR. Each library is best-effort; a failed/missing library never takes down
+`next dev`.
+
+Requirements for the loop: `../core-ui` must have its own `node_modules`
+(run `npm install` there once) so the watch build can run.
+
+**Add another library:** append one entry to `LIBS` in `scripts/dev.mjs`
+(a stub for `core-ui-2` is already commented in).
+
+**Coexists with a real workspace:** if `node_modules/<pkg>` is already a symlink
+(e.g. a pnpm/npm workspace on your own machine), the copy-sync is skipped for
+that package automatically.
+
+### Dependency version rule (important)
+
+Keep `@jasonyangcis/core-ui` in `package.json` pinned to a **published** version
+(currently `^0.2.0`). Do **not** bump it to a version that isn't on the registry
+yet: a clean `npm install` re-resolves from the registry and fails with
+`ETARGET / No matching version found`, which breaks container setup.
+
+- The local dev loop does **not** need the new version published — it overlays
+  the freshly-built local `dist`, so `Badge` (added after `0.2.0`) is available
+  in dev even though the installed registry baseline is `0.2.0`.
+- Only bump to `^0.3.0` **after** `core-ui@0.3.0` is actually published via the
+  changeset release flow (`changeset version` → `changeset publish`).
+
 ## Smoke checklist
 
 - [ ] Home page renders Builder content.
