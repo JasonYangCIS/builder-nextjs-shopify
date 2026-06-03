@@ -68,7 +68,9 @@ each library in that script's `LIBS` list it:
    it);
 2. runs the library's watch build (`npm run dev` → `rolldown -c -w`) so its
    `dist/` regenerates on every source change;
-3. re-copies `dist/` into `node_modules` whenever it changes;
+3. re-copies `dist/` into `node_modules` whenever it changes — and also when the
+   library's `package.json` changes, so a version-only bump (e.g. after syncing
+   a release from `main`) propagates without restarting the dev server;
 
 then starts `next dev`. Net effect: edit `../core-ui/src` → rebuild → re-sync →
 Next HMR. Each library is best-effort; a failed/missing library never takes down

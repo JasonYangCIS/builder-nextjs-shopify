@@ -96,6 +96,15 @@ function startLib({ pkg, dir }) {
       timer = setTimeout(() => sync("rebuild"), 150);
     });
   }
+
+  // Re-sync on a version-only bump (package.json changes but dist/ may not).
+  if (existsSync(srcPkgJson)) {
+    let timer;
+    watch(srcPkgJson, () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => sync("version bump"), 150);
+    });
+  }
 }
 
 for (const lib of LIBS) startLib(lib);
