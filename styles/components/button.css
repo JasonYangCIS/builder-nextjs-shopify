@@ -1,0 +1,100 @@
+/* ── core-ui Button (styled via data-variant / data-size) ──── */
+[data-variant][data-size] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 150ms;
+  clip-path: var(--chamfer);
+}
+[data-variant][data-size]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+}
+[data-variant][data-size]:disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+[data-variant="default"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: var(--glow-cyan-sm);
+}
+[data-variant="default"]:hover { filter: brightness(1.1); box-shadow: var(--glow-cyan-md); }
+
+[data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+}
+[data-variant="destructive"]:hover { filter: brightness(1.1); }
+
+[data-variant="outline"] {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--secondary-foreground);
+}
+[data-variant="outline"]:hover {
+  border-color: var(--cyan-line);
+  background: rgba(61, 217, 214, 0.06);
+  color: var(--foreground);
+  box-shadow: var(--glow-cyan-sm);
+}
+
+[data-variant="secondary"] {
+  border-color: var(--border);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+[data-variant="secondary"]:hover {
+  border-color: var(--cyan-line);
+  background: rgba(61, 217, 214, 0.06);
+}
+
+[data-variant="ghost"] {
+  background: transparent;
+  color: var(--secondary-foreground);
+}
+[data-variant="ghost"]:hover {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--secondary) 40%, transparent);
+  color: var(--foreground);
+}
+
+[data-variant="link"] {
+  background: transparent;
+  color: var(--primary);
+  text-underline-offset: 4px;
+  clip-path: var(--chamfer-sm);
+}
+[data-variant="link"]:hover { text-decoration: underline; }
+
+[data-size="default"] {
+  height: 2.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: var(--t-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+[data-size="sm"] {
+  height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+[data-size="lg"] {
+  height: 3rem;
+  padding: 0 2rem;
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+[data-size="icon"] {
+  height: 2.25rem;
+  width: 2.25rem;
+}
