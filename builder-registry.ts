@@ -2,7 +2,7 @@ import type { RegisteredComponent } from "@builder.io/sdk-react";
 import "@/components/builder/BuilderDesignTokens/BuilderDesignTokens";
 
 import ProductGridClient from "@/components/shopify/ProductGrid/ProductGridClient";
-import ProductCard from "@/components/shopify/ProductCard/ProductCard";
+import ProductCardClient from "@/components/shopify/ProductCard/ProductCardClient";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
 import OrderHistoryList from "@/components/shopify/OrderHistoryList/OrderHistoryList";
@@ -79,9 +79,16 @@ export const customComponents: RegisteredComponent[] = [
     ],
   },
   {
-    component: ProductCard,
+    component: ProductCardClient,
     name: "ProductCard",
-    inputs: [{ name: "productHandle", type: "string", required: true }],
+    inputs: [
+      {
+        name: "productHandle",
+        type: "string",
+        required: true,
+        helperText: "Shopify product handle, e.g. obsidian-amulet",
+      },
+    ],
   },
   {
     component: InventoryBadge,
