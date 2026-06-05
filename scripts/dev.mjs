@@ -27,10 +27,16 @@ const LIBS = [
 ];
 
 const children = [];
+const watchers = [];
 let shuttingDown = false;
 function shutdown(code) {
   if (shuttingDown) return;
   shuttingDown = true;
+  for (const w of watchers) {
+    try {
+      w.close();
+    } catch {}
+  }
   for (const child of children) {
     try {
       child.kill();
@@ -89,21 +95,40 @@ function startLib({ pkg, dir }) {
   }
 
   // Re-sync whenever the library's dist/ changes (debounced).
-  if (existsSync(srcDist)) {
+  const watchDist = () => {
     let timer;
-    watch(srcDist, { recursive: true }, () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => sync("rebuild"), 150);
-    });
+    watchers.push(
+      watch(srcDist, { recursive: true }, () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => sync("rebuild"), 150);
+      }),
+    );
+  };
+  if (existsSync(srcDist)) {
+    watchDist();
+  } else {
+    // Fresh checkout: dist/ doesn't exist until the watch build produces it.
+    // Poll until it appears, then sync once and attach the watcher.
+    const poll = setInterval(() => {
+      if (shuttingDown || existsSync(srcDist)) {
+        clearInterval(poll);
+        if (!shuttingDown) {
+          sync("first build");
+          watchDist();
+        }
+      }
+    }, 500);
   }
 
   // Re-sync on a version-only bump (package.json changes but dist/ may not).
   if (existsSync(srcPkgJson)) {
     let timer;
-    watch(srcPkgJson, () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => sync("version bump"), 150);
-    });
+    watchers.push(
+      watch(srcPkgJson, () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => sync("version bump"), 150);
+      }),
+    );
   }
 }
 

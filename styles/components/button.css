@@ -1,4 +1,7 @@
 /* ── core-ui Button (styled via data-variant / data-size) ──── */
+/* All selectors require [data-size]: Button always emits both data-variant and
+   data-size, while Badge emits data-variant only. Requiring [data-size] keeps
+   these rules from bleeding onto badges (which share data-variant values). */
 [data-variant][data-size] {
   display: inline-flex;
   align-items: center;
@@ -20,58 +23,58 @@
   opacity: 0.4;
 }
 
-[data-variant="default"] {
+[data-variant="default"][data-size] {
   background: var(--primary);
   color: var(--primary-foreground);
   box-shadow: var(--glow-cyan-sm);
 }
-[data-variant="default"]:hover { filter: brightness(1.1); box-shadow: var(--glow-cyan-md); }
+[data-variant="default"][data-size]:hover { filter: brightness(1.1); box-shadow: var(--glow-cyan-md); }
 
-[data-variant="destructive"] {
+[data-variant="destructive"][data-size] {
   background: var(--destructive);
   color: var(--destructive-foreground);
 }
-[data-variant="destructive"]:hover { filter: brightness(1.1); }
+[data-variant="destructive"][data-size]:hover { filter: brightness(1.1); }
 
-[data-variant="outline"] {
+[data-variant="outline"][data-size] {
   border-color: var(--border);
   background: transparent;
   color: var(--secondary-foreground);
 }
-[data-variant="outline"]:hover {
+[data-variant="outline"][data-size]:hover {
   border-color: var(--cyan-line);
   background: rgba(61, 217, 214, 0.06);
   color: var(--foreground);
   box-shadow: var(--glow-cyan-sm);
 }
 
-[data-variant="secondary"] {
+[data-variant="secondary"][data-size] {
   border-color: var(--border);
   background: var(--secondary);
   color: var(--secondary-foreground);
 }
-[data-variant="secondary"]:hover {
+[data-variant="secondary"][data-size]:hover {
   border-color: var(--cyan-line);
   background: rgba(61, 217, 214, 0.06);
 }
 
-[data-variant="ghost"] {
+[data-variant="ghost"][data-size] {
   background: transparent;
   color: var(--secondary-foreground);
 }
-[data-variant="ghost"]:hover {
+[data-variant="ghost"][data-size]:hover {
   border-color: var(--border);
   background: color-mix(in srgb, var(--secondary) 40%, transparent);
   color: var(--foreground);
 }
 
-[data-variant="link"] {
+[data-variant="link"][data-size] {
   background: transparent;
   color: var(--primary);
   text-underline-offset: 4px;
   clip-path: var(--chamfer-sm);
 }
-[data-variant="link"]:hover { text-decoration: underline; }
+[data-variant="link"][data-size]:hover { text-decoration: underline; }
 
 [data-size="default"] {
   height: 2.5rem;
