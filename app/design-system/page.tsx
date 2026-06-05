@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { Button, Badge, Card } from "@jasonyangcis/core-ui";
-import Input from "@/components/ui/Input/Input";
-import Label from "@/components/ui/Label/Label";
+import { Button, Badge, Card, Input, Label } from "@jasonyangcis/core-ui";
 import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
 import AnnouncementBar from "@/components/marketing/AnnouncementBar/AnnouncementBar";

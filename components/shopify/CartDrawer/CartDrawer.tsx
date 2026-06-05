@@ -5,7 +5,7 @@ import {
   DialogTrigger,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/Dialog/Dialog";
+} from "@jasonyangcis/core-ui";
 import CartLineItem from "@/components/shopify/CartLineItem/CartLineItem";
 import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCodeInput";
 import CheckoutButton from "@/components/shopify/CheckoutButton/CheckoutButton";

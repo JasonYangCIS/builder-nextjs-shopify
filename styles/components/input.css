@@ -1,0 +1,24 @@
+/* ── core-ui Input (styled via data-slot) ──────────────────── */
+[data-slot="input"] {
+  display: flex;
+  height: 2.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.025em;
+  color: var(--foreground);
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xs);
+  transition: all 150ms;
+}
+[data-slot="input"]:focus-visible {
+  outline: none;
+  border-color: var(--cyan-line);
+  box-shadow: var(--glow-cyan-sm);
+}
+[data-slot="input"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

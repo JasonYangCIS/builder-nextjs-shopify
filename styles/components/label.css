@@ -1,0 +1,8 @@
+/* ── core-ui Label (styled via data-slot) ──────────────────── */
+[data-slot="label"] {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--t-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-glow);
+}
