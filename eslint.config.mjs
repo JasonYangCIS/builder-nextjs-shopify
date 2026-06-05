@@ -45,6 +45,11 @@ const eslintConfig = defineConfig([
     files: ["lib/env.ts"],
     rules: { "no-restricted-syntax": "off" },
   },
+  {
+    // Dev-only Node tooling; console output is intentional status logging.
+    files: ["scripts/**"],
+    rules: { "no-console": "off" },
+  },
   globalIgnores([
     ".next/**",
     "out/**",
