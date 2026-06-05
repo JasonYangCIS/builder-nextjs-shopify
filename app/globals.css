@@ -2,6 +2,7 @@
 @import "../styles/tokens.css";
 @import "../styles/components/button.css";
 @import "../styles/components/badge.css";
+@import "../styles/components/card.css";
 
 @theme inline {
   --color-background:            var(--background);
@@ -135,7 +136,7 @@ body {
 .chamfer     { clip-path: var(--chamfer); }
 .chamfer-sm  { clip-path: var(--chamfer-sm); }
 
-/* core-ui Button + Badge styles live in styles/components/{button,badge}.css
+/* core-ui Button + Badge + Card styles live in styles/components/{button,badge,card}.css
    (imported at the top of this file). */
 
 /* ── Typography utilities ─────────────────────────────────── */

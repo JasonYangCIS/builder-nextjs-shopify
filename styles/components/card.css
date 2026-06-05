@@ -1,0 +1,8 @@
+/* ── core-ui Card (styled via data-slot) ───────────────────── */
+[data-slot="card"] {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xs);
+  background: var(--card);
+  color: var(--card-foreground);
+}
