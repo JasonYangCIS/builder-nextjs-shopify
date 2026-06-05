@@ -79,6 +79,15 @@ Next HMR. Each library is best-effort; a failed/missing library never takes down
 Requirements for the loop: `../core-ui` must have its own `node_modules`
 (run `npm install` there once) so the watch build can run.
 
+> **Failure mode to recognize:** if `../core-ui/node_modules` is missing, the
+> watch build never starts and the app **silently falls back to the published
+> registry version**. Anything added to core-ui since the last publish (a new
+> component, a new export) will be missing, and `npx tsc --noEmit` fails with
+> `Module '"@jasonyangcis/core-ui"' has no exported member 'X'` against the
+> stale `node_modules`. Fix: `cd ../core-ui && npm install && npm run build`,
+> then let the dev loop re-sync (or copy `dist/` + `package.json` into
+> `node_modules/@jasonyangcis/core-ui/` manually).
+
 **Add another library:** append one entry to `LIBS` in `scripts/dev.mjs`
 (a stub for `core-ui-2` is already commented in).
 
@@ -117,6 +126,7 @@ Those visuals are split per component instead of living in one big
   @import "../styles/tokens.css";
   @import "../styles/components/button.css";
   @import "../styles/components/badge.css";
+  @import "../styles/components/card.css";
   ```
 
   `@import` rules must stay at the very top of the file or the browser drops

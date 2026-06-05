@@ -71,6 +71,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `skill-creator` | Authoring a new skill. |
 | `route-handlers` | Adding or editing any file under `app/api/**/route.ts`. |
 | `builder-page-wiring` | Adding a new Builder model or a new Builder-rendered route. |
+| `core-ui-migration` | Moving a component from this app into the headless `@jasonyangcis/core-ui` library. |
 
 ## Rules (mdc, scoped via globs)
 
