@@ -17,6 +17,11 @@
   text-decoration: none;
 }
 
+[data-slot="announcement-bar"][data-linked]:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
 [data-slot="announcement-bar-glyph"] {
   color: var(--cyan-3);
 }
