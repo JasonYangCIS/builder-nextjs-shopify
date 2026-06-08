@@ -1,0 +1,27 @@
+[data-slot="announcement-bar"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 6px 24px;
+  background: rgba(6, 9, 15, 0.7);
+  border-bottom: 1px solid var(--cyan-line);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-1);
+}
+
+[data-slot="announcement-bar"][data-linked] {
+  text-decoration: none;
+}
+
+[data-slot="announcement-bar"][data-linked]:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+[data-slot="announcement-bar-glyph"] {
+  color: var(--cyan-3);
+}

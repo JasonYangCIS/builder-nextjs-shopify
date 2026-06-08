@@ -8,7 +8,7 @@ import LoginButton from "@/components/shopify/LoginButton/LoginButton";
 import OrderHistoryList from "@/components/shopify/OrderHistoryList/OrderHistoryList";
 import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
-import AnnouncementBar from "@/components/marketing/AnnouncementBar/AnnouncementBar";
+import { announcementBarConfig } from "@jasonyangcis/core-ui/components/AnnouncementBar/AnnouncementBar.builder";
 import FaqList from "@/components/marketing/FaqList/FaqList";
 import SigilForge from "@/components/marketing/SigilForge/SigilForge";
 
@@ -55,14 +55,7 @@ export const customComponents: RegisteredComponent[] = [
       { name: "headingLevel", type: "string", enum: ["h1", "h2"], defaultValue: "h1" },
     ],
   },
-  {
-    component: AnnouncementBar,
-    name: "AnnouncementBar",
-    inputs: [
-      { name: "message", type: "string" },
-      { name: "href", type: "url" },
-    ],
-  },
+  announcementBarConfig,
   {
     component: FaqList,
     name: "FaqList",
