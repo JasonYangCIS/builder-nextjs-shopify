@@ -10,7 +10,7 @@
   font-size: 9px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ink-2);
+  color: var(--ink-1);
 }
 
 [data-slot="announcement-bar"][data-linked] {
