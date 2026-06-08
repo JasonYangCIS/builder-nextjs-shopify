@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Button, Badge, Card, Input, Label } from "@jasonyangcis/core-ui";
+import { Button, Badge, Card, Input, Label, AnnouncementBar } from "@jasonyangcis/core-ui";
 import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
-import AnnouncementBar from "@/components/marketing/AnnouncementBar/AnnouncementBar";
 import FaqList from "@/components/marketing/FaqList/FaqList";
 import SigilForge from "@/components/marketing/SigilForge/SigilForge";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
