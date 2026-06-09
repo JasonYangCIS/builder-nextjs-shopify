@@ -25,6 +25,7 @@ Under `core-ui/src/components/<Name>/`, mirror the existing `Badge`/`Button` fol
 - `index.ts` — barrel: `export { X }` + `export type { XProps }`.
 - `<Name>.test.tsx` — Vitest + Testing Library (renders, `data-*` emitted, className passthrough, ref forwarding).
 - `<Name>.stories.tsx` — **always required**. See rules below.
+- `<Name>.stories.css` — **always required** alongside the stories file. Demo styles keyed off `data-slot` attributes; imported at the top of `<Name>.stories.tsx`. Never add component styles to `.storybook/preview.css`.
 - `<Name>.builder.ts` — ONLY if Builder-registered (like Button). Omit otherwise (like Badge). It is NOT re-exported from `src/index.ts`; it's reached via deep import.
 
 Then export from `core-ui/src/index.ts` — **named exports only** (never `export default { ... }`, which defeats treeshaking).
