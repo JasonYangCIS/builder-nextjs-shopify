@@ -34,7 +34,7 @@ Then export from `core-ui/src/index.ts` — **named exports only** (never `expor
 - Import from `@jasonyangcis/core-ui` (the aliased barrel), not the relative source file.
 - Set `tags: ['autodocs']` on the meta object.
 - Include a `Default` story plus stories for each meaningful prop combination (variants, conditional sections, slot overrides).
-- Add demo styles for the new component's `data-slot` attributes to `core-ui/.storybook/preview.css`. The library ships no CSS — without preview styles the canvas renders unstyled/invisible output, defeating the whole point of Storybook.
+- Create `<Name>.stories.css` alongside the stories file with demo styles keyed off the component's `data-slot` attributes, then `import './<Name>.stories.css'` at the top of `<Name>.stories.tsx`. The library ships no CSS — without these styles the canvas renders blank. Do **not** add component styles to `.storybook/preview.css`; that file is intentionally empty so each component's styles stay scoped to its own story.
 - Stories must **not** leak into `dist/` — `tsconfig.build.json` excludes `**/*.stories.ts(x)` already; don't move or rename stories outside that pattern.
 
 ## Step 3 — Treeshake sentinel + changeset (don't skip)
