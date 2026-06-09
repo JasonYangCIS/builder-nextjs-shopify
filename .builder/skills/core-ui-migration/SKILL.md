@@ -24,9 +24,19 @@ Under `core-ui/src/components/<Name>/`, mirror the existing `Badge`/`Button` fol
 - `<Name>.tsx` — implementation; `import type` the props and **re-export them at the bottom**. Relative imports use the emitted `.js` extension (`from './X.types.js'`).
 - `index.ts` — barrel: `export { X }` + `export type { XProps }`.
 - `<Name>.test.tsx` — Vitest + Testing Library (renders, `data-*` emitted, className passthrough, ref forwarding).
+- `<Name>.stories.tsx` — **always required**. See rules below.
+- `<Name>.stories.css` — **always required** alongside the stories file. Demo styles keyed off `data-slot` attributes; imported at the top of `<Name>.stories.tsx`. Never add component styles to `.storybook/preview.css`.
 - `<Name>.builder.ts` — ONLY if Builder-registered (like Button). Omit otherwise (like Badge). It is NOT re-exported from `src/index.ts`; it's reached via deep import.
 
 Then export from `core-ui/src/index.ts` — **named exports only** (never `export default { ... }`, which defeats treeshaking).
+
+### Stories rules (never skip)
+
+- Import from `@jasonyangcis/core-ui` (the aliased barrel), not the relative source file.
+- Set `tags: ['autodocs']` on the meta object.
+- Include a `Default` story plus stories for each meaningful prop combination (variants, conditional sections, slot overrides).
+- Create `<Name>.stories.css` alongside the stories file with demo styles keyed off the component's `data-slot` attributes, then `import './<Name>.stories.css'` at the top of `<Name>.stories.tsx`. The library ships no CSS — without these styles the canvas renders blank. Do **not** add component styles to `.storybook/preview.css`; that file is intentionally empty so each component's styles stay scoped to its own story.
+- Stories must **not** leak into `dist/` — `tsconfig.build.json` excludes `**/*.stories.ts(x)` already; don't move or rename stories outside that pattern.
 
 ## Step 3 — Treeshake sentinel + changeset (don't skip)
 

@@ -1,0 +1,100 @@
+/* ── core-ui FaqList (styled via data-slot) ─────────────────── */
+[data-slot="faq-list"] {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+[data-slot="faq-heading"] {
+  font-family: var(--font-display), var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--t-2xl);
+  letter-spacing: 0.06em;
+  color: var(--ink-0);
+}
+
+[data-slot="faq-items"] {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+}
+
+[data-slot="faq-item"] {
+  border-bottom: 1px solid var(--border);
+}
+
+[data-slot="faq-item"]:last-child {
+  border-bottom: none;
+}
+
+[data-slot="faq-summary"] {
+  display: flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  color: var(--ink-0);
+}
+
+[data-slot="faq-summary"]::-webkit-details-marker {
+  display: none;
+}
+
+[data-slot="faq-summary"]:hover {
+  background: rgba(61, 217, 214, 0.04);
+}
+
+[data-slot="faq-question"] {
+  font-family: var(--font-display), var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--t-sm);
+  letter-spacing: 0.06em;
+}
+
+[data-slot="faq-indicator"] {
+  font-family: var(--font-mono);
+  font-size: var(--t-lg);
+  color: var(--cyan-3);
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+[data-slot="faq-item"][open] [data-slot="faq-indicator"] {
+  transform: rotate(45deg);
+}
+
+[data-slot="faq-answer"] {
+  padding: 0 1.25rem 1.25rem;
+  color: var(--ink-1);
+  font-size: var(--t-sm);
+  line-height: 1.7;
+}
+
+[data-slot="faq-answer"] h1,
+[data-slot="faq-answer"] h2,
+[data-slot="faq-answer"] h3 {
+  font-family: var(--font-display), var(--font-sans);
+  color: var(--ink-0);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+[data-slot="faq-answer"] p {
+  margin-bottom: 1em;
+}
+
+[data-slot="faq-answer"] a {
+  color: var(--cyan-3);
+}
+
+[data-slot="faq-answer"] strong {
+  color: var(--ink-0);
+  font-weight: 600;
+}

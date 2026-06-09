@@ -7,6 +7,9 @@
 @import "../styles/components/label.css";
 @import "../styles/components/dialog.css";
 @import "../styles/components/announcement-bar.css";
+@import "../styles/components/faq-list.css";
+@import "../styles/components/hero-centered.css";
+@import "../styles/components/hero-split.css";
 
 @theme inline {
   --color-background:            var(--background);
