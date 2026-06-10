@@ -1,4 +1,20 @@
 /* ── core-ui HeroCentered (styled via data-slot) ─────────────── */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 [data-slot="hero-centered"] {
   position: relative;
   display: flex;
@@ -19,6 +35,8 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink-1);
+  animation: hero-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.1s;
 }
 
 [data-slot="hero-centered-eyebrow-rule"] {
@@ -38,6 +56,8 @@
   color: var(--ink-0);
   text-transform: uppercase;
   margin: 0;
+  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.25s;
 }
 
 [data-slot="hero-centered-heading-accent"] {
@@ -51,4 +71,12 @@
   font-size: var(--t-lg);
   color: var(--ink-1);
   line-height: 1.6;
+  animation: hero-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.45s;
+}
+
+[data-slot="hero-centered"] a,
+[data-slot="hero-centered"] button {
+  animation: hero-fade-in 0.6s ease both;
+  animation-delay: 0.65s;
 }
