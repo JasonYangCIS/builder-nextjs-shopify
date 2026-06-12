@@ -33,7 +33,7 @@ app/                      — Next.js 16 App Router (routes, route handlers)
   preview/                — Builder live-preview ONLY here
 components/
   ui/                     — shadcn/ui primitives (Button, Input, Label, Card, Badge, Dialog)
-  layout/                 — Header, Footer, NavItems, MiniCart, AccountMenu
+  layout/                 — Header, Footer, MobileMenu, AccountMenu
   shopify/                — ProductGrid, ProductCard, PriceDisplay, VariantPicker,
                             QuantityStepper, InventoryBadge, AddToCartButton, CartDrawer,
                             CartLineItem, DiscountCodeInput, CheckoutButton, LoginButton,
