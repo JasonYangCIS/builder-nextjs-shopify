@@ -29,7 +29,7 @@ export default function ProductGridSelectedClient({
       ? `/api/products?handles=${rawHandles.map(encodeURIComponent).join(",")}`
       : null;
 
-  const { data, isLoading } = useSWR(key, fetcher);
+  const { data, isLoading, error } = useSWR(key, fetcher);
 
   const results = data?.results ?? [];
   const found = results.filter((r) => r.product !== null);
@@ -40,7 +40,7 @@ export default function ProductGridSelectedClient({
         <div className="flex items-center gap-4">
           <h2 className={`t-display ${styles.heading}`}>{heading}</h2>
           <div className={styles.headingRule} />
-          {!isLoading && (
+          {!isLoading && !error && (
             <span className="t-eyebrow">
               {found.length} artifact{found.length !== 1 ? "s" : ""}
             </span>
@@ -52,11 +52,15 @@ export default function ProductGridSelectedClient({
         <p className={`t-mono ${styles.scanText}`}>Scanning sector...</p>
       )}
 
-      {!isLoading && rawHandles.length === 0 && (
+      {!isLoading && error && (
+        <p className={`t-mono ${styles.scanText}`}>⌁ Failed to load artifacts</p>
+      )}
+
+      {!isLoading && !error && rawHandles.length === 0 && (
         <p className={`t-mono ${styles.scanText}`}>⌁ No artifacts selected</p>
       )}
 
-      {!isLoading && rawHandles.length > 0 && results.length > 0 && (
+      {!isLoading && !error && rawHandles.length > 0 && results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {results.map(({ handle, product }, i) =>
             product ? (
