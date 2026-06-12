@@ -2,6 +2,7 @@ import type { RegisteredComponent } from "@builder.io/sdk-react";
 import "@/components/builder/BuilderDesignTokens/BuilderDesignTokens";
 
 import ProductGridClient from "@/components/shopify/ProductGrid/ProductGridClient";
+import ProductGridSelectedClient from "@/components/shopify/ProductGridSelected/ProductGridSelectedClient";
 import ProductCardClient from "@/components/shopify/ProductCard/ProductCardClient";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
@@ -21,6 +22,24 @@ export const customComponents: RegisteredComponent[] = [
       { name: "collectionHandle", type: "string", helperText: "Shopify collection handle (optional)" },
       { name: "query", type: "string", helperText: "Storefront search query (optional)" },
       { name: "limit", type: "number", defaultValue: 12 },
+    ],
+  },
+  {
+    component: ProductGridSelectedClient,
+    name: "ProductGridSelected",
+    inputs: [
+      { name: "heading", type: "string" },
+      {
+        name: "handles",
+        type: "list",
+        subFields: [
+          {
+            name: "shopifyProductHandle",
+            type: "ShopifyProductHandle",
+            helperText: "Shopify product handle, e.g. the-inventory-not-tracked-snowboard",
+          },
+        ],
+      },
     ],
   },
   {
