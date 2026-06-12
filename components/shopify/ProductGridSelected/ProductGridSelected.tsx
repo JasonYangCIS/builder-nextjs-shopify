@@ -12,10 +12,14 @@ export default async function ProductGridSelected({
     .filter((h): h is string => !!h);
 
   const settled = await Promise.allSettled(rawHandles.map((h) => getProductByHandle(h)));
-  const results = rawHandles.map((h, i) => ({
-    handle: h,
-    product: settled[i]?.status === "fulfilled" ? (settled[i].value ?? null) : null,
-  }));
+  const results = rawHandles.map((h, i) => {
+    const s = settled[i];
+    return {
+      handle: h,
+      product: s?.status === "fulfilled" ? (s.value ?? null) : null,
+      fetchError: s?.status === "rejected",
+    };
+  });
   const found = results.filter((r) => r.product !== null);
 
   return (
@@ -36,7 +40,7 @@ export default async function ProductGridSelected({
 
       {results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {results.map(({ handle, product }, i) =>
+          {results.map(({ handle, product, fetchError }, i) =>
             product ? (
               <li key={`${handle}-${i}`}>
                 <ProductCard product={product} />
@@ -44,7 +48,7 @@ export default async function ProductGridSelected({
             ) : (
               <li key={`${handle}-${i}`} className={styles.notFoundSlot}>
                 <span className={`t-mono ${styles.notFoundLabel}`}>
-                  ⌁ {handle} not found
+                  {fetchError ? `⌁ ${handle} unavailable` : `⌁ ${handle} not found`}
                 </span>
               </li>
             )

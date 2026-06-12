@@ -8,6 +8,7 @@ import styles from "./ProductGridSelected.module.scss";
 interface HandleResult {
   handle: string;
   product: Product | null;
+  fetchError: boolean;
 }
 
 const fetcher = async (url: string): Promise<{ results: HandleResult[] }> => {
@@ -62,7 +63,7 @@ export default function ProductGridSelectedClient({
 
       {!isLoading && !error && rawHandles.length > 0 && results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {results.map(({ handle, product }, i) =>
+          {results.map(({ handle, product, fetchError }, i) =>
             product ? (
               <li key={`${handle}-${i}`}>
               <ProductCard product={product} />
@@ -70,7 +71,7 @@ export default function ProductGridSelectedClient({
             ) : (
               <li key={`${handle}-${i}`} className={styles.notFoundSlot}>
                 <span className={`t-mono ${styles.notFoundLabel}`}>
-                  ⌁ {handle} not found
+                  {fetchError ? `⌁ ${handle} unavailable` : `⌁ ${handle} not found`}
                 </span>
               </li>
             )
