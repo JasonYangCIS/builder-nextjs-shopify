@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getBuilderCollection, listBuilderCollectionHandles } from "@/lib/builder/client";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
+import { prefetchSelectedProducts } from "@/components/shopify/ProductGridSelected/ProductGridSelected.prefetch";
 import { config } from "@/config";
 
 export const revalidate = 5;
@@ -41,5 +42,6 @@ export default async function CollectionPage({
   const { handle } = await params;
   const content = await getBuilderCollection(handle).catch(() => null);
   if (!content) notFound();
-  return <RenderBuilderContent content={content} model={config.models.collection} />;
+  const fallback = await prefetchSelectedProducts(content);
+  return <RenderBuilderContent content={content} model={config.models.collection} fallback={fallback} />;
 }

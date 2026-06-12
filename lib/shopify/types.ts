@@ -37,6 +37,13 @@ export interface Product {
   availableForSale: boolean;
 }
 
+/** One resolved entry for a handle requested via the selected-products API. */
+export interface SelectedProductResult {
+  handle: string;
+  product: Product | null;
+  fetchError: boolean;
+}
+
 export interface CartLine {
   id: string;
   quantity: number;

@@ -1,36 +1,36 @@
 "use client";
 import useSWR from "swr";
+import { isPreviewing } from "@builder.io/sdk-react";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
-import type { Product } from "@/lib/shopify/types";
+import type { SelectedProductResult } from "@/lib/shopify/types";
 import type { ProductGridSelectedProps } from "./ProductGridSelected.types";
+import { extractSelectedHandles, selectedProductsKey } from "./ProductGridSelected.shared";
 import styles from "./ProductGridSelected.module.scss";
 
-interface HandleResult {
-  handle: string;
-  product: Product | null;
-  fetchError: boolean;
-}
-
-const fetcher = async (url: string): Promise<{ results: HandleResult[] }> => {
+const fetcher = async (url: string): Promise<{ results: SelectedProductResult[] }> => {
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to load products");
-  return (await res.json()) as { results: HandleResult[] };
+  return (await res.json()) as { results: SelectedProductResult[] };
 };
 
 export default function ProductGridSelectedClient({
   handles,
   heading,
 }: ProductGridSelectedProps) {
-  const rawHandles = (handles ?? [])
-    .map((h) => h.shopifyProductHandle)
-    .filter((h): h is string => !!h);
+  const rawHandles = extractSelectedHandles(handles);
+  const key = selectedProductsKey(rawHandles);
 
-  const key =
-    rawHandles.length > 0
-      ? `/api/products?handles=${rawHandles.map(encodeURIComponent).join(",")}`
-      : null;
-
-  const { data, isLoading, error } = useSWR(key, fetcher);
+  // In the Builder editor we revalidate freely so admins see real-time product
+  // changes. In production an SWR fallback is hydrated from the server, so we
+  // pin it (no client refetch) — the grid is already in the server HTML.
+  const previewing = isPreviewing();
+  const { data, isLoading, error } = useSWR(
+    key,
+    fetcher,
+    previewing
+      ? undefined
+      : { revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false },
+  );
 
   const results = data?.results ?? [];
   const found = results.filter((r) => r.product !== null);
@@ -66,8 +66,8 @@ export default function ProductGridSelectedClient({
           {results.map(({ handle, product, fetchError }, i) =>
             product ? (
               <li key={`${handle}-${i}`}>
-              <ProductCard product={product} />
-            </li>
+                <ProductCard product={product} />
+              </li>
             ) : (
               <li key={`${handle}-${i}`} className={styles.notFoundSlot}>
                 <span className={`t-mono ${styles.notFoundLabel}`}>

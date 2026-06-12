@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getBuilderPage } from "@/lib/builder/client";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
+import { prefetchSelectedProducts } from "@/components/shopify/ProductGridSelected/ProductGridSelected.prefetch";
 import { config } from "@/config";
 
 export const revalidate = 5;
@@ -32,5 +33,6 @@ export default async function CatchAllPage({ params }: { params: Promise<PagePar
   const path = pathFromParams(p);
   const content = await getBuilderPage(path);
   if (!content) notFound();
-  return <RenderBuilderContent content={content} model={config.models.page} />;
+  const fallback = await prefetchSelectedProducts(content);
+  return <RenderBuilderContent content={content} model={config.models.page} fallback={fallback} />;
 }

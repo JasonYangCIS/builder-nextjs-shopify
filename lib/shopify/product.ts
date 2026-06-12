@@ -2,7 +2,10 @@ import "server-only";
 import { shopifyFetch } from "./storefront-client";
 import { GET_PRODUCT_BY_HANDLE, LIST_PRODUCTS, LIST_PRODUCT_HANDLES } from "./queries/product";
 import { GET_COLLECTION, LIST_COLLECTION_HANDLES } from "./queries/collection";
-import type { Product } from "./types";
+import type { Product, SelectedProductResult } from "./types";
+
+/** Upper bound on handles resolved in a single selected-products request. */
+export const SELECTED_PRODUCTS_MAX_HANDLES = 24;
 
 interface RawProduct extends Omit<Product, "images" | "variants"> {
   images: { edges: { node: Product["images"][number] }[] };
@@ -25,6 +28,33 @@ export async function getProductByHandle(handle: string): Promise<Product | null
     tags: [`product:${handle}`],
   });
   return normalizeProduct(data.product);
+}
+
+/**
+ * Resolve a list of product handles, preserving input order and trimming to
+ * {@link SELECTED_PRODUCTS_MAX_HANDLES}. Each handle is fetched independently so
+ * one failure never sinks the rest. Shared by the `/api/products` handler and
+ * the server-side SSR prefetch so both produce byte-identical results.
+ */
+export async function resolveProductsByHandles(handles: string[]): Promise<SelectedProductResult[]> {
+  const ordered = handles
+    .map((h) => h.trim())
+    .filter(Boolean)
+    .slice(0, SELECTED_PRODUCTS_MAX_HANDLES);
+  const unique = [...new Set(ordered)];
+  const settled = await Promise.allSettled(unique.map((h) => getProductByHandle(h)));
+  const resolved = new Map(
+    unique.map((h, i) => {
+      const s = settled[i];
+      return [
+        h,
+        s.status === "fulfilled"
+          ? { product: s.value ?? null, fetchError: false }
+          : { product: null, fetchError: true },
+      ] as const;
+    }),
+  );
+  return ordered.map((h) => ({ handle: h, ...resolved.get(h)! }));
 }
 
 export async function listProducts(opts: { first?: number; query?: string } = {}): Promise<Product[]> {

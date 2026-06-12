@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getBuilderPage } from "@/lib/builder/client";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
+import { prefetchSelectedProducts } from "@/components/shopify/ProductGridSelected/ProductGridSelected.prefetch";
 import { config } from "@/config";
 
 export const revalidate = 5;
@@ -17,5 +18,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   const content = await getBuilderPage("/");
-  return <RenderBuilderContent content={content} model={config.models.page} />;
+  const fallback = await prefetchSelectedProducts(content);
+  return <RenderBuilderContent content={content} model={config.models.page} fallback={fallback} />;
 }

@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { listProducts, getCollection, getProductByHandle } from "@/lib/shopify/product";
-
-const MAX_HANDLES = 24;
+import { listProducts, getCollection, getProductByHandle, resolveProductsByHandles } from "@/lib/shopify/product";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -12,19 +10,7 @@ export async function GET(req: Request) {
   const limit = Math.min(48, Number(url.searchParams.get("limit") ?? 12));
   if (handlesParam) {
     try {
-      const handles = handlesParam.split(",").map((h) => h.trim()).filter(Boolean).slice(0, MAX_HANDLES);
-      const uniqueHandles = [...new Set(handles)];
-      const settled = await Promise.allSettled(uniqueHandles.map((h) => getProductByHandle(h)));
-      const resultMap = new Map(uniqueHandles.map((h, i) => {
-        const s = settled[i];
-        return [
-          h,
-          s.status === "fulfilled"
-            ? { product: s.value ?? null, fetchError: false }
-            : { product: null, fetchError: true },
-        ];
-      }));
-      const results = handles.map((h) => ({ handle: h, ...resultMap.get(h)! }));
+      const results = await resolveProductsByHandles(handlesParam.split(","));
       return NextResponse.json({ results });
     } catch {
       return NextResponse.json({ results: [] }, { status: 500 });
