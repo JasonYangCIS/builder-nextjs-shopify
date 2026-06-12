@@ -1,0 +1,40 @@
+.heading {
+  font-size: var(--t-xl);
+  letter-spacing: 0.06em;
+  color: var(--ink-0);
+}
+
+.headingRule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.empty {
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: var(--t-sm);
+  letter-spacing: 0.1em;
+}
+
+.scanText {
+  color: var(--ink-2);
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.notFoundSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border: 1px dashed var(--border);
+}
+
+.notFoundLabel {
+  color: var(--ink-3);
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
