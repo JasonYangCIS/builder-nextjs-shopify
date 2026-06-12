@@ -57,6 +57,28 @@ export async function resolveProductsByHandles(handles: string[]): Promise<Selec
   return ordered.map((h) => ({ handle: h, ...resolved.get(h)! }));
 }
 
+/** Upper bound on the number of products a single grid request returns. */
+export const PRODUCT_GRID_MAX_LIMIT = 48;
+
+/**
+ * Resolve the products for a ProductGrid block: a collection's products when a
+ * handle is given, otherwise a (optionally filtered) product listing. Shared by
+ * the `/api/products` handler and the server-side SSR prefetch so both produce
+ * identical results for the same query string.
+ */
+export async function resolveProductGrid(opts: {
+  collectionHandle?: string | null;
+  query?: string | null;
+  limit?: number | string | null;
+}): Promise<Product[]> {
+  const limit = Math.min(PRODUCT_GRID_MAX_LIMIT, Number(opts.limit ?? 12));
+  if (opts.collectionHandle) {
+    const collection = await getCollection(opts.collectionHandle, limit);
+    return collection?.products ?? [];
+  }
+  return listProducts({ first: limit, query: opts.query ?? undefined });
+}
+
 export async function listProducts(opts: { first?: number; query?: string } = {}): Promise<Product[]> {
   const { first = 24, query } = opts;
   const { data } = await shopifyFetch<{ products: { edges: { node: RawProduct }[] } }>({

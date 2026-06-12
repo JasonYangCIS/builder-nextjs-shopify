@@ -1,8 +1,10 @@
 "use client";
 import useSWR from "swr";
+import { isPreviewing } from "@builder.io/sdk-react";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import type { Product } from "@/lib/shopify/types";
 import type { ProductGridProps } from "./ProductGrid.types";
+import { productGridKey } from "./ProductGrid.shared";
 import styles from "./ProductGrid.module.scss";
 
 const fetcher = async (url: string): Promise<{ products: Product[] }> => {
@@ -17,11 +19,19 @@ export default function ProductGridClient({
   limit = 12,
   heading,
 }: ProductGridProps) {
-  const params = new URLSearchParams();
-  if (collectionHandle) params.set("collection", collectionHandle);
-  if (query) params.set("query", query);
-  params.set("limit", String(limit));
-  const { data, isLoading } = useSWR(`/api/products?${params.toString()}`, fetcher);
+  const key = productGridKey({ collectionHandle, query, limit });
+
+  // In the Builder editor we revalidate freely so admins see real-time product
+  // changes. In production an SWR fallback is hydrated from the server, so we
+  // pin it (no client refetch) — the grid is already in the server HTML.
+  const previewing = isPreviewing();
+  const { data, isLoading } = useSWR(
+    key,
+    fetcher,
+    previewing
+      ? undefined
+      : { revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false },
+  );
 
   return (
     <section className="flex flex-col gap-6">

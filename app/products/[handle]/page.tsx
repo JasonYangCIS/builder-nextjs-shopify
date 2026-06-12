@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getProductByHandle, listProductHandles } from "@/lib/shopify/product";
 import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
-import { prefetchSelectedProducts } from "@/components/shopify/ProductGridSelected/ProductGridSelected.prefetch";
+import { prefetchBuilderFallback } from "@/components/builder/prefetchBuilderFallback";
 import { getBuilderProduct } from "@/lib/builder/client";
 import { config } from "@/config";
 import { env } from "@/lib/env";
@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   ]);
   if (!product) notFound();
 
-  const builderFallback = await prefetchSelectedProducts(builderContent);
+  const builderFallback = await prefetchBuilderFallback(builderContent);
 
   const variant = product.variants[0];
   const productJsonLd = {
