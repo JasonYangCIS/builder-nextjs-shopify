@@ -58,13 +58,13 @@ export default function ProductGridSelectedClient({
 
       {!isLoading && rawHandles.length > 0 && results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {results.map(({ handle, product }) =>
+          {results.map(({ handle, product }, i) =>
             product ? (
-              <li key={handle}>
-                <ProductCard product={product} />
-              </li>
+              <li key={`${handle}-${i}`}>
+              <ProductCard product={product} />
+            </li>
             ) : (
-              <li key={handle} className={styles.notFoundSlot}>
+              <li key={`${handle}-${i}`} className={styles.notFoundSlot}>
                 <span className={`t-mono ${styles.notFoundLabel}`}>
                   ⌁ {handle} not found
                 </span>

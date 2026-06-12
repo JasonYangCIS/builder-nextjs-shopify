@@ -11,8 +11,11 @@ export default async function ProductGridSelected({
     .map((h) => h.shopifyProductHandle)
     .filter((h): h is string => !!h);
 
-  const settled = await Promise.all(rawHandles.map((h) => getProductByHandle(h)));
-  const results = rawHandles.map((h, i) => ({ handle: h, product: settled[i] ?? null }));
+  const settled = await Promise.allSettled(rawHandles.map((h) => getProductByHandle(h)));
+  const results = rawHandles.map((h, i) => ({
+    handle: h,
+    product: settled[i]?.status === "fulfilled" ? (settled[i].value ?? null) : null,
+  }));
   const found = results.filter((r) => r.product !== null);
 
   return (
@@ -33,13 +36,13 @@ export default async function ProductGridSelected({
 
       {results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {results.map(({ handle, product }) =>
+          {results.map(({ handle, product }, i) =>
             product ? (
-              <li key={handle}>
+              <li key={`${handle}-${i}`}>
                 <ProductCard product={product} />
               </li>
             ) : (
-              <li key={handle} className={styles.notFoundSlot}>
+              <li key={`${handle}-${i}`} className={styles.notFoundSlot}>
                 <span className={`t-mono ${styles.notFoundLabel}`}>
                   ⌁ {handle} not found
                 </span>
