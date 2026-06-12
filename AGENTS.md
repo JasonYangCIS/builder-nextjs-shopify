@@ -50,7 +50,7 @@ utils/                    — cn, sanitize-html, register-insert-menu, url, date
 styles/tokens.css         — design tokens
 proxy.ts                  — security headers + (future) token refresh
 config.ts                 — { apiKey, models }
-builder-registry.ts       — central RegisteredComponent[] export
+builder-registry.ts       — assembles per-component `<Name>.builder.ts` configs into the RegisteredComponent[] export
 .builder/skills/          — agent skills
 .builder/rules/           — agent rules (mdc)
 docs/skills/              — long-form skill docs
@@ -61,7 +61,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 
 | Skill | When |
 |---|---|
-| `builder-io` | Anything touching Builder fetch / render / register / preview. |
+| `builder-io` | Anything touching Builder fetch / render / register / preview. Each registered component's config lives in its own `<Name>.builder.ts` (exporting a `RegisteredComponent`); `builder-registry.ts` only imports + assembles them — never inline a config there. |
 | `design-system` | New UI primitive, tokens, focus rings, insert-menu groups. |
 | `engineering-standards` | TS / folder pattern / boundaries / no-console. |
 | `shopify-commerce` | Cart, inventory, discounts, checkout, Storefront queries. |
