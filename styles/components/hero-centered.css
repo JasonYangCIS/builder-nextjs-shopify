@@ -1,4 +1,82 @@
 /* ── core-ui HeroCentered (styled via data-slot) ─────────────── */
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hero-rule-expand {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-heading-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+    filter: blur(10px);
+    letter-spacing: 0.18em;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    letter-spacing: 0.04em;
+  }
+}
+
+@keyframes hero-scan {
+  0% {
+    background-position: 0 -100%;
+  }
+  100% {
+    background-position: 0 200%;
+  }
+}
+
+@keyframes hero-eyebrow-spacing {
+  from {
+    letter-spacing: 0.04em;
+    opacity: 0;
+  }
+  to {
+    letter-spacing: 0.22em;
+    opacity: 1;
+  }
+}
+
+@keyframes hero-cta-pulse {
+  0%, 100% {
+    box-shadow: var(--glow-cyan-sm), 0 0 0 0 color-mix(in srgb, var(--cyan-3) 35%, transparent);
+  }
+  50% {
+    box-shadow: var(--glow-cyan-md), 0 0 0 10px color-mix(in srgb, var(--cyan-3) 0%, transparent);
+  }
+}
+
+@keyframes hero-cta-shimmer {
+  0% {
+    transform: translateX(-110%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(210%) skewX(-15deg);
+  }
+}
+
 [data-slot="hero-centered"] {
   position: relative;
   display: flex;
@@ -7,6 +85,24 @@
   gap: 1.5rem;
   padding: 5rem 0;
   text-align: center;
+  overflow: hidden;
+}
+
+/* Scan-line sweep over the whole hero */
+[data-slot="hero-centered"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--cyan-3) 6%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 100% 40%;
+  animation: hero-scan 3.5s cubic-bezier(0.4, 0, 0.6, 1) 0.8s both;
+  opacity: 0.6;
 }
 
 [data-slot="hero-centered-eyebrow"] {
@@ -19,6 +115,7 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink-1);
+  animation: hero-eyebrow-spacing 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
 }
 
 [data-slot="hero-centered-eyebrow-rule"] {
@@ -27,6 +124,8 @@
   height: 1px;
   background: var(--cyan-3);
   box-shadow: var(--glow-cyan-sm);
+  transform-origin: center;
+  animation: hero-rule-expand 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
 }
 
 [data-slot="hero-centered-heading"] {
@@ -38,6 +137,7 @@
   color: var(--ink-0);
   text-transform: uppercase;
   margin: 0;
+  animation: hero-heading-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
 }
 
 [data-slot="hero-centered-heading-accent"] {
@@ -51,4 +151,43 @@
   font-size: var(--t-lg);
   color: var(--ink-1);
   line-height: 1.6;
+  animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+}
+
+a[data-slot="hero-centered-cta"],
+[data-slot="hero-centered"] a[data-variant][data-size] {
+  position: relative;
+  overflow: hidden;
+  animation: hero-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.7s both,
+             hero-cta-pulse 2.8s ease-in-out 1.6s infinite;
+}
+
+a[data-slot="hero-centered-cta"]::after,
+[data-slot="hero-centered"] a[data-variant][data-size]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, #fff 22%, transparent) 50%,
+    transparent 100%
+  );
+  animation: hero-cta-shimmer 2.4s cubic-bezier(0.4, 0, 0.6, 1) 1.5s infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="hero-centered"]::after,
+  [data-slot="hero-centered-eyebrow"],
+  [data-slot="hero-centered-eyebrow-rule"],
+  [data-slot="hero-centered-heading"],
+  [data-slot="hero-centered-body"],
+  a[data-slot="hero-centered-cta"],
+  a[data-slot="hero-centered-cta"]::after,
+  [data-slot="hero-centered"] a[data-variant][data-size],
+  [data-slot="hero-centered"] a[data-variant][data-size]::after {
+    animation: none;
+  }
 }
