@@ -4,6 +4,13 @@ import AccountMenu from "@/components/layout/AccountMenu/AccountMenu";
 import MobileMenu from "@/components/layout/MobileMenu/MobileMenu";
 import styles from "./Header.module.scss";
 
+const TICKER_ITEMS = [
+  { accent: "⌁ LIVE", text: "Free interstellar shipping on orders over $150" },
+  { accent: "◈", text: "All boards rated for zero-gravity terrain" },
+  { accent: "◈", text: "New drop: Void Serpent series available now" },
+  { accent: "◈", text: "Secure Shopify checkout" },
+];
+
 const NAV_LINKS = [
   { href: "/collections/all", label: "Catalogue",    num: "01" },
   { href: "/design-system",   label: "Design Codex", num: "02" },
@@ -45,15 +52,15 @@ export default function Header() {
       </div>
 
       {/* Ticker — desktop only */}
-      <div className={`hidden overflow-hidden md:flex ${styles.ticker}`}>
-        <span className={styles.tickerAccent}>⌁ LIVE</span>
-        <span>Free interstellar shipping on orders over $150</span>
-        <span className={styles.tickerAccent}>◈</span>
-        <span>All boards rated for zero-gravity terrain</span>
-        <span className={styles.tickerAccent}>◈</span>
-        <span>New drop: Void Serpent series available now</span>
-        <span className={styles.tickerAccent}>◈</span>
-        <span>Secure Shopify checkout</span>
+      <div className={`hidden md:block ${styles.ticker}`} aria-hidden="true">
+        <div className={styles.tickerTrack}>
+          {[...TICKER_ITEMS, ...TICKER_ITEMS].map(({ accent, text }, i) => (
+            <span key={i} className={styles.tickerItem}>
+              <span className={styles.tickerAccent}>{accent}</span>
+              <span>{text}</span>
+            </span>
+          ))}
+        </div>
       </div>
     </header>
   );

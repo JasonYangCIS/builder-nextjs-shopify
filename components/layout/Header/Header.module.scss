@@ -1,8 +1,43 @@
+@keyframes header-entry {
+  from {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes header-glow {
+  from {
+    box-shadow: none;
+  }
+  to {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(61, 217, 214, 0.1);
+  }
+}
+
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .header {
   background: rgba(6, 9, 15, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
+  animation: header-entry 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@supports (animation-timeline: scroll()) {
+  .header {
+    animation: header-entry 0.45s cubic-bezier(0.16, 1, 0.3, 1) both, header-glow linear both;
+    animation-timeline: auto, scroll(root);
+    animation-range: auto, 0px 120px;
+  }
 }
 
 .navGrid {
@@ -64,17 +99,40 @@
 .ticker {
   border-top: 1px solid var(--border);
   background: rgba(6, 9, 15, 0.5);
-  padding: 5px 24px;
-  gap: 20px;
-  justify-content: center;
+  padding: 5px 0;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-1);
+  overflow: hidden;
+}
+
+.tickerTrack {
+  display: flex;
+  gap: 32px;
+  width: max-content;
+  animation: ticker-scroll 28s linear infinite;
+}
+
+.tickerItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   white-space: nowrap;
+  padding: 0 8px;
 }
 
 .tickerAccent {
   color: var(--cyan-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    animation: none !important;
+  }
+
+  .tickerTrack {
+    animation: none;
+  }
 }
