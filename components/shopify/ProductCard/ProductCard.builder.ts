@@ -11,5 +11,15 @@ export const productCardConfig: RegisteredComponent = {
       required: true,
       helperText: "Shopify product handle, e.g. obsidian-amulet",
     },
+    {
+      name: "variant",
+      type: "text",
+      enum: [
+        { label: "Default", value: "default" },
+        { label: "Hover add to cart", value: "hover-add-to-cart" },
+      ],
+      defaultValue: "default",
+      helperText: "Default shows price and stock only; Hover add to cart reveals an add-to-cart button on hover.",
+    },
   ],
 };

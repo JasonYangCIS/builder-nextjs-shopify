@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
+import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButton";
 import type { ProductCardProps } from "./ProductCard.types";
 import styles from "./ProductCard.module.scss";
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, variant }: ProductCardProps) {
+  const cardVariant = variant ?? "default";
   const img = product.featuredImage;
   const firstVariant = product.variants[0];
 
@@ -33,6 +35,21 @@ export default function ProductCard({ product }: ProductCardProps) {
           aria-hidden="true"
           className={`absolute inset-0 pointer-events-none ${styles.scanlines}`}
         />
+
+        {cardVariant === "hover-add-to-cart" && firstVariant && (
+          <div
+            className={styles.hoverAddToCart}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <AddToCartButton
+              variantId={firstVariant.id}
+              availableForSale={product.availableForSale}
+            />
+          </div>
+        )}
       </div>
 
       <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
