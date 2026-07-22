@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import useSWR from "swr";
-import { isPreviewing } from "@builder.io/sdk-react";
+import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import type { Product } from "@/lib/shopify/types";
 import type { ProductGridProps } from "./ProductGrid.types";
@@ -28,7 +28,7 @@ export default function ProductGridClient({
   const listRef = useRef<HTMLUListElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
 
-  const previewing = isPreviewing();
+  const previewing = useIsPreviewing();
   const { data, isLoading } = useSWR(
     key,
     fetcher,

@@ -1,6 +1,7 @@
 "use client";
-import { Content, isPreviewing } from "@builder.io/sdk-react";
+import { Content } from "@builder.io/sdk-react";
 import { SWRConfig } from "swr";
+import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import { config } from "@/config";
 import { customComponents } from "@/builder-registry";
 import type { RenderBuilderContentProps } from "./RenderBuilderContent.types";
@@ -14,7 +15,8 @@ import type { RenderBuilderContentProps } from "./RenderBuilderContent.types";
  * server-prefetched data — SSR/SSG with no client fetch in production.
  */
 export default function RenderBuilderContent({ content, model, fallback }: RenderBuilderContentProps) {
-  if (!content && !isPreviewing()) return null;
+  const previewing = useIsPreviewing();
+  if (!content && !previewing) return null;
   const rendered = (
     <Content
       content={content ?? undefined}
