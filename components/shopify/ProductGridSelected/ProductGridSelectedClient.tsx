@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import useSWR from "swr";
-import { isPreviewing } from "@builder.io/sdk-react";
+import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import type { SelectedProductResult } from "@/lib/shopify/types";
 import type { ProductGridSelectedProps } from "./ProductGridSelected.types";
@@ -27,7 +27,7 @@ export default function ProductGridSelectedClient({
   const listRef = useRef<HTMLUListElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
 
-  const previewing = isPreviewing();
+  const previewing = useIsPreviewing();
   const { data, isLoading, error } = useSWR(
     key,
     fetcher,
