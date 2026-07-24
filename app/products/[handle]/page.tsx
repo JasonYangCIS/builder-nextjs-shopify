@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getProductByHandle, listProductHandles } from "@/lib/shopify/product";
 import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
+import { prefetchBuilderFallback } from "@/components/builder/prefetchBuilderFallback";
 import { getBuilderProduct } from "@/lib/builder/client";
 import { config } from "@/config";
 import { env } from "@/lib/env";
@@ -48,7 +49,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
     getBuilderProduct(handle).catch(() => null),
   ]);
   if (!product) notFound();
-
+  const fallback = await prefetchBuilderFallback(builderContent);
 
   const variant = product.variants[0];
   const productJsonLd = {
@@ -82,7 +83,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <ProductDetail product={product} />
       {builderContent ? (
         <section aria-label="Additional product content" className="mt-12">
-          <RenderBuilderContent content={builderContent} model={config.models.product} />
+          <RenderBuilderContent content={builderContent} model={config.models.product} fallback={fallback} />
         </section>
       ) : null}
       {/* Render JSON-LD as raw HTML to avoid React 19's script-element warning. */}
