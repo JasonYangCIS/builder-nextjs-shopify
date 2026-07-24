@@ -10,7 +10,6 @@ Use the Gen-2 SDK from `@builder.io/sdk-react`.
 - Use `config.models.*`, never string literals for model names.
 - `notFound()` when `fetchOneEntry` returns null on a Builder-only route.
 - Guard `subscribeToEditor` with the model-name check to avoid mismatch errors.
-- HTML fields → `utils/sanitize-html.ts` (DOMPurify).
+- HTML fields → `utils/sanitize-html.ts`.
+- In `app/preview/page.tsx`, pass `disableTracking` to `RenderBuilderContent`; its `isNestedRender` mode prevents the Builder 5.2 A/B initializer from appearing as visible text under React 19 SSR.
 - 4-step new model: edit `config.ts` → add `types/*.types.ts` → wire route → register components in `builder-registry.ts`.
-
-Long-form: see `docs/skills/builder-io.md`.

@@ -62,8 +62,116 @@ Key rules (full list in [`.builder/rules/secrets.mdc`](./.builder/rules/secrets.
 |---|---|
 | `page` | `app/[...page]/page.tsx` (catch-all), `app/page.tsx` (root) |
 | `product` | `app/products/[handle]/page.tsx` (optional section) |
-| `collection` | _not yet wired_ |
-| `announcement-bar` | _not yet wired_ |
+| `collection` | `app/collections/[handle]/page.tsx` |
+| `announcement-bar` | `builder-registry.ts` |
+| `blog-post` | `app/blog/[slug]/page.tsx`, `app/blog/page.tsx` |
+| `blog-author` | Resolved by `lib/builder/client.ts` |
+| `blog-category` | `app/blog/category/[slug]/page.tsx` |
+| `editorial-profile` | Fusion blog-publishing policy source |
+
+## Governed blog publishing
+
+The `blog-publishing` Fusion skill turns a structured brief and approved source material into Builder blog entries. Posts use reusable editorial components from `@jasonyangcis/core-ui`, while this app owns Builder reads, sanitization, styling, SEO, analytics, and public routes.
+
+### Workflow
+
+1. Provide a topic brief plus JSON, an attached PDF, or an API source.
+2. Normalize the source into the structured input contract and retain source/page/URL provenance.
+3. Load the draft `editorial-profile`, author, category, existing posts, and approved Media Library assets.
+4. Draft original copy with citations and approved editorial blocks.
+5. Run `scripts/blog/validate-blog.ts` for required fields, links, headings, taxonomy, SEO, dates, citations, asset rights, and publication state.
+6. Save to Builder as a draft first. Publish or schedule only when every required gate passes.
+
+Copyright/originality checks reduce risk but are not legal clearance. Missing sources, unsupported claims, unapproved assets, or uncertain rights fail closed and cannot be overridden.
+
+### Structured JSON example
+
+```json
+{
+  "version": "1.0",
+  "project": {
+    "name": "Orbital Snowboards",
+    "numberOfArticles": 3
+  },
+  "audience": "Snowboard enthusiasts who enjoy science-fiction themes",
+  "contentFraming": {
+    "theme": "Space snowboards used on fictional off-world expeditions",
+    "seriesName": "Xenosphere Field Transmissions",
+    "requiredSections": [
+      "Mission profile",
+      "Deck visual analysis",
+      "System status",
+      "Source notes",
+      "Call to action"
+    ],
+    "disclosure": "The orbital setting is fictional. Product details come from linked storefront records."
+  },
+  "topics": [
+    {
+      "title": "Hydrogen Deck: Molecular Lines",
+      "primaryKeyword": "Hydrogen snowboard",
+      "productHandle": "the-collection-snowboard-hydrogen",
+      "angle": "Analyze the molecular graphics and H2 visual identity."
+    }
+  ],
+  "sources": [
+    {
+      "id": "catalogue",
+      "type": "api",
+      "url": "https://builder-nextjs-shopify-sandbox.vercel.app/api/products?limit=50",
+      "required": true
+    }
+  ],
+  "assets": {
+    "policy": "builder-media-library-only",
+    "requireAltText": true,
+    "requireRightsMetadata": true
+  },
+  "publishing": {
+    "mode": "draft",
+    "category": "orbital-snowboards",
+    "author": "builder-editorial-team",
+    "autoPublish": false
+  }
+}
+```
+
+### PDF example
+
+Attach a PDF to the Fusion request with a small manifest:
+
+```json
+{
+  "type": "pdf",
+  "file": "orbital-snowboard-brief.pdf",
+  "extract": ["product facts", "audience", "story themes", "required terminology"],
+  "citePages": true,
+  "requireExtractionReview": true
+}
+```
+
+Fusion records page-level provenance and keeps the entry in draft when extraction is ambiguous. Do not treat inferred table structure or unreadable text as verified data.
+
+### API example
+
+```json
+{
+  "type": "api",
+  "url": "https://builder-nextjs-shopify-sandbox.vercel.app/api/products?limit=50",
+  "method": "GET",
+  "mapping": {
+    "title": "products[].title",
+    "handle": "products[].handle",
+    "description": "products[].description",
+    "image": "products[].featuredImage"
+  },
+  "freshness": "fetch-at-draft-time"
+}
+```
+
+API credentials are never stored in content JSON. Authenticated sources must use an approved server-side integration, and the source URL, retrieval time, and mapped fields remain part of the provenance record.
+
+Implementation details: [`.builder/skills/blog-publishing/SKILL.md`](./.builder/skills/blog-publishing/SKILL.md) and [`docs/skills/blog-publishing.md`](./docs/skills/blog-publishing.md).
 
 ## Shopify
 

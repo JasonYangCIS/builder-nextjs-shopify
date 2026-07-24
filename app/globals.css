@@ -10,6 +10,7 @@
 @import "../styles/components/faq-list.css";
 @import "../styles/components/hero-centered.css";
 @import "../styles/components/hero-split.css";
+@import "../styles/components/blog.css";
 
 @theme inline {
   --color-background:            var(--background);

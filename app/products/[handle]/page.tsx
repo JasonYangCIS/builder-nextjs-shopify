@@ -8,6 +8,7 @@ import { prefetchBuilderFallback } from "@/components/builder/prefetchBuilderFal
 import { getBuilderProduct } from "@/lib/builder/client";
 import { config } from "@/config";
 import { env } from "@/lib/env";
+import { serializeJsonLd } from "@/lib/blog/json-ld";
 
 export const revalidate = 5;
 export const dynamicParams = true;
@@ -48,8 +49,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
     getBuilderProduct(handle).catch(() => null),
   ]);
   if (!product) notFound();
-
-  const builderFallback = await prefetchBuilderFallback(builderContent);
+  const fallback = await prefetchBuilderFallback(builderContent);
 
   const variant = product.variants[0];
   const productJsonLd = {
@@ -83,14 +83,14 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <ProductDetail product={product} />
       {builderContent ? (
         <section aria-label="Additional product content" className="mt-12">
-          <RenderBuilderContent content={builderContent} model={config.models.product} fallback={builderFallback} />
+          <RenderBuilderContent content={builderContent} model={config.models.product} fallback={fallback} />
         </section>
       ) : null}
       {/* Render JSON-LD as raw HTML to avoid React 19's script-element warning. */}
       <div
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: `<script type="application/ld+json">${JSON.stringify(productJsonLd)}</script>`,
+          __html: `<script type="application/ld+json">${serializeJsonLd(productJsonLd)}</script>`,
         }}
       />
     </>

@@ -14,7 +14,12 @@ import type { RenderBuilderContentProps } from "./RenderBuilderContent.types";
  * so data-driven client components (e.g. ProductGridSelected) render from
  * server-prefetched data — SSR/SSG with no client fetch in production.
  */
-export default function RenderBuilderContent({ content, model, fallback }: RenderBuilderContentProps) {
+export default function RenderBuilderContent({
+  content,
+  model,
+  fallback,
+  disableTracking = false,
+}: RenderBuilderContentProps) {
   const previewing = useIsPreviewing();
   if (!content && !previewing) return null;
   const rendered = (
@@ -23,6 +28,8 @@ export default function RenderBuilderContent({ content, model, fallback }: Rende
       apiKey={config.apiKey}
       model={model}
       customComponents={customComponents}
+      canTrack={!disableTracking && !previewing}
+      isNestedRender={disableTracking}
     />
   );
   if (!fallback) return rendered;
