@@ -59,6 +59,10 @@ function referenceId(value: unknown): string | null {
   return text(item?.id) ?? text(nested?.id) ?? text(item?.modelId);
 }
 
+function listFieldValue(value: unknown, field: string): unknown {
+  return record(value)?.[field] ?? value;
+}
+
 function image(value: unknown, fallbackAlt?: unknown): BlogImage | null {
   const direct = safeUrl(value);
   if (direct) return { url: direct, alt: text(fallbackAlt), width: null, height: null };
@@ -171,12 +175,14 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     ? data.categories
     : data.category ? [data.category] : [];
   const categories = unique(
-    categoryValues.map((item) => normalizeCategoryValue(item, maps)).filter((item): item is BlogCategory => item !== null),
+    categoryValues
+      .map((item) => normalizeCategoryValue(listFieldValue(item, "category"), maps))
+      .filter((item): item is BlogCategory => item !== null),
     (item) => item.slug,
   );
   const tags = unique(
     (Array.isArray(data.tags) ? data.tags : [])
-      .map(text)
+      .map((item) => text(listFieldValue(item, "tag")))
       .filter((item): item is string => item !== null),
     (item) => item.toLocaleLowerCase(),
   );
@@ -202,7 +208,9 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     assetRights: (Array.isArray(data.assetRights) ? data.assetRights : Array.isArray(data.media) ? data.media : [])
       .map(normalizeRights)
       .filter((item): item is BlogAssetRights => item !== null),
-    relatedPostIds: relatedValues.map(referenceId).filter((item): item is string => item !== null),
+    relatedPostIds: relatedValues
+      .map((item) => referenceId(listFieldValue(item, "post")))
+      .filter((item): item is string => item !== null),
     cta: normalizeCta(data.cta),
     publishedAt: dateValue(data.publishedAt ?? root?.publishedDate),
     updatedAt: dateValue(data.updatedAt ?? root?.lastUpdated),
