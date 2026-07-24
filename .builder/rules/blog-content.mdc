@@ -8,12 +8,12 @@ alwaysApply: false
 - A short blog-creation prompt activates the complete workflow. Load policy/taxonomy/assets, derive safe defaults, check duplicate intent, and default to English draft; never infer publish authorization or asset approval.
 - Validate structured inputs with `scripts/blog/validate-blog.ts` before any Builder CMS write.
 - Create or revise a draft first. Publishing, scheduling, updating, and archiving require an explicit requested action and a passing result.
-- Use approved brand voice/taxonomy values and relevant approved Builder Media assets with complete rights and alt metadata. No suitable approved image means the post remains draft.
+- Use approved brand voice/taxonomy values and relevant approved Builder Media assets with complete alt metadata. No suitable approved image means the post remains draft.
 - Match the long-form quality bar with useful framing, source-backed analysis, scannable H2/H3 sections, tradeoffs, decision guidance, visible sources, and non-repetitive FAQs where relevant; do not pad or invent evidence.
-- Keep claims traceable to primary-source citation-ledger records. Do not invent sources, quotes, rights, approvals, or dates.
+- Keep claims traceable to primary-source citation-ledger records. Do not invent sources, quotes, approvals, or dates.
 - The article shell owns the only H1; Builder body headings start at H2. Preserve visible FAQ, citation, image, author-type, taxonomy, date, and reading-time fields used by Schema.org output.
 - Preview the exact saved draft and verify imagery, responsive readability, blocks, links, citations, CTA, navigation, and that Builder bootstrap JavaScript is not visible as content.
 - Keep HTML canonical. Generate `/blog/{slug}.md` and `/llms.txt` from public normalized Builder data; exclude drafts/no-index entries from discovery and never maintain duplicate copy.
-- Fail closed on legal, copyright/originality, rights, secret, and authorization failures; legal failures cannot be overridden.
+- Fail closed on legal, copyright/originality, secret, and authorization failures; legal failures cannot be overridden.
 - Allow only authorized, auditable non-legal overrides enumerated by the validator.
 - Never store secrets, credentials, personal data, chain-of-thought, or hidden reasoning in content or audit records.

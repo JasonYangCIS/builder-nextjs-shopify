@@ -29,18 +29,6 @@ export interface BlogCitation {
   primarySource: boolean;
 }
 
-export interface BlogMediaAsset {
-  id: string;
-  url: string;
-  alt: string;
-  decorative: boolean;
-  rightsStatus: "approved" | "pending" | "rejected";
-  rightsOwner: string;
-  license: string;
-  sourceUrl: string;
-  approvalId: string;
-  rightsExpiresAt: string | null;
-}
 
 interface BlogBlockBase {
   id: string;
@@ -89,7 +77,6 @@ export interface BlogContent {
   tags: readonly string[];
   blocks: readonly BlogBlock[];
   citations: readonly BlogCitation[];
-  media: readonly BlogMediaAsset[];
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -103,7 +90,6 @@ export interface BlogPolicy {
   approvedCategories: readonly string[];
   approvedTags: readonly string[];
   approvedCanonicalOrigins: readonly string[];
-  approvedMediaAssetIds: readonly string[];
 }
 
 export interface BlogAttestations {
@@ -162,7 +148,6 @@ export type BlogIssueCode =
   | "ORIGINALITY_REVIEW_INCOMPLETE"
   | "LEGAL_RISK_PRESENT"
   | "LEGAL_QUOTE_INVALID"
-  | "LEGAL_MEDIA_RIGHTS_INVALID"
   | "CONFIDENTIALITY_ATTESTATION_MISSING"
   | "OVERRIDE_INVALID";
 
@@ -449,52 +434,6 @@ function validateCitations(input: BlogPublishingInput, issues: BlogValidationIss
   });
 }
 
-function validateMedia(
-  input: BlogPublishingInput,
-  issues: BlogValidationIssue[],
-  now: number | null,
-): void {
-  const approvedAssets = new Set(input.policy.approvedMediaAssetIds);
-  const mediaById = new Map(input.content.media.map((asset) => [asset.id, asset]));
-  for (const [index, block] of input.content.blocks.entries()) {
-    if (block.type !== "image") continue;
-    const asset = mediaById.get(block.assetId);
-    if (!asset || !approvedAssets.has(block.assetId)) {
-      addIssue(
-        issues,
-        "LEGAL_MEDIA_RIGHTS_INVALID",
-        `content.blocks[${index}].assetId`,
-        "Image must reference an approved Builder Media asset.",
-      );
-    }
-  }
-  input.content.media.forEach((asset, index) => {
-    const path = `content.media[${index}]`;
-    const expiry = asset.rightsExpiresAt === null ? null : parseTimestamp(asset.rightsExpiresAt);
-    const metadataComplete =
-      hasText(asset.id) &&
-      parseHttpsUrl(asset.url) !== null &&
-      (asset.decorative ? asset.alt.length === 0 : hasText(asset.alt)) &&
-      hasText(asset.rightsOwner) &&
-      hasText(asset.license) &&
-      parseHttpsUrl(asset.sourceUrl) !== null &&
-      hasText(asset.approvalId);
-    if (
-      !approvedAssets.has(asset.id) ||
-      asset.rightsStatus !== "approved" ||
-      !metadataComplete ||
-      (asset.rightsExpiresAt !== null && (expiry === null || now === null || expiry <= now))
-    ) {
-      addIssue(
-        issues,
-        "LEGAL_MEDIA_RIGHTS_INVALID",
-        path,
-        "Asset approval, alt text, HTTPS source, and current rights metadata are required.",
-      );
-    }
-  });
-}
-
 function validateTaxonomy(input: BlogPublishingInput, issues: BlogValidationIssue[]): void {
   const categories = new Set(input.content.categories);
   const tags = new Set(input.content.tags);
@@ -665,7 +604,6 @@ export function validateBlogPublishingInput(input: BlogPublishingInput): BlogVal
   validateTaxonomy(input, issues);
   const now = validateDates(input, issues);
   validateActionState(input, issues);
-  validateMedia(input, issues, now);
   validatePolicy(input, issues);
   const acceptedOverrideCodes = applyOverride(input, issues, now);
   const accepted = new Set(acceptedOverrideCodes);

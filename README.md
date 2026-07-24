@@ -79,10 +79,10 @@ The `blog-publishing` Fusion skill turns a structured brief and approved source 
 2. Normalize the source into the structured input contract and retain source/page/URL provenance.
 3. Load the draft `editorial-profile`, author, category, existing posts, and approved Media Library assets.
 4. Draft original copy with citations and approved editorial blocks.
-5. Run `scripts/blog/validate-blog.ts` for required fields, links, headings, taxonomy, SEO, dates, citations, asset rights, and publication state.
+5. Run `scripts/blog/validate-blog.ts` for required fields, links, headings, taxonomy, SEO, dates, citations, and publication state.
 6. Save to Builder as a draft first. Publish or schedule only when every required gate passes.
 
-Copyright/originality checks reduce risk but are not legal clearance. Missing sources, unsupported claims, unapproved assets, or uncertain rights fail closed and cannot be overridden.
+Copyright/originality checks reduce risk but are not legal clearance. Missing sources, unsupported claims, or unapproved assets fail closed and cannot be overridden.
 
 ### Structured JSON example
 
@@ -124,8 +124,7 @@ Copyright/originality checks reduce risk but are not legal clearance. Missing so
   ],
   "assets": {
     "policy": "builder-media-library-only",
-    "requireAltText": true,
-    "requireRightsMetadata": true
+    "requireAltText": true
   },
   "publishing": {
     "mode": "draft",

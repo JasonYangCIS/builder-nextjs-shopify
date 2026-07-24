@@ -1,6 +1,4 @@
 import type {
-  BlogAssetRights,
-  BlogAssetRightsStatus,
   BlogAuthor,
   BlogCategory,
   BlogCitation,
@@ -133,23 +131,7 @@ function normalizeCitation(value: unknown, index: number): BlogCitation | null {
   };
 }
 
-function rightsStatus(value: unknown): BlogAssetRightsStatus {
-  return value === "approved" || value === "pending" || value === "rejected" ? value : "unknown";
-}
 
-function normalizeRights(value: unknown): BlogAssetRights | null {
-  const item = record(value);
-  const assetId = text(item?.assetId) ?? text(item?.id);
-  if (!assetId) return null;
-  return {
-    assetId,
-    status: rightsStatus(item?.rightsStatus ?? item?.status),
-    owner: text(item?.rightsOwner ?? item?.owner),
-    license: text(item?.license),
-    sourceUrl: safeUrl(item?.sourceUrl),
-    expiresAt: dateValue(item?.rightsExpiresAt ?? item?.expiresAt),
-  };
-}
 
 function normalizeCta(value: unknown): BlogCtaData | null {
   const item = record(value);
@@ -253,9 +235,6 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     citations: (Array.isArray(data.citations) ? data.citations : [])
       .map(normalizeCitation)
       .filter((item): item is BlogCitation => item !== null),
-    assetRights: (Array.isArray(data.assetRights) ? data.assetRights : Array.isArray(data.media) ? data.media : [])
-      .map(normalizeRights)
-      .filter((item): item is BlogAssetRights => item !== null),
     relatedPostIds: relatedValues
       .map((item) => referenceId(listFieldValue(item, "post")))
       .filter((item): item is string => item !== null),

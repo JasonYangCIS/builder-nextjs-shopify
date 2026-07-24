@@ -18,7 +18,6 @@ const post: BlogPost = {
   categories: [{ id: "category-1", name: "Research", slug: "research", description: null }],
   tags: ["Evidence"],
   citations: [{ id: "source-1", title: "Primary source", url: "https://source.example/report", publisher: "Source Lab", accessedAt: null }],
-  assetRights: [],
   relatedPostIds: [],
   cta: { heading: "Read the record", body: "Use the current source.", actionLabel: "Open source", actionHref: "https://source.example/report" },
   publishedAt: "2026-01-02T00:00:00.000Z",

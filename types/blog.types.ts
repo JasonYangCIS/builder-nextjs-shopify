@@ -30,16 +30,6 @@ export interface BlogCitation {
   accessedAt: string | null;
 }
 
-export type BlogAssetRightsStatus = "approved" | "pending" | "rejected" | "unknown";
-
-export interface BlogAssetRights {
-  assetId: string;
-  status: BlogAssetRightsStatus;
-  owner: string | null;
-  license: string | null;
-  sourceUrl: string | null;
-  expiresAt: string | null;
-}
 
 export interface BlogCtaData {
   heading: string | null;
@@ -69,7 +59,6 @@ export interface BlogPost {
   categories: BlogCategory[];
   tags: string[];
   citations: BlogCitation[];
-  assetRights: BlogAssetRights[];
   relatedPostIds: string[];
   cta: BlogCtaData | null;
   publishedAt: string | null;
