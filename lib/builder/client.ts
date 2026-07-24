@@ -149,6 +149,7 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
   const posts = (entries ?? [])
     .map((entry) => normalizeBlogPost(entry, maps))
     .filter((post): post is BlogPost => post !== null)
+    .filter((post) => !post.noIndex)
     .filter((post) => !normalizedFilters.category || post.categories.some(({ slug }) => slug === normalizedFilters.category))
     .filter((post) => !normalizedFilters.tag || post.tags.some((tag) => tag.toLocaleLowerCase() === normalizedFilters.tag));
   const result = paginate(posts, normalizedFilters.page, normalizedFilters.pageSize);
@@ -168,14 +169,14 @@ export async function listBlogPostSlugs(limit = 100): Promise<BlogSlugRecord[]> 
     model: config.models.blogPost,
     apiKey: config.apiKey,
     limit,
-    fields: "data.slug,data.updatedAt,lastUpdated",
+    fields: "data.slug,data.updatedAt,data.noIndex,lastUpdated",
   });
   return (entries ?? []).flatMap((entry) => {
     const post = normalizeBlogPost({
       ...entry,
       data: { ...(entry.data ?? {}), title: "slug" },
     });
-    return post ? [{ slug: post.slug, updatedAt: post.updatedAt }] : [];
+    return post && !post.noIndex ? [{ slug: post.slug, updatedAt: post.updatedAt }] : [];
   });
 }
 

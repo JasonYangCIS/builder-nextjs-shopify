@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   if (!slug) return new Response("Not found\n", { status: 404 });
 
   const result = await getBlogPostBySlug(slug).catch(() => null);
-  if (!result) return new Response("Not found\n", { status: 404 });
+  if (!result || result.post.noIndex) return new Response("Not found\n", { status: 404 });
 
   const origin = process.env.APP_ORIGIN ?? request.nextUrl.origin;
   const markdown = createBlogMarkdown(result.post, result.content?.data?.blocks, origin);

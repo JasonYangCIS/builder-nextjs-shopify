@@ -6,7 +6,7 @@ This document is the source of truth for Fusion-assisted blog work. It governs e
 
 1. Receive a structured brief and the current approved policy context.
 2. Draft original copy, edit it, assemble blocks, citations, media, SEO, taxonomy, and dates.
-3. Run the deterministic validator in `scripts/blog/validate-blog.ts`.
+3. Run the deterministic validator with `npm run blog:validate -- path/to/input.json` before every Builder CMS write; a nonzero exit code blocks the write.
 4. Resolve every blocking issue. A legal or rights failure always stops the workflow.
 5. Use Builder CMS MCP to create or update a **draft first**. Never publish in the same initial write.
 6. Re-read the saved draft, revalidate the exact payload, then perform the explicitly requested publish, schedule, update, or archive action.

@@ -7,6 +7,8 @@ import { normalizeBlogPost } from "@/lib/blog/normalize";
 
 interface SP { [key: string]: string | string[] | undefined }
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
