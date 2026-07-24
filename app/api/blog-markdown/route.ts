@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 import { getBlogPostBySlug } from "@/lib/builder/client";
-import { removeDuplicateFeaturedImageBlocks } from "@/lib/blog/deduplicate-featured-image";
 import { createBlogMarkdown } from "@/lib/blog/markdown";
 
 export const revalidate = 5;
@@ -13,8 +12,7 @@ export async function GET(request: NextRequest) {
   if (!result || result.post.noIndex) return new Response("Not found\n", { status: 404 });
 
   const origin = process.env.APP_ORIGIN ?? request.nextUrl.origin;
-  const articleContent = removeDuplicateFeaturedImageBlocks(result.content, result.post.featuredImage?.url);
-  const markdown = createBlogMarkdown(result.post, articleContent?.data?.blocks, origin);
+  const markdown = createBlogMarkdown(result.post, result.content?.data?.blocks, origin);
   return new Response(markdown, {
     headers: {
       "Content-Type": "text/markdown; charset=utf-8",
