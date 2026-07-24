@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductByHandle, listProductHandles } from "@/lib/shopify/product";
 import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
-import ClientOnlyBuilderContent from "@/components/builder/ClientOnlyBuilderContent";
+import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
 import { getBuilderProduct } from "@/lib/builder/client";
 import { config } from "@/config";
 import { env } from "@/lib/env";
@@ -82,7 +82,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <ProductDetail product={product} />
       {builderContent ? (
         <section aria-label="Additional product content" className="mt-12">
-          <ClientOnlyBuilderContent content={builderContent} model={config.models.product} />
+          <RenderBuilderContent content={builderContent} model={config.models.product} />
         </section>
       ) : null}
       {/* Render JSON-LD as raw HTML to avoid React 19's script-element warning. */}

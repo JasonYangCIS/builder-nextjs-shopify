@@ -2,6 +2,10 @@ import { listPublishedBlogPosts } from "@/lib/builder/client";
 
 export const revalidate = 300;
 
+function markdownText(value: string): string {
+  return value.replace(/[\r\n]+/g, " ").replace(/([\\[\]])/g, "\\$1").trim();
+}
+
 export async function GET(request: Request) {
   const origin = process.env.APP_ORIGIN ?? new URL(request.url).origin;
   const listing = await listPublishedBlogPosts({ pageSize: 100 }).catch(() => null);
@@ -21,8 +25,8 @@ export async function GET(request: Request) {
     "",
     ...posts.map((post) => {
       const canonical = post.canonicalUrl ?? `${origin}/blog/${post.slug}`;
-      const description = post.excerpt ? ` — ${post.excerpt}` : "";
-      return `- [${post.title} (Markdown)](${origin}/blog/${post.slug}.md): Canonical HTML: ${canonical}.${description}`;
+      const description = post.excerpt ? ` — ${markdownText(post.excerpt)}` : "";
+      return `- [${markdownText(post.title)} (Markdown)](${origin}/blog/${post.slug}.md): Canonical HTML: ${canonical}.${description}`;
     }),
     "",
     "## Usage",
