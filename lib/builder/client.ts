@@ -96,7 +96,7 @@ async function listBlogAuthors(limit = 100): Promise<BlogAuthor[]> {
     model: config.models.blogAuthor,
     apiKey: config.apiKey,
     limit,
-    fields: "id,data.name,data.title,data.slug,data.bio,data.description,data.avatar,data.image,data.avatarAlt",
+    fields: "id,data.name,data.title,data.slug,data.schemaType,data.bio,data.description,data.avatar,data.image,data.avatarAlt,data.profileUrl",
   });
   return (entries ?? []).map(normalizeBlogAuthor).filter((item): item is BlogAuthor => item !== null);
 }

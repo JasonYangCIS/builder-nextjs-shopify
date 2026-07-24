@@ -5,6 +5,7 @@ import type {
   BlogCategory,
   BlogCitation,
   BlogCtaData,
+  BlogFaq,
   BlogImage,
   BlogPost,
 } from "@/types/blog.types";
@@ -98,8 +99,10 @@ export function normalizeBlogAuthor(value: unknown): BlogAuthor | null {
     id: text(root?.id) ?? referenceId(value) ?? text(data.slug) ?? name,
     name,
     slug: text(data.slug),
+    schemaType: data.schemaType === "Organization" ? "Organization" : "Person",
     bio: text(data.bio) ?? text(data.description),
     avatar: image(data.avatar ?? data.image, data.avatarAlt),
+    profileUrl: safeUrl(data.profileUrl),
   };
 }
 
@@ -164,6 +167,49 @@ function unique<T>(values: T[], key: (value: T) => string): T[] {
   return Array.from(new Map(values.map((value) => [key(value), value])).values());
 }
 
+function plainText(value: string): string {
+  return value
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function richTextHtml(blocks: unknown): string[] {
+  if (!Array.isArray(blocks)) return [];
+  return blocks.flatMap((block) => {
+    const item = record(block);
+    const component = record(item?.component);
+    const options = record(component?.options);
+    const current = text(options?.html);
+    const children = richTextHtml(item?.children);
+    return current ? [current, ...children] : children;
+  });
+}
+
+function extractFaqs(htmlValues: readonly string[]): BlogFaq[] {
+  return htmlValues.flatMap((html) => {
+    const section = html.match(/<h2[^>]*>\s*Frequently asked questions\s*<\/h2>([\s\S]*)/i)?.[1];
+    if (!section) return [];
+    const faqs: BlogFaq[] = [];
+    const questionPattern = /<h3[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3|<h2|$)/gi;
+    for (const match of section.matchAll(questionPattern)) {
+      const question = plainText(match[1] ?? "");
+      const answer = plainText(match[2] ?? "");
+      if (question && answer) faqs.push({ question, answer });
+    }
+    return faqs;
+  });
+}
+
+function countWords(htmlValues: readonly string[]): number | null {
+  const words = plainText(htmlValues.join(" ")).match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu);
+  return words?.length ?? null;
+}
+
 export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}): BlogPost | null {
   const root = record(value);
   const data = dataOf(value);
@@ -187,6 +233,7 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     (item) => item.toLocaleLowerCase(),
   );
   const relatedValues = Array.isArray(data.relatedPosts) ? data.relatedPosts : [];
+  const articleHtml = richTextHtml(data.blocks);
 
   return {
     id: text(root?.id) ?? slug,
@@ -196,6 +243,7 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     seoTitle: text(data.seoTitle),
     seoDescription: text(data.seoDescription),
     canonicalUrl: safeUrl(data.canonicalUrl, true),
+    focusKeyword: text(data.focusKeyword),
     noIndex: data.noIndex === true,
     featured: data.featured === true,
     featuredImage: image(data.featuredImage ?? data.image, data.featuredImageAlt ?? data.imageAlt),
@@ -215,6 +263,8 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     publishedAt: dateValue(data.publishedAt ?? root?.publishedDate),
     updatedAt: dateValue(data.updatedAt ?? root?.lastUpdated),
     readingTimeMinutes: numberValue(data.readingTimeMinutes ?? data.readingTime),
+    wordCount: countWords(articleHtml),
+    faqs: extractFaqs(articleHtml),
   };
 }
 

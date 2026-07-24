@@ -33,8 +33,8 @@ function validInput(): BlogPublishingInput {
         {
           id: "heading-1",
           type: "heading",
-          level: 1,
-          text: "A Practical Guide to Faster Storefronts",
+          level: 2,
+          text: "Measure storefront performance",
         },
         {
           id: "paragraph-1",
@@ -45,7 +45,7 @@ function validInput(): BlogPublishingInput {
             { label: "Read the Web Vitals guidance", url: "https://web.dev/articles/vitals" },
           ],
         },
-        { id: "heading-2", type: "heading", level: 2, text: "Measure before changing" },
+        { id: "heading-2", type: "heading", level: 2, text: "Prioritize before changing" },
         { id: "image-1", type: "image", assetId: "builder-media-1" },
       ],
       citations: [
@@ -112,7 +112,7 @@ describe("validateBlogPublishingInput", () => {
     input.content.canonicalUrl = "http://evil.example/post?preview=true";
     input.content.categories = ["Unknown"];
     input.content.blocks = [
-      { id: "heading-2", type: "heading", level: 2, text: "Skipped heading" },
+      { id: "heading-3", type: "heading", level: 3, text: "Skipped heading" },
       {
         id: "paragraph-1",
         type: "paragraph",
@@ -205,6 +205,7 @@ describe("validateBlogPublishingInput", () => {
       savedDraftRevalidated: true,
     };
     scheduled.content.scheduledAt = "2026-01-16T12:00:00.000Z";
+    scheduled.content.publishedAt = scheduled.content.scheduledAt;
     expect(validateBlogPublishingInput(scheduled).valid).toBe(true);
 
     const draft = validInput();
@@ -227,6 +228,10 @@ describe("validateBlogPublishingInput", () => {
       "ACTION_STATE_INVALID",
     );
     input.workflow.savedDraftRevalidated = true;
+    expect(validateBlogPublishingInput(input).blockingIssues.map(({ code }) => code)).toContain(
+      "DATE_INVALID",
+    );
+    input.content.publishedAt = input.policy.now;
     expect(validateBlogPublishingInput(input).valid).toBe(true);
   });
 

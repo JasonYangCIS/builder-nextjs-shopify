@@ -17,6 +17,15 @@ describe("normalizeBlogPost", () => {
           tags: [{ tag: "News" }, null, "News"],
           citations: [{ title: "Primary source", url: "https://example.com/source" }],
           featuredImage: { url: "https://example.com/image.jpg", alt: null },
+          focusKeyword: "first contact",
+          blocks: [{
+            component: {
+              name: "BlogRichText",
+              options: {
+                html: "<p>Visible article introduction.</p><h2>Frequently asked questions</h2><h3>What is first contact?</h3><p>A visible answer.</p>",
+              },
+            },
+          }],
         },
       },
       { categories: new Map(category ? [[category.id, category]] : []) },
@@ -29,7 +38,10 @@ describe("normalizeBlogPost", () => {
       tags: ["News"],
       categories: [{ slug: "field-notes" }],
       updatedAt: "2025-01-03T00:00:00Z",
+      focusKeyword: "first contact",
+      faqs: [{ question: "What is first contact?", answer: "A visible answer." }],
     });
+    expect(post?.wordCount).toBe(13);
     expect(post?.citations[0]?.url).toBe("https://example.com/source");
   });
 

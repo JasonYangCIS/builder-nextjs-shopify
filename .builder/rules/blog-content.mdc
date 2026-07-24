@@ -9,6 +9,7 @@ alwaysApply: false
 - Create or revise a draft first. Publishing, scheduling, updating, and archiving require an explicit requested action and a passing result.
 - Use approved brand voice/taxonomy values and approved Builder Media assets with complete rights and alt metadata.
 - Keep claims traceable to primary-source citation-ledger records. Do not invent sources, quotes, rights, approvals, or dates.
+- The article shell owns the only H1; Builder body headings start at H2. Preserve visible FAQ, citation, image, author-type, taxonomy, date, and reading-time fields used by Schema.org output.
 - Fail closed on legal, copyright/originality, rights, secret, and authorization failures; legal failures cannot be overridden.
 - Allow only authorized, auditable non-legal overrides enumerated by the validator.
 - Never store secrets, credentials, personal data, chain-of-thought, or hidden reasoning in content or audit records.

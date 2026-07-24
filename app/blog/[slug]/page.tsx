@@ -84,6 +84,16 @@ export default async function BlogArticlePage({ params }: { params: ArticleParam
           <li aria-hidden="true">/</li>
           <li><Link href="/blog">Blog</Link></li>
           <li aria-hidden="true">/</li>
+          {post.categories[0] ? (
+            <>
+              <li>
+                <Link href={`/blog/category/${post.categories[0].slug}`}>
+                  {post.categories[0].name}
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+            </>
+          ) : null}
           <li aria-current="page">{post.title}</li>
         </ol>
       </nav>
@@ -157,6 +167,7 @@ export default async function BlogArticlePage({ params }: { params: ArticleParam
 
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
     </BlogAnalyticsBoundary>

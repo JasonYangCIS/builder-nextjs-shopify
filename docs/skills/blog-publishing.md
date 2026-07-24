@@ -45,10 +45,12 @@ Copy should be clear, specific, useful, inclusive, and confident without hype. P
 - Slugs are lowercase kebab-case, 3–80 characters, with no leading/trailing hyphen or repeated hyphens.
 - Content title is 10–100 characters; excerpt 50–300; SEO title 30–60; SEO description 120–160.
 - Canonical URLs must be absolute HTTPS URLs, use an approved origin, have no credentials/query/hash, and end in the content slug.
-- Use exactly one level-one heading, then ordered levels without jumps. Headings must have visible text.
+- The storefront article shell renders the page’s single level-one heading from `content.title`. Builder body blocks must not contain H1; they start with H2 and use ordered levels without jumps. Headings must have visible text.
 - Every link and citation uses absolute `https:`. Links require useful labels and cannot contain credentials.
 - Include one to five categories and one to ten unique tags from approved taxonomy allowlists.
-- `publishedAt`, when present, cannot precede `createdAt`; `updatedAt` cannot precede either. Scheduling requires a future `scheduledAt`. Non-schedule actions must not carry `scheduledAt`.
+- Publish and schedule actions require `publishedAt`; scheduled content uses the same instant for `publishedAt` and future `scheduledAt`. `publishedAt` cannot precede `createdAt`, and `updatedAt` cannot precede either. Non-schedule actions must not carry `scheduledAt`.
+- Preserve visible FAQ questions/answers, citations, author identity type, focus keyword, categories, tags, hero metadata, and reading time so the storefront can emit accurate `BlogPosting`, `FAQPage`, `BreadcrumbList`, `ImageObject`, and citation graphs.
+- Structured data must describe visible page content only. Never add review, product, how-to, rating, FAQ, person, or organization schema that the rendered content and source records do not support.
 
 ## Primary-source citation ledger
 

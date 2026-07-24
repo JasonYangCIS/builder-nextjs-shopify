@@ -7,6 +7,7 @@ import {
   listBlogCategorySlugs,
   listPublishedBlogPosts,
 } from "@/lib/builder/client";
+import { createBlogListingJsonLd, serializeJsonLd } from "@/lib/blog/json-ld";
 import { normalizeBlogFilters } from "@/lib/blog/urls";
 
 export const revalidate = 5;
@@ -66,15 +67,33 @@ export default async function BlogCategoryPage({ params, searchParams }: {
   ]);
   if (!category) notFound();
 
+  const pathname = `/blog/category/${category.slug}`;
+  const description = category.description ?? `Explore ${category.name} articles from Builder Shop.`;
+  const jsonLd = createBlogListingJsonLd({
+    origin: process.env.APP_ORIGIN ?? "http://localhost:3000",
+    pathname,
+    title: category.name,
+    description,
+    listing,
+    category,
+  });
+
   return (
-    <BlogListingView
-      listing={listing}
-      categories={categories}
-      pathname={`/blog/category/${category.slug}`}
-      activeCategory={category.slug}
-      activeTag={filters.tag}
-      heading={category.name}
-      description={category.description}
-    />
+    <>
+      <BlogListingView
+        listing={listing}
+        categories={categories}
+        pathname={pathname}
+        activeCategory={category.slug}
+        activeTag={filters.tag}
+        heading={category.name}
+        description={description}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+      />
+    </>
   );
 }

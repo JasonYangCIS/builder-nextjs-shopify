@@ -335,8 +335,8 @@ function validateMetadata(input: BlogPublishingInput, issues: BlogValidationIssu
 function validateBlocks(input: BlogPublishingInput, issues: BlogValidationIssue[]): void {
   const allowedBlocks = new Set(input.policy.allowedBlockTypes);
   const citationIds = new Set(input.content.citations.map(({ id }) => id));
-  let h1Count = 0;
-  let previousHeadingLevel = 0;
+  let bodyHeadingCount = 0;
+  let previousHeadingLevel = 1;
 
   input.content.blocks.forEach((block, index) => {
     const path = `content.blocks[${index}]`;
@@ -346,8 +346,16 @@ function validateBlocks(input: BlogPublishingInput, issues: BlogValidationIssue[
     }
     if (block.type === "heading") {
       requireText(issues, block.text, `${path}.text`);
-      if (block.level === 1) h1Count += 1;
-      if (previousHeadingLevel > 0 && block.level > previousHeadingLevel + 1) {
+      bodyHeadingCount += 1;
+      if (block.level === 1) {
+        addIssue(
+          issues,
+          "HEADING_STRUCTURE_INVALID",
+          `${path}.level`,
+          "The article shell renders the only level-one heading; body headings must start at level two.",
+        );
+      }
+      if (block.level > previousHeadingLevel + 1) {
         addIssue(
           issues,
           "HEADING_STRUCTURE_INVALID",
@@ -406,12 +414,12 @@ function validateBlocks(input: BlogPublishingInput, issues: BlogValidationIssue[
     }
   });
 
-  if (h1Count !== 1) {
+  if (bodyHeadingCount === 0) {
     addIssue(
       issues,
       "HEADING_STRUCTURE_INVALID",
       "content.blocks",
-      "Content must contain exactly one level-one heading.",
+      "Article body content must contain at least one level-two section heading.",
     );
   }
 }
@@ -524,7 +532,9 @@ function validateDates(input: BlogPublishingInput, issues: BlogValidationIssue[]
     created === null ||
     updated === null ||
     updated < created ||
-    (input.content.publishedAt !== null && (published === null || published < created))
+    (input.content.publishedAt !== null && (published === null || published < created)) ||
+    ((input.action === "publish" || input.action === "schedule") && published === null) ||
+    (input.action === "schedule" && scheduled !== null && published !== scheduled)
   ) {
     addIssue(
       issues,

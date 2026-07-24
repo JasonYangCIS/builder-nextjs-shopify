@@ -9,8 +9,10 @@ export interface BlogAuthor {
   id: string;
   name: string;
   slug: string | null;
+  schemaType: "Person" | "Organization";
   bio: string | null;
   avatar: BlogImage | null;
+  profileUrl: string | null;
 }
 
 export interface BlogCategory {
@@ -46,6 +48,11 @@ export interface BlogCtaData {
   actionHref: string | null;
 }
 
+export interface BlogFaq {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -54,6 +61,7 @@ export interface BlogPost {
   seoTitle: string | null;
   seoDescription: string | null;
   canonicalUrl: string | null;
+  focusKeyword: string | null;
   noIndex: boolean;
   featured: boolean;
   featuredImage: BlogImage | null;
@@ -67,6 +75,8 @@ export interface BlogPost {
   publishedAt: string | null;
   updatedAt: string | null;
   readingTimeMinutes: number | null;
+  wordCount: number | null;
+  faqs: BlogFaq[];
 }
 
 export interface BlogListing {

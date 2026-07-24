@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import BlogListingView from "@/components/blog/BlogListingView/BlogListingView";
 import { listBlogCategories, listPublishedBlogPosts } from "@/lib/builder/client";
+import { createBlogListingJsonLd, serializeJsonLd } from "@/lib/blog/json-ld";
 import { normalizeBlogFilters } from "@/lib/blog/urls";
 
 export const revalidate = 5;
@@ -50,15 +51,32 @@ export default async function BlogPage({ searchParams }: { searchParams: BlogSea
     listBlogCategories().catch(() => []),
   ]);
 
+  const heading = "Builder Shop Blog";
+  const description = "Field notes, product stories, and ideas from beyond the storefront.";
+  const jsonLd = createBlogListingJsonLd({
+    origin: process.env.APP_ORIGIN ?? "http://localhost:3000",
+    pathname: "/blog",
+    title: heading,
+    description,
+    listing,
+  });
+
   return (
-    <BlogListingView
-      listing={listing}
-      categories={categories}
-      pathname="/blog"
-      activeCategory={filters.category}
-      activeTag={filters.tag}
-      heading="Builder Shop Blog"
-      description="Field notes, product stories, and ideas from beyond the storefront."
-    />
+    <>
+      <BlogListingView
+        listing={listing}
+        categories={categories}
+        pathname="/blog"
+        activeCategory={filters.category}
+        activeTag={filters.tag}
+        heading={heading}
+        description={description}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+      />
+    </>
   );
 }

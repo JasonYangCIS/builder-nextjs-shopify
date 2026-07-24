@@ -31,11 +31,25 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_ORIGIN ?? "http://localhost:3000"),
 };
 
-const orgJsonLd = {
+const siteUrl = new URL(process.env.APP_ORIGIN ?? "http://localhost:3000").origin;
+const siteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Builder Shop",
-  url: process.env.APP_ORIGIN ?? "http://localhost:3000",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "Builder Shop",
+      url: siteUrl,
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: "Builder Shop",
+      url: siteUrl,
+      publisher: { "@id": `${siteUrl}/#organization` },
+      inLanguage: "en-US",
+    },
+  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -65,7 +79,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `<script type="application/ld+json">${JSON.stringify(orgJsonLd)}</script>`,
+            __html: `<script type="application/ld+json">${JSON.stringify(siteJsonLd)}</script>`,
           }}
         />
       </body>
