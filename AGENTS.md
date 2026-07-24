@@ -104,7 +104,8 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `blog-post` | page | `app/blog/[slug]/page.tsx` and `app/preview/page.tsx` via `getBlogPostBySlug` / preview fetch | Shell owns H1; approved Builder blocks start at H2. Public posts also generate `/blog/{slug}.md`. |
 | `blog-author` | data | `lib/builder/client.ts` reference resolution | Supports `Person` or `Organization` schema identity. |
 | `blog-category` | data | `lib/builder/client.ts`, blog listing/category routes | Canonical category taxonomy and landing-page metadata. |
-| `editorial-profile` | data singleton | Blog publishing skill through Builder CMS MCP | Approved audience, voice, sourcing, rights, SEO, and risk policy; version changes. |
+| `editorial-profile` | data singleton | Blog publishing skill through Builder CMS MCP | Shared audience, sourcing, rights, SEO, and risk policy; version changes. |
+| `editorial-voice` | data | Blog publishing skill through Builder CMS MCP | Active, versioned selectable voice profiles. `brandVoiceId` resolves to its slug; current profiles are Product Editorial, Technical Documentation, Campaign Storytelling, and Founder Voice. |
 
 When wiring a new model, always:
 1. Add a typed helper to `lib/builder/client.ts` (server-only).
