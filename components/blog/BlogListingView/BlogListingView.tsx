@@ -38,6 +38,7 @@ function PostCard({ post }: { post: BlogPost }) {
 export default function BlogListingView({
   listing,
   categories,
+  tags,
   pathname,
   activeCategory,
   activeTag,
@@ -46,7 +47,6 @@ export default function BlogListingView({
 }: BlogListingViewProps) {
   const featured = listing.page === 1 ? listing.posts.find((post) => post.featured) ?? null : null;
   const recent = featured ? listing.posts.filter((post) => post.id !== featured.id) : listing.posts;
-  const tags = Array.from(new Set(listing.posts.flatMap((post) => post.tags))).sort();
   const previousHref = listing.hasPreviousPage
     ? blogListingHref(pathname, { category: activeCategory, tag: activeTag, page: listing.page - 1 })
     : null;

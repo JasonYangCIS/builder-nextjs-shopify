@@ -5,6 +5,7 @@ import {
   getBlogCategoryBySlug,
   listBlogCategories,
   listBlogCategorySlugs,
+  listBlogTags,
   listPublishedBlogPosts,
 } from "@/lib/builder/client";
 import { createBlogListingJsonLd, serializeJsonLd } from "@/lib/blog/json-ld";
@@ -57,9 +58,10 @@ export default async function BlogCategoryPage({ params, searchParams }: {
     tag: first(query.tag),
     page: Number(first(query.page) ?? "1"),
   });
-  const [category, categories, listing] = await Promise.all([
+  const [category, categories, tags, listing] = await Promise.all([
     getBlogCategoryBySlug(slug).catch(() => null),
     listBlogCategories().catch(() => []),
+    listBlogTags().catch(() => []),
     listPublishedBlogPosts(filters).catch(() => ({
       posts: [], page: 1, pageSize: filters.pageSize, total: 0, totalPages: 1,
       hasPreviousPage: false, hasNextPage: false,
@@ -83,6 +85,7 @@ export default async function BlogCategoryPage({ params, searchParams }: {
       <BlogListingView
         listing={listing}
         categories={categories}
+        tags={tags}
         pathname={pathname}
         activeCategory={category.slug}
         activeTag={filters.tag}
