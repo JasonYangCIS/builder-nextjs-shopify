@@ -3,14 +3,12 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductByHandle, listProductHandles } from "@/lib/shopify/product";
 import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
-import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
-import { prefetchBuilderFallback } from "@/components/builder/prefetchBuilderFallback";
+import ClientOnlyBuilderContent from "@/components/builder/ClientOnlyBuilderContent";
 import { getBuilderProduct } from "@/lib/builder/client";
 import { config } from "@/config";
 import { env } from "@/lib/env";
 
 export const revalidate = 5;
-export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -50,7 +48,6 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   ]);
   if (!product) notFound();
 
-  const builderFallback = await prefetchBuilderFallback(builderContent);
 
   const variant = product.variants[0];
   const productJsonLd = {
@@ -84,7 +81,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <ProductDetail product={product} />
       {builderContent ? (
         <section aria-label="Additional product content" className="mt-12">
-          <RenderBuilderContent content={builderContent} model={config.models.product} fallback={builderFallback} />
+          <ClientOnlyBuilderContent content={builderContent} model={config.models.product} />
         </section>
       ) : null}
       {/* Render JSON-LD as raw HTML to avoid React 19's script-element warning. */}
