@@ -19,6 +19,7 @@ export default function RenderBuilderContent({
   model,
   fallback,
   disableTracking = false,
+  isNestedRender = false,
 }: RenderBuilderContentProps) {
   const previewing = useIsPreviewing();
   if (!content && !previewing) return null;
@@ -29,7 +30,7 @@ export default function RenderBuilderContent({
       model={model}
       customComponents={customComponents}
       canTrack={!disableTracking && !previewing}
-      isNestedRender={disableTracking}
+      isNestedRender={disableTracking || isNestedRender}
     />
   );
   if (!fallback) return rendered;

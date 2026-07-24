@@ -18,3 +18,9 @@ test("published blog article renders and is accessible when content exists", asy
   const axe = await new AxeBuilder({ page }).analyze();
   expect(axe.violations).toEqual([]);
 });
+
+test("blog article does not render Builder experiment JavaScript as text", async ({ page }) => {
+  await page.goto("/blog/complete-deck-all-systems-profile");
+  await expect(page.locator('[data-slot="blog-article-title"]')).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("window.builderIoAbTest = function");
+});
