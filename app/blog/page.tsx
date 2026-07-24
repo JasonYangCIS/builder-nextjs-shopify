@@ -44,10 +44,13 @@ export default async function BlogPage({ searchParams }: { searchParams: BlogSea
     page: first(query.page) ? Number(first(query.page)) : 1,
   });
   const [listing, categories] = await Promise.all([
-    listPublishedBlogPosts(filters).catch(() => ({
-      posts: [], page: 1, pageSize: filters.pageSize, total: 0, totalPages: 1,
-      hasPreviousPage: false, hasNextPage: false,
-    })),
+    listPublishedBlogPosts(filters).catch((error) => {
+      console.error("Unable to load published blog posts.", error);
+      return {
+        posts: [], page: 1, pageSize: filters.pageSize, total: 0, totalPages: 1,
+        hasPreviousPage: false, hasNextPage: false,
+      };
+    }),
     listBlogCategories().catch(() => []),
   ]);
 

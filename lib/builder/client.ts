@@ -142,7 +142,7 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
       apiKey: config.apiKey,
       limit: 100,
       fields: BLOG_LIST_PROJECTION,
-      sort: { "data.publishedAt": -1 },
+      options: { noTargeting: true },
     }),
     getBlogReferenceMaps(),
   ]);
@@ -150,6 +150,11 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
     .map((entry) => normalizeBlogPost(entry, maps))
     .filter((post): post is BlogPost => post !== null)
     .filter((post) => !post.noIndex)
+    .sort((left, right) => {
+      const leftDate = Date.parse(left.publishedAt ?? left.updatedAt ?? "") || 0;
+      const rightDate = Date.parse(right.publishedAt ?? right.updatedAt ?? "") || 0;
+      return rightDate - leftDate;
+    })
     .filter((post) => !normalizedFilters.category || post.categories.some(({ slug }) => slug === normalizedFilters.category))
     .filter((post) => !normalizedFilters.tag || post.tags.some((tag) => tag.toLocaleLowerCase() === normalizedFilters.tag));
   const result = paginate(posts, normalizedFilters.page, normalizedFilters.pageSize);
@@ -170,6 +175,7 @@ export async function listBlogPostSlugs(limit = 100): Promise<BlogSlugRecord[]> 
     apiKey: config.apiKey,
     limit,
     fields: "data.slug,data.updatedAt,data.noIndex,lastUpdated",
+    options: { noTargeting: true },
   });
   return (entries ?? []).flatMap((entry) => {
     const post = normalizeBlogPost({
