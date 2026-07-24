@@ -16,6 +16,7 @@ import {
   listBlogPostSlugs,
   listRelatedBlogPosts,
 } from "@/lib/builder/client";
+import { removeDuplicateFeaturedImageBlocks } from "@/lib/blog/deduplicate-featured-image";
 import { createBlogJsonLd, serializeJsonLd } from "@/lib/blog/json-ld";
 
 export const revalidate = 5;
@@ -72,6 +73,7 @@ export default async function BlogArticlePage({ params }: { params: ArticleParam
   const result = await getBlogPostBySlug(slug).catch(() => null);
   if (!result) notFound();
   const { content, post } = result;
+  const articleContent = removeDuplicateFeaturedImageBlocks(content, post.featuredImage?.url);
   const related = await listRelatedBlogPosts(post).catch(() => []);
   const origin = process.env.APP_ORIGIN ?? "http://localhost:3000";
   const jsonLd = createBlogJsonLd({ origin, post });
@@ -112,7 +114,7 @@ export default async function BlogArticlePage({ params }: { params: ArticleParam
         />
 
         <section data-slot="blog-article-body" aria-label="Article content">
-          <RenderBuilderContent content={content} model={config.models.blogPost} isNestedRender />
+          <RenderBuilderContent content={articleContent} model={config.models.blogPost} isNestedRender />
         </section>
 
         <BlogReferences
