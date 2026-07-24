@@ -47,6 +47,7 @@
 
 [data-slot="blog-filters"] {
   max-width: 100%;
+  margin-block: clamp(-1.75rem, -4vw, -3.25rem);
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--cyan-line) transparent;
