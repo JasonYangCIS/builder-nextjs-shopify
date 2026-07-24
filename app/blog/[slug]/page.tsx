@@ -112,7 +112,7 @@ export default async function BlogArticlePage({ params }: { params: ArticleParam
         />
 
         <section data-slot="blog-article-body" aria-label="Article content">
-          <RenderBuilderContent content={content} model={config.models.blogPost} />
+          <RenderBuilderContent content={content} model={config.models.blogPost} isNestedRender />
         </section>
 
         <BlogReferences
