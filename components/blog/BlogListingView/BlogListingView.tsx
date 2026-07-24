@@ -6,7 +6,7 @@ import {
   BlogPagination,
 } from "@jasonyangcis/core-ui";
 import BlogAnalyticsBoundary from "@/components/blog/BlogAnalyticsBoundary/BlogAnalyticsBoundary";
-import { blogListingHref } from "@/lib/blog/urls";
+import { blogListingHref, slugifyTag } from "@/lib/blog/urls";
 import type { BlogPost } from "@/types/blog.types";
 import type { BlogListingViewProps } from "./BlogListingView.types";
 
@@ -95,8 +95,8 @@ export default function BlogListingView({
             { label: "All", value: "all", href: blogListingHref(pathname, { category: activeCategory }) },
             ...tags.map((tag) => ({
               label: `#${tag}`,
-              value: tag.toLocaleLowerCase(),
-              href: blogListingHref(pathname, { category: activeCategory, tag }),
+              value: slugifyTag(tag),
+              href: blogListingHref(pathname, { category: activeCategory, tag: slugifyTag(tag) }),
             })),
           ]}
         />
