@@ -1,5 +1,6 @@
 import {
   BlogCard,
+  BlogCta,
   BlogFilters,
   BlogGrid,
   BlogPagination,
@@ -60,6 +61,14 @@ export default function BlogListingView({
         <h1>{heading}</h1>
         {description ? <p>{description}</p> : null}
       </header>
+      {listing.page === 1 && !activeCategory && !activeTag ? (
+        <BlogCta
+          heading="How this blog gets published"
+          body="This blog is drafted, validated, and published by Fusion under strict editorial and legal gates. Read the end-to-end architecture."
+          actionLabel="Read the architecture writeup"
+          actionHref="/blog-architecture"
+        />
+      ) : null}
 
       {categories.length > 0 ? (
         <BlogFilters
