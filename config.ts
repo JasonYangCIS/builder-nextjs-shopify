@@ -13,7 +13,6 @@ export const config = {
     blogAuthor: "blog-author",
     blogCategory: "blog-category",
     editorialProfile: "editorial-profile",
-    editorialVoice: "editorial-voice",
   },
 } as const;
 
