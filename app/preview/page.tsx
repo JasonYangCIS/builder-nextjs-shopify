@@ -40,12 +40,16 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
             readingTime={post.readingTimeMinutes ? `${post.readingTimeMinutes} min read` : null}
           />
           <section data-slot="blog-article-body" aria-label="Article content">
-            <RenderBuilderContent content={content} model={config.models.blogPost} />
+            <RenderBuilderContent
+              content={content}
+              model={config.models.blogPost}
+              disableTracking
+            />
           </section>
         </article>
       );
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return <RenderBuilderContent content={content} model={model as any} />;
+  return <RenderBuilderContent content={content} model={model as any} disableTracking />;
 }
