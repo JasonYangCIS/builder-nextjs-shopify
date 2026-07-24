@@ -14,6 +14,14 @@ This document is the source of truth for Fusion-assisted blog work. It governs e
 
 If a policy fact cannot be verified, treat it as absent and fail closed. Do not infer approvals, asset rights, citations, identity, or authorization.
 
+## Efficient prompt intake and defaults
+
+A short request such as “create a blog about X” activates this complete workflow; do not wait for the user to restate established repository requirements. Load the approved `editorial-profile`, author/category records, relevant existing posts, and approved Media Library assets first. Derive the audience, voice, terminology, CTA style, SEO defaults, taxonomy candidates, and canonical origin from those records.
+
+Default to English, `action: draft`, the approved site origin, a unique kebab-case slug, and the current approved policy version. Never infer approval, authorship, asset rights, a publication time, or permission to publish. Ask at most one bundled clarification when a required fact remains unresolved after Builder lookup. If the missing fact is only needed for publication, create a clearly blocked draft when safe and report the exact blocker.
+
+Before drafting, check existing post titles, slugs, focus keywords, categories, and summaries for duplicate intent or SEO cannibalization. Prefer updating a materially overlapping post over creating a competing URL, but never overwrite one without explicit update intent.
+
 ## Structured brief
 
 A request must supply the validator's `BlogPublishingInput` fields:
@@ -28,6 +36,12 @@ A request must supply the validator's `BlogPublishingInput` fields:
 
 Required values must contain meaningful non-whitespace text. Unknown block types, taxonomy values, media assets, voice profiles, or canonical origins are rejected.
 
+### Accepted source inputs
+
+A brief may arrive as prompt text, pasted structured JSON, an attached PDF plus extraction instructions, or a public API/source URL. Normalize all formats into `BlogPublishingInput` before validation and retain provenance at the source URL, file, and page/section level where available. Treat supplied copy samples as voice evidence for the editorial profile, not as text to imitate closely.
+
+Do not claim that an automated PDF/API ingestion adapter ran unless one exists and was actually executed. Read attached PDFs with the available file tool and use authenticated integrations for private sources; do not bypass authentication or copy unverified extracted text into factual claims. If extraction is incomplete, preserve the gap as a blocker or remove the unsupported claim.
+
 ## Copyright and originality
 
 Write fresh prose from the brief and cited facts. Do not reproduce source structure, distinctive phrasing, paywalled text, lyrics, poems, scripts, images, or long quotations. Quotes must be necessary, attributed, linked to a ledger source, and no longer than 280 characters. `originalityReviewed` is required, but it never cures copying or uncertain rights.
@@ -40,6 +54,22 @@ Before a write, complete a copy edit for factual consistency, grammar, spelling,
 
 Copy should be clear, specific, useful, inclusive, and confident without hype. Prefer active voice and plain language. Avoid manipulative urgency, unverifiable guarantees, competitor disparagement, keyword stuffing, and claims of legal/medical/financial certainty. A local tone request cannot supersede the approved voice profile.
 
+### Long-form editorial quality bar
+
+Do not produce a thin summary merely to fill the model. Match the established reference quality with the sections that genuinely help the specific reader:
+
+- frame the problem, reader, decision, and evidence boundary early;
+- provide an at-a-glance summary before detailed analysis;
+- use H2 sections with H3 subsections and short paragraphs;
+- include comparison tables only when compared attributes share authoritative evidence;
+- explain strengths, limitations, and tradeoffs instead of listing features;
+- provide decision guidance, questions to verify, or a pre-action checklist;
+- add a final assessment that distinguishes known facts from interpretation;
+- include visible FAQs only when they answer real follow-up questions without repeating the article;
+- finish with a relevant, non-manipulative CTA and visible source list.
+
+Length follows topic complexity and evidence, not a fixed word quota. As a review heuristic, a competitive comparison, buying guide, or field report is usually underdeveloped if it cannot support roughly 900–1,500 original words, but padded or repetitive copy must be shortened. Never invent detail to reach length.
+
 ## SEO and structure
 
 - Slugs are lowercase kebab-case, 3–80 characters, with no leading/trailing hyphen or repeated hyphens.
@@ -51,6 +81,8 @@ Copy should be clear, specific, useful, inclusive, and confident without hype. P
 - Publish and schedule actions require `publishedAt`; scheduled content uses the same instant for `publishedAt` and future `scheduledAt`. `publishedAt` cannot precede `createdAt`, and `updatedAt` cannot precede either. Non-schedule actions must not carry `scheduledAt`.
 - Preserve visible FAQ questions/answers, citations, author identity type, focus keyword, categories, tags, hero metadata, and reading time so the storefront can emit accurate `BlogPosting`, `FAQPage`, `BreadcrumbList`, `ImageObject`, and citation graphs.
 - Structured data must describe visible page content only. Never add review, product, how-to, rating, FAQ, person, or organization schema that the rendered content and source records do not support.
+- The public article remains canonical. `/blog/{slug}.md` is a generated, `noindex` Markdown representation for agents, and `/llms.txt` is a generated discovery map of public content. Both must read the same normalized Builder records; never paste or separately maintain article copies in those routes.
+- Draft and `noIndex` posts must not be advertised in `/llms.txt`. A Markdown request for a non-public post returns 404.
 
 ## Primary-source citation ledger
 
@@ -63,6 +95,8 @@ Check that the cited source supports the nearby claim. Never invent a URL, publi
 Media blocks may reference only asset IDs present in `policy.approvedMediaAssetIds`. Every asset record requires an absolute HTTPS Builder Media URL, descriptive alt text (unless explicitly decorative), rights owner, license, source URL, approval ID, and rights expiry when applicable. Alt text describes purpose/content rather than repeating filenames or “image of”. Decorative assets use empty alt text and must be marked `decorative: true`.
 
 Rights status must be `approved`; rights expiry must be a valid date later than the validation clock. Missing, unknown, expired, or contradictory rights metadata is a legal stop. External hotlinks and unapproved/generated assets are not acceptable merely because they are reachable.
+
+Every preview-ready post needs relevant editorial imagery with valid dimensions, useful alt text, caption/credit when required, and complete rights metadata. Select from approved Media Library locations and match the image to the article’s subject; do not reuse one provisional image across unrelated posts merely because it is the only convenient asset. If no suitable approved image exists, keep the post in draft and report the asset requirement instead of hotlinking or fabricating approval.
 
 ## Fail-closed gates and overrides
 
@@ -91,6 +125,20 @@ All CMS operations use authenticated Builder CMS MCP tools. Read the model/schem
 - **Archive:** require explicit archive intent and entry identity, read the entry, then use the supported archive/unpublish state. Do not substitute deletion. Report the prior and resulting state.
 
 If the MCP tool cannot prove the requested state transition, permissions, current entry version, or schedule, stop and report the blocker. Never emulate publishing by changing public application code.
+
+## Preview and release QA
+
+After saving the draft, open the exact Builder override in `/preview` and inspect the rendered article rather than relying only on payloads or tests. Verify:
+
+1. exactly one visible H1 comes from the article shell and Builder body headings begin at H2;
+2. hero and inline imagery load, retain aspect ratio, include appropriate alt/caption/credit, and do not overwhelm the reading column;
+3. body typography, spacing, tables, callouts, references, author bio, related links, CTA, and article navigation are readable on desktop and mobile;
+4. links and citations resolve to the intended HTTPS destinations;
+5. FAQ and other structured-data claims exactly match visible content;
+6. no Builder/React bootstrap JavaScript is visible as article text;
+7. the draft remains unpublished whenever rights, policy approval, sources, or other blocking gates are unresolved.
+
+The shared `RenderBuilderContent` preview path passes `disableTracking` and uses Builder’s `isNestedRender` mode to prevent the SDK’s A/B-test initializer from leaking into React 19 preview output. Preserve that behavior when changing preview rendering. Run focused tests, typecheck, and lint after application changes; content-only MCP edits still require live preview inspection.
 
 ## Legal and confidentiality boundary
 

@@ -8,5 +8,6 @@ alwaysApply: false
 - Reference models via `config.models.*`, never as string literals.
 - `notFound()` when `fetchOneEntry` returns null on a Builder-only route.
 - `getBuilderSearchParams` only inside `app/preview/page.tsx`.
-- HTML fields → `utils/sanitize-html.ts` (DOMPurify).
+- Preview renders pass `disableTracking` to `RenderBuilderContent`; preserve its `isNestedRender` behavior so the Builder A/B initializer cannot leak as visible React 19 content.
+- HTML fields → `utils/sanitize-html.ts`.
 - Re-export Builder field types from `types/*.types.ts` with `string | null`.

@@ -73,7 +73,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `route-handlers` | Adding or editing any file under `app/api/**/route.ts`. |
 | `builder-page-wiring` | Adding a new Builder model or a new Builder-rendered route. |
 | `core-ui-migration` | Moving a component from this app into the headless `@jasonyangcis/core-ui` library. |
-| `blog-publishing` | Drafting, validating, scheduling, publishing, updating, or archiving blog entries through Builder CMS MCP. |
+| `blog-publishing` | Any request to create, write, research, revise, validate, preview, schedule, publish, archive, or expose machine-readable blog content. A short “write a blog” prompt activates the full documented workflow. |
 
 ## Rules (mdc, scoped via globs)
 
@@ -101,12 +101,20 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `product` | page | `app/products/[handle]/page.tsx` via `getBuilderProduct(handle)` | Optional Builder section rendered **below** `<ProductDetail />`. Filters by `data.handle`; `urlPath` user attribute set for targeting. Renders nothing if no entry exists. |
 | `collection` | page | `app/collections/[handle]/page.tsx` via `getBuilderCollection(handle)` | Per-handle Builder layout; collection handles are included in static params and unknown entries return 404. |
 | `announcement-bar` | section | _not yet wired_ | Reserved for header announcement region. |
+| `blog-post` | page | `app/blog/[slug]/page.tsx` and `app/preview/page.tsx` via `getBlogPostBySlug` / preview fetch | Shell owns H1; approved Builder blocks start at H2. Public posts also generate `/blog/{slug}.md`. |
+| `blog-author` | data | `lib/builder/client.ts` reference resolution | Supports `Person` or `Organization` schema identity. |
+| `blog-category` | data | `lib/builder/client.ts`, blog listing/category routes | Canonical category taxonomy and landing-page metadata. |
+| `editorial-profile` | data singleton | Blog publishing skill through Builder CMS MCP | Approved audience, voice, sourcing, rights, SEO, and risk policy; version changes. |
 
 When wiring a new model, always:
 1. Add a typed helper to `lib/builder/client.ts` (server-only).
 2. Pass `userAttributes: { urlPath }` so Builder targeting / preview works.
 3. Render with `<RenderBuilderContent content={...} model={config.models.X} />` — never `<Content>` directly.
 4. Reference the model name via `config.models.X`, never a string literal.
+
+## Repeated blog work
+
+Treat `docs/skills/blog-publishing.md` as the source of truth. Do not ask the user to restate established quality, SEO, imagery, sourcing, accessibility, preview, draft-first, or machine-readable-output requirements. Load the approved Builder records, derive safe defaults, and ask one bundled clarification only when a required fact cannot be resolved. Publishing or scheduling is never implied by a request to create or write.
 
 ## Hard rules (always-on)
 
