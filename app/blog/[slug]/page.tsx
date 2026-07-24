@@ -146,6 +146,15 @@ export default async function BlogArticlePage({ params }: { params: ArticleParam
         />
       ) : null}
 
+      <nav aria-label="Article navigation" data-slot="blog-article-navigation">
+        <Link href="/blog">← All dispatches</Link>
+        {post.categories[0] ? (
+          <Link href={`/blog/category/${post.categories[0].slug}`}>
+            More in {post.categories[0].name} →
+          </Link>
+        ) : null}
+      </nav>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
