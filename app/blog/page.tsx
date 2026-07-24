@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import BlogListingView from "@/components/blog/BlogListingView/BlogListingView";
-import { listBlogCategories, listPublishedBlogPosts } from "@/lib/builder/client";
+import { listBlogCategories, listBlogTags, listPublishedBlogPosts } from "@/lib/builder/client";
 import { createBlogListingJsonLd, serializeJsonLd } from "@/lib/blog/json-ld";
 import { normalizeBlogFilters } from "@/lib/blog/urls";
 
@@ -43,7 +43,7 @@ export default async function BlogPage({ searchParams }: { searchParams: BlogSea
     tag: first(query.tag),
     page: first(query.page) ? Number(first(query.page)) : 1,
   });
-  const [listing, categories] = await Promise.all([
+  const [listing, categories, tags] = await Promise.all([
     listPublishedBlogPosts(filters).catch((error) => {
       console.error("Unable to load published blog posts.", error);
       return {
@@ -52,6 +52,7 @@ export default async function BlogPage({ searchParams }: { searchParams: BlogSea
       };
     }),
     listBlogCategories().catch(() => []),
+    listBlogTags().catch(() => []),
   ]);
 
   const heading = "Builder Shop Blog";
@@ -69,6 +70,7 @@ export default async function BlogPage({ searchParams }: { searchParams: BlogSea
       <BlogListingView
         listing={listing}
         categories={categories}
+        tags={tags}
         pathname="/blog"
         activeCategory={filters.category}
         activeTag={filters.tag}

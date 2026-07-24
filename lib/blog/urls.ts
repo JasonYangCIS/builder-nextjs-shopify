@@ -27,6 +27,14 @@ function cleanFilter(value: string | null | undefined): string | null {
   return cleaned && /^[a-z0-9][a-z0-9-]{0,79}$/.test(cleaned) ? cleaned : null;
 }
 
+export function slugifyTag(value: string): string {
+  return value
+    .toLocaleLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function blogListingHref(
   pathname: string,
   filters: Pick<BlogListFilters, "category" | "tag" | "page">,

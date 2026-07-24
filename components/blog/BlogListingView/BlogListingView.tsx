@@ -1,11 +1,12 @@
 import {
   BlogCard,
+  BlogCta,
   BlogFilters,
   BlogGrid,
   BlogPagination,
 } from "@jasonyangcis/core-ui";
 import BlogAnalyticsBoundary from "@/components/blog/BlogAnalyticsBoundary/BlogAnalyticsBoundary";
-import { blogListingHref } from "@/lib/blog/urls";
+import { blogListingHref, slugifyTag } from "@/lib/blog/urls";
 import type { BlogPost } from "@/types/blog.types";
 import type { BlogListingViewProps } from "./BlogListingView.types";
 
@@ -37,6 +38,7 @@ function PostCard({ post }: { post: BlogPost }) {
 export default function BlogListingView({
   listing,
   categories,
+  tags,
   pathname,
   activeCategory,
   activeTag,
@@ -45,7 +47,6 @@ export default function BlogListingView({
 }: BlogListingViewProps) {
   const featured = listing.page === 1 ? listing.posts.find((post) => post.featured) ?? null : null;
   const recent = featured ? listing.posts.filter((post) => post.id !== featured.id) : listing.posts;
-  const tags = Array.from(new Set(listing.posts.flatMap((post) => post.tags))).sort();
   const previousHref = listing.hasPreviousPage
     ? blogListingHref(pathname, { category: activeCategory, tag: activeTag, page: listing.page - 1 })
     : null;
@@ -60,6 +61,14 @@ export default function BlogListingView({
         <h1>{heading}</h1>
         {description ? <p>{description}</p> : null}
       </header>
+      {listing.page === 1 && !activeCategory && !activeTag ? (
+        <BlogCta
+          heading="How this blog gets published"
+          body="This blog is drafted, validated, and published by Fusion under strict editorial and legal gates. Read the end-to-end architecture."
+          actionLabel="Read the architecture writeup"
+          actionHref="/blog-architecture"
+        />
+      ) : null}
 
       {categories.length > 0 ? (
         <BlogFilters
@@ -81,13 +90,24 @@ export default function BlogListingView({
         <BlogFilters
           data-blog-analytics="filters"
           ariaLabel="Filter articles by tag"
-          activeValue={activeTag}
-          items={tags.map((tag) => ({
-            label: `#${tag}`,
-            value: tag.toLocaleLowerCase(),
-            href: blogListingHref(pathname, { category: activeCategory, tag }),
-          }))}
+          activeValue={activeTag ?? "all"}
+          items={[
+            { label: "All", value: "all", href: blogListingHref(pathname, { category: activeCategory }) },
+            ...tags.map((tag) => ({
+              label: `#${tag}`,
+              value: slugifyTag(tag),
+              href: blogListingHref(pathname, { category: activeCategory, tag: slugifyTag(tag) }),
+            })),
+          ]}
         />
+      ) : null}
+
+      {activeCategory || activeTag ? (
+        <p data-slot="blog-clear-filters">
+          <a data-slot="blog-filter-link" href={pathname}>
+            Clear filters
+          </a>
+        </p>
       ) : null}
 
       {featured ? (

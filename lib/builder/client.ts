@@ -8,7 +8,7 @@ import {
   normalizeBlogCategory,
   normalizeBlogPost,
 } from "@/lib/blog/normalize";
-import { normalizeBlogFilters, paginate } from "@/lib/blog/urls";
+import { normalizeBlogFilters, paginate, slugifyTag } from "@/lib/blog/urls";
 import type {
   BlogAuthor,
   BlogCategory,
@@ -111,6 +111,26 @@ export async function listBlogCategories(limit = 100): Promise<BlogCategory[]> {
   return (entries ?? []).map(normalizeBlogCategory).filter((item): item is BlogCategory => item !== null);
 }
 
+export async function listBlogTags(): Promise<string[]> {
+  const [entries, maps] = await Promise.all([
+    fetchEntries({
+      model: config.models.blogPost,
+      apiKey: config.apiKey,
+      limit: 100,
+      fields: BLOG_LIST_PROJECTION,
+      options: { noTargeting: true },
+    }),
+    getBlogReferenceMaps(),
+  ]);
+  const tags = new Set<string>();
+  for (const entry of entries ?? []) {
+    const post = normalizeBlogPost(entry, maps);
+    if (!post || post.noIndex) continue;
+    for (const tag of post.tags) tags.add(tag);
+  }
+  return Array.from(tags).sort((left, right) => left.localeCompare(right));
+}
+
 async function getBlogReferenceMaps() {
   const [authors, categories] = await Promise.all([
     listBlogAuthors().catch(() => []),
@@ -156,7 +176,7 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
       return rightDate - leftDate;
     })
     .filter((post) => !normalizedFilters.category || post.categories.some(({ slug }) => slug.toLocaleLowerCase() === normalizedFilters.category))
-    .filter((post) => !normalizedFilters.tag || post.tags.some((tag) => tag.toLocaleLowerCase() === normalizedFilters.tag));
+    .filter((post) => !normalizedFilters.tag || post.tags.some((tag) => slugifyTag(tag) === normalizedFilters.tag));
   const result = paginate(posts, normalizedFilters.page, normalizedFilters.pageSize);
   return {
     posts: result.items,
