@@ -90,13 +90,24 @@ export default function BlogListingView({
         <BlogFilters
           data-blog-analytics="filters"
           ariaLabel="Filter articles by tag"
-          activeValue={activeTag}
-          items={tags.map((tag) => ({
-            label: `#${tag}`,
-            value: tag.toLocaleLowerCase(),
-            href: blogListingHref(pathname, { category: activeCategory, tag }),
-          }))}
+          activeValue={activeTag ?? "all"}
+          items={[
+            { label: "All", value: "all", href: blogListingHref(pathname, { category: activeCategory }) },
+            ...tags.map((tag) => ({
+              label: `#${tag}`,
+              value: tag.toLocaleLowerCase(),
+              href: blogListingHref(pathname, { category: activeCategory, tag }),
+            })),
+          ]}
         />
+      ) : null}
+
+      {activeCategory || activeTag ? (
+        <p data-slot="blog-clear-filters">
+          <a data-slot="blog-filter-link" href={pathname}>
+            Clear filters
+          </a>
+        </p>
       ) : null}
 
       {featured ? (

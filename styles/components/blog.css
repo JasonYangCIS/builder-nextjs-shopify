@@ -61,6 +61,16 @@
   list-style: none;
 }
 
+[data-slot="blog-clear-filters"] {
+  margin-block: -1rem 0;
+}
+
+[data-slot="blog-clear-filters"] [data-slot="blog-filter-link"] {
+  min-height: 2.25rem;
+  border-color: var(--border);
+  color: var(--ink-2);
+}
+
 [data-slot="blog-filter-link"],
 [data-slot="blog-pagination"] a,
 [data-slot="blog-article-navigation"] a {
