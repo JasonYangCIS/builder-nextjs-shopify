@@ -58,20 +58,6 @@ function validInput(): BlogPublishingInput {
           primarySource: true,
         },
       ],
-      media: [
-        {
-          id: "builder-media-1",
-          url: "https://cdn.builder.io/api/v1/image/assets/example/asset",
-          alt: "Performance dashboard showing stable Core Web Vitals",
-          decorative: false,
-          rightsStatus: "approved",
-          rightsOwner: "Example, Inc.",
-          license: "Owned",
-          sourceUrl: "https://cdn.builder.io/api/v1/image/assets/example/asset",
-          approvalId: "rights-2026-001",
-          rightsExpiresAt: null,
-        },
-      ],
       createdAt: now,
       updatedAt: now,
       publishedAt: null,
@@ -84,7 +70,6 @@ function validInput(): BlogPublishingInput {
       approvedCategories: ["Engineering"],
       approvedTags: ["Performance", "Commerce"],
       approvedCanonicalOrigins: ["https://example.com"],
-      approvedMediaAssetIds: ["builder-media-1"],
     },
     attestations: {
       copyEdited: true,
@@ -135,7 +120,7 @@ describe("validateBlogPublishingInput", () => {
     );
   });
 
-  it("fails closed for unapproved blocks, expired media rights, and invalid scheduling", () => {
+  it("fails closed for unapproved blocks and invalid scheduling", () => {
     const input = validInput();
     input.action = "schedule";
     input.workflow = {
@@ -145,17 +130,11 @@ describe("validateBlogPublishingInput", () => {
     };
     input.content.scheduledAt = "2026-01-15T11:59:00.000Z";
     input.policy.allowedBlockTypes = ["heading", "paragraph"];
-    const media = input.content.media[0];
-    if (media) media.rightsExpiresAt = "2026-01-14T00:00:00.000Z";
 
     const result = validateBlogPublishingInput(input);
     expect(result.valid).toBe(false);
     expect(result.blockingIssues.map(({ code }) => code)).toEqual(
-      expect.arrayContaining([
-        "BLOCK_TYPE_UNAPPROVED",
-        "LEGAL_MEDIA_RIGHTS_INVALID",
-        "SCHEDULE_INVALID",
-      ]),
+      expect.arrayContaining(["BLOCK_TYPE_UNAPPROVED", "SCHEDULE_INVALID"]),
     );
   });
 
@@ -250,14 +229,12 @@ describe("validateBlogPublishingInput", () => {
     );
   });
 
-  it("rejects invalid alt metadata and non-ISO chronological dates", () => {
+  it("rejects non-ISO chronological dates", () => {
     const input = validInput();
     input.content.updatedAt = "January 15, 2026";
-    const media = input.content.media[0];
-    if (media) media.alt = "";
 
     expect(validateBlogPublishingInput(input).blockingIssues.map(({ code }) => code)).toEqual(
-      expect.arrayContaining(["DATE_INVALID", "LEGAL_MEDIA_RIGHTS_INVALID"]),
+      expect.arrayContaining(["DATE_INVALID"]),
     );
   });
 });

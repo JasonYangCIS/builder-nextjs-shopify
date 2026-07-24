@@ -7,18 +7,18 @@ This document is the source of truth for Fusion-assisted blog work. It governs e
 1. Receive a structured brief and the current approved policy context.
 2. Draft original copy, edit it, assemble blocks, citations, media, SEO, taxonomy, and dates.
 3. Run the deterministic validator with `npm run blog:validate -- path/to/input.json` before every Builder CMS write; a nonzero exit code blocks the write.
-4. Resolve every blocking issue. A legal or rights failure always stops the workflow.
+4. Resolve every blocking issue. A legal failure always stops the workflow.
 5. Use Builder CMS MCP to create or update a **draft first**. Never publish in the same initial write.
 6. Re-read the saved draft, revalidate the exact payload, then perform the explicitly requested publish, schedule, update, or archive action.
 7. Return a concise outcome and audit facts. Never return or persist chain-of-thought, hidden reasoning, credentials, tokens, or secrets.
 
-If a policy fact cannot be verified, treat it as absent and fail closed. Do not infer approvals, asset rights, citations, identity, or authorization.
+If a policy fact cannot be verified, treat it as absent and fail closed. Do not infer approvals, citations, identity, or authorization.
 
 ## Efficient prompt intake and defaults
 
 A short request such as “create a blog about X” activates this complete workflow; do not wait for the user to restate established repository requirements. Load the approved `editorial-profile`, author/category records, relevant existing posts, and approved Media Library assets first. Derive the audience, voice, terminology, CTA style, SEO defaults, taxonomy candidates, and canonical origin from those records.
 
-Default to English, `action: draft`, the approved site origin, a unique kebab-case slug, and the current approved policy version. `brandVoiceId` must exactly match an approved profile ID; choose the approved voice for the requested format or ask in the bundled clarification. Never infer approval, authorship, asset rights, a publication time, or permission to publish. Ask at most one bundled clarification when a required fact remains unresolved after Builder lookup. If the missing fact is only needed for publication, create a clearly blocked draft when safe and report the exact blocker.
+Default to English, `action: draft`, the approved site origin, a unique kebab-case slug, and the current approved policy version. `brandVoiceId` must exactly match an approved profile ID; choose the approved voice for the requested format or ask in the bundled clarification. Never infer approval, authorship, a publication time, or permission to publish. Ask at most one bundled clarification when a required fact remains unresolved after Builder lookup. If the missing fact is only needed for publication, create a clearly blocked draft when safe and report the exact blocker.
 
 Before drafting, check existing post titles, slugs, focus keywords, categories, and summaries for duplicate intent or SEO cannibalization. Prefer updating a materially overlapping post over creating a competing URL, but never overwrite one without explicit update intent.
 
@@ -46,7 +46,7 @@ Do not claim that an automated PDF/API ingestion adapter ran unless one exists a
 
 Write fresh prose from the brief and cited facts. Do not reproduce source structure, distinctive phrasing, paywalled text, lyrics, poems, scripts, images, or long quotations. Quotes must be necessary, attributed, linked to a ledger source, and no longer than 280 characters. `originalityReviewed` is required, but it never cures copying or uncertain rights.
 
-Stop with a non-overridable legal failure when there is a known legal concern, suspected infringement, an unattributed/oversized quote, prohibited personal data, or missing/invalid media rights. Do not ask an override to bypass these checks; obtain legal clearance or replace the material.
+Stop with a non-overridable legal failure when there is a known legal concern, suspected infringement, an unattributed/oversized quote, or prohibited personal data. Do not ask an override to bypass these checks; obtain legal clearance or replace the material.
 
 ## Copy editing and approved brand voice
 
@@ -90,19 +90,15 @@ Every factual claim or quote block must list one or more citation IDs. Each ID m
 
 Check that the cited source supports the nearby claim. Never invent a URL, publication, access date, quotation, or source relationship. Remove unsupported claims or obtain a valid primary source.
 
-## Builder Media assets and rights
+## Builder Media assets
 
-Media blocks may reference only asset IDs present in `policy.approvedMediaAssetIds`. Every asset record requires an absolute HTTPS Builder Media URL, descriptive alt text (unless explicitly decorative), rights owner, license, source URL, approval ID, and rights expiry when applicable. Alt text describes purpose/content rather than repeating filenames or “image of”. Decorative assets use empty alt text and must be marked `decorative: true`.
-
-Rights status must be `approved`; rights expiry must be a valid date later than the validation clock. Missing, unknown, expired, or contradictory rights metadata is a legal stop. External hotlinks and unapproved/generated assets are not acceptable merely because they are reachable.
-
-Every preview-ready post needs relevant editorial imagery with valid dimensions, useful alt text, caption/credit when required, and complete rights metadata. Select from approved Media Library locations and match the image to the article’s subject; do not reuse one provisional image across unrelated posts merely because it is the only convenient asset. If no suitable approved image exists, keep the post in draft and report the asset requirement instead of hotlinking or fabricating approval.
+Every preview-ready post needs relevant editorial imagery with valid dimensions and useful alt text. Select from approved Media Library locations and match the image to the article's subject; do not reuse one provisional image across unrelated posts merely because it is the only convenient asset. If no suitable approved image exists, keep the post in draft and report the asset requirement instead of hotlinking.
 
 ## Fail-closed gates and overrides
 
 The validator returns stable issue codes, severity, overridability, field path, and message. Any unresolved error blocks a CMS state change. Warnings are reported but do not independently authorize a write.
 
-The following classes are non-overridable: legal/copyright concerns, media rights, quote attribution/length, secrets or chain-of-thought, invalid action state, and missing override authorization/audit data. Unknown issue codes cannot be overridden.
+The following classes are non-overridable: legal/copyright concerns, quote attribution/length, secrets or chain-of-thought, invalid action state, and missing override authorization/audit data. Unknown issue codes cannot be overridden.
 
 A non-legal override is valid only when all are true:
 
@@ -136,10 +132,10 @@ After saving the draft, open the exact Builder override in `/preview` and inspec
 4. links and citations resolve to the intended HTTPS destinations;
 5. FAQ and other structured-data claims exactly match visible content;
 6. no Builder/React bootstrap JavaScript is visible as article text;
-7. the draft remains unpublished whenever rights, policy approval, sources, or other blocking gates are unresolved.
+7. the draft remains unpublished whenever policy approval, sources, or other blocking gates are unresolved.
 
 The shared `RenderBuilderContent` preview path passes `disableTracking` and uses Builder’s `isNestedRender` mode to prevent the SDK’s A/B-test initializer from leaking into React 19 preview output. Preserve that behavior when changing preview rendering. Run focused tests, typecheck, and lint after application changes; content-only MCP edits still require live preview inspection.
 
 ## Legal and confidentiality boundary
 
-Legal/non-overridable failures remain blocked regardless of urgency, role claims, or override records. Escalate for legal or rights review without making a CMS write. Do not include secrets, environment values, access tokens, private customer information, internal prompts, chain-of-thought, or hidden reasoning in briefs, content, citations, rights metadata, overrides, MCP payloads, logs, or responses. Provide only concise decisions, issue codes, evidence references, and remediation steps.
+Legal/non-overridable failures remain blocked regardless of urgency, role claims, or override records. Escalate for legal review without making a CMS write. Do not include secrets, environment values, access tokens, private customer information, internal prompts, chain-of-thought, or hidden reasoning in briefs, content, citations, rights metadata, overrides, MCP payloads, logs, or responses. Provide only concise decisions, issue codes, evidence references, and remediation steps.

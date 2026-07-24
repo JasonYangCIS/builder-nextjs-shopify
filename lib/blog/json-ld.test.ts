@@ -41,7 +41,6 @@ const post: BlogPost = {
     publisher: "Example Publisher",
     accessedAt: "2025-01-02T00:00:00Z",
   }],
-  assetRights: [],
   relatedPostIds: [],
   cta: null,
   publishedAt: "2025-01-01T00:00:00Z",
