@@ -54,6 +54,7 @@ builder-registry.ts       — assembles per-component `<Name>.builder.ts` config
 .builder/skills/          — agent skills
 .builder/rules/           — agent rules (mdc)
 docs/skills/              — long-form skill docs
+scripts/blog/              — deterministic blog publishing validation
 docs/runbook.md           — dev-store, tokens, webhook setup
 ```
 
@@ -72,6 +73,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `route-handlers` | Adding or editing any file under `app/api/**/route.ts`. |
 | `builder-page-wiring` | Adding a new Builder model or a new Builder-rendered route. |
 | `core-ui-migration` | Moving a component from this app into the headless `@jasonyangcis/core-ui` library. |
+| `blog-publishing` | Drafting, validating, scheduling, publishing, updating, or archiving blog entries through Builder CMS MCP. |
 
 ## Rules (mdc, scoped via globs)
 
@@ -89,6 +91,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | `route-handlers.mdc` | `app/api/**/*.ts` |
 | `accessibility.mdc` | `components/**, app/**` |
 | `seo.mdc` | `app/**/page.tsx, app/sitemap.ts, app/robots.ts` |
+| `blog-content.mdc` | `.builder/skills/blog-publishing/**, docs/skills/blog-publishing.md, scripts/blog/**, content/blog/**` |
 
 ## Builder model wiring
 
@@ -96,7 +99,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 |---|---|---|---|
 | `page` | page | `app/[...page]/page.tsx` via `getBuilderPage(urlPath)` | Catch-all; root handled separately. |
 | `product` | page | `app/products/[handle]/page.tsx` via `getBuilderProduct(handle)` | Optional Builder section rendered **below** `<ProductDetail />`. Filters by `data.handle`; `urlPath` user attribute set for targeting. Renders nothing if no entry exists. |
-| `collection` | page | _not yet wired_ | Reserved for `app/collections/[handle]/page.tsx` per-handle Builder layout. |
+| `collection` | page | `app/collections/[handle]/page.tsx` via `getBuilderCollection(handle)` | Per-handle Builder layout; collection handles are included in static params and unknown entries return 404. |
 | `announcement-bar` | section | _not yet wired_ | Reserved for header announcement region. |
 
 When wiring a new model, always:

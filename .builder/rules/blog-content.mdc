@@ -1,0 +1,14 @@
+---
+description: Fail-closed editorial and Builder CMS controls for blog publishing workflow artifacts.
+globs: .builder/skills/blog-publishing/**, docs/skills/blog-publishing.md, scripts/blog/**, content/blog/**
+alwaysApply: false
+---
+
+- Load the `blog-publishing` skill and treat `docs/skills/blog-publishing.md` as authoritative.
+- Validate structured inputs with `scripts/blog/validate-blog.ts` before any Builder CMS write.
+- Create or revise a draft first. Publishing, scheduling, updating, and archiving require an explicit requested action and a passing result.
+- Use approved brand voice/taxonomy values and approved Builder Media assets with complete rights and alt metadata.
+- Keep claims traceable to primary-source citation-ledger records. Do not invent sources, quotes, rights, approvals, or dates.
+- Fail closed on legal, copyright/originality, rights, secret, and authorization failures; legal failures cannot be overridden.
+- Allow only authorized, auditable non-legal overrides enumerated by the validator.
+- Never store secrets, credentials, personal data, chain-of-thought, or hidden reasoning in content or audit records.
