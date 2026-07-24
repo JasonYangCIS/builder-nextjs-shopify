@@ -21,3 +21,13 @@ export function sanitizeHtml(dirty: string | null | undefined): string {
     disallowedTagsMode: "discard",
   });
 }
+
+export function sanitizeBlogHtml(dirty: string | null | undefined): string {
+  if (!dirty) return "";
+  return sanitize(dirty, {
+    allowedTags: ALLOWED_TAGS.filter((tag) => tag !== "h1"),
+    allowedAttributes: ALLOWED_ATTR_BY_TAG,
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    disallowedTagsMode: "discard",
+  });
+}

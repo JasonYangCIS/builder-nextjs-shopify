@@ -198,7 +198,7 @@ function hasText(value: string): boolean {
 }
 
 function parseTimestamp(value: string): number | null {
-  if (!ISO_TIMESTAMP.test(value)) return null;
+  if (!ISO_TIMESTAMP.test(value) || !isCalendarDate(value.slice(0, 10))) return null;
   const parsed = Date.parse(value);
   return Number.isFinite(parsed) ? parsed : null;
 }

@@ -155,7 +155,7 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
       const rightDate = Date.parse(right.publishedAt ?? right.updatedAt ?? "") || 0;
       return rightDate - leftDate;
     })
-    .filter((post) => !normalizedFilters.category || post.categories.some(({ slug }) => slug === normalizedFilters.category))
+    .filter((post) => !normalizedFilters.category || post.categories.some(({ slug }) => slug.toLocaleLowerCase() === normalizedFilters.category))
     .filter((post) => !normalizedFilters.tag || post.tags.some((tag) => tag.toLocaleLowerCase() === normalizedFilters.tag));
   const result = paginate(posts, normalizedFilters.page, normalizedFilters.pageSize);
   return {

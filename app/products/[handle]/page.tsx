@@ -7,6 +7,7 @@ import ClientOnlyBuilderContent from "@/components/builder/ClientOnlyBuilderCont
 import { getBuilderProduct } from "@/lib/builder/client";
 import { config } from "@/config";
 import { env } from "@/lib/env";
+import { serializeJsonLd } from "@/lib/blog/json-ld";
 
 export const revalidate = 5;
 export const dynamicParams = true;
@@ -88,7 +89,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
       <div
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: `<script type="application/ld+json">${JSON.stringify(productJsonLd)}</script>`,
+          __html: `<script type="application/ld+json">${serializeJsonLd(productJsonLd)}</script>`,
         }}
       />
     </>

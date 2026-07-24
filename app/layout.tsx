@@ -3,6 +3,7 @@ import { Orbitron, Inter, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import SilenceScriptTagWarning from "@/components/util/SilenceScriptTagWarning/SilenceScriptTagWarning";
+import { serializeJsonLd } from "@/lib/blog/json-ld";
 import "./globals.css";
 
 const inter = Inter({
@@ -79,7 +80,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `<script type="application/ld+json">${JSON.stringify(siteJsonLd)}</script>`,
+            __html: `<script type="application/ld+json">${serializeJsonLd(siteJsonLd)}</script>`,
           }}
         />
       </body>
