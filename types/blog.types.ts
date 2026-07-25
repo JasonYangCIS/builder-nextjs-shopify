@@ -53,6 +53,7 @@ export interface BlogPost {
   canonicalUrl: string | null;
   focusKeyword: string | null;
   noIndex: boolean;
+  qualityGateStatus: string | null;
   featured: boolean;
   featuredImage: BlogImage | null;
   author: BlogAuthor | null;

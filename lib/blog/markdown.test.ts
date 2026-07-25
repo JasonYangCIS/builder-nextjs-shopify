@@ -12,6 +12,7 @@ const post: BlogPost = {
   canonicalUrl: "https://example.com/blog/field-notes",
   focusKeyword: null,
   noIndex: false,
+  qualityGateStatus: null,
   featured: false,
   featuredImage: null,
   author: null,

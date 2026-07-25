@@ -227,6 +227,7 @@ export function normalizeBlogPost(value: unknown, maps: BlogReferenceMaps = {}):
     canonicalUrl: safeUrl(data.canonicalUrl, true),
     focusKeyword: text(data.focusKeyword),
     noIndex: data.noIndex === true,
+    qualityGateStatus: text(record(data.qualityGate)?.status),
     featured: data.featured === true,
     featuredImage: image(data.featuredImage ?? data.image, data.featuredImageAlt ?? data.imageAlt),
     author: normalizeAuthorValue(data.author, maps),

@@ -39,7 +39,12 @@ const BLOG_LIST_PROJECTION = [
   "data.publishedAt",
   "data.updatedAt",
   "data.readingTimeMinutes",
+  "data.qualityGate",
 ].join(",");
+
+function isPubliclyVisible(post: BlogPost): boolean {
+  return !post.noIndex && post.qualityGateStatus !== "fail";
+}
 
 export async function getBuilderPage(urlPath: string) {
   return fetchOneEntry({
@@ -125,7 +130,7 @@ export async function listBlogTags(): Promise<string[]> {
   const tags = new Set<string>();
   for (const entry of entries ?? []) {
     const post = normalizeBlogPost(entry, maps);
-    if (!post || post.noIndex) continue;
+    if (!post || !isPubliclyVisible(post)) continue;
     for (const tag of post.tags) tags.add(tag);
   }
   return Array.from(tags).sort((left, right) => left.localeCompare(right));
@@ -151,7 +156,7 @@ export async function getBlogPostBySlug(slug: string): Promise<{
   });
   if (!content) return null;
   const post = normalizeBlogPost(content, await getBlogReferenceMaps());
-  return post ? { content, post } : null;
+  return post && isPubliclyVisible(post) ? { content, post } : null;
 }
 
 export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Promise<BlogListing> {
@@ -169,7 +174,7 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
   const posts = (entries ?? [])
     .map((entry) => normalizeBlogPost(entry, maps))
     .filter((post): post is BlogPost => post !== null)
-    .filter((post) => !post.noIndex)
+    .filter(isPubliclyVisible)
     .sort((left, right) => {
       const leftDate = Date.parse(left.publishedAt ?? left.updatedAt ?? "") || 0;
       const rightDate = Date.parse(right.publishedAt ?? right.updatedAt ?? "") || 0;
@@ -194,7 +199,7 @@ export async function listBlogPostSlugs(limit = 100): Promise<BlogSlugRecord[]> 
     model: config.models.blogPost,
     apiKey: config.apiKey,
     limit,
-    fields: "data.slug,data.updatedAt,data.noIndex,lastUpdated",
+    fields: "data.slug,data.updatedAt,data.noIndex,data.qualityGate,lastUpdated",
     options: { noTargeting: true },
   });
   return (entries ?? []).flatMap((entry) => {
@@ -202,7 +207,7 @@ export async function listBlogPostSlugs(limit = 100): Promise<BlogSlugRecord[]> 
       ...entry,
       data: { ...(entry.data ?? {}), title: "slug" },
     });
-    return post && !post.noIndex ? [{ slug: post.slug, updatedAt: post.updatedAt }] : [];
+    return post && isPubliclyVisible(post) ? [{ slug: post.slug, updatedAt: post.updatedAt }] : [];
   });
 }
 

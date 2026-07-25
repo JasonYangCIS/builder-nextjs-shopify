@@ -16,6 +16,7 @@ const post: BlogPost = {
   canonicalUrl: null,
   focusKeyword: "safe publishing",
   noIndex: false,
+  qualityGateStatus: null,
   featured: false,
   featuredImage: {
     url: "https://example.com/image.jpg",
