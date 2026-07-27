@@ -30,7 +30,7 @@ export default function RenderBuilderContent({
       model={model}
       customComponents={customComponents}
       canTrack={!disableTracking && !previewing}
-      isNestedRender={disableTracking || isNestedRender}
+      isNestedRender={isNestedRender}
     />
   );
   if (!fallback) return rendered;
