@@ -29,7 +29,11 @@ export default function PreviewBlogArticleHeader({
       title={post.title}
       eyebrow={post.categories[0]?.name ?? "Dispatch"}
       description={post.excerpt}
+      authorName={post.author?.name}
+      publishedAt={post.publishedAt}
       readingTime={post.readingTimeMinutes ? `${post.readingTimeMinutes} min read` : null}
+      imageSrc={post.featuredImage?.url}
+      imageAlt={post.featuredImage?.alt}
     />
   );
 }
