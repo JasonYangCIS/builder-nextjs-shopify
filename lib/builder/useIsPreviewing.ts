@@ -5,6 +5,7 @@ import { isPreviewing } from "@builder.io/sdk-react";
 
 const subscribeNoop = () => () => {};
 const getServerSnapshot = () => false;
+const getClientSnapshot = () => true;
 
 /**
  * isPreviewing() reads window.location.search, so it always returns false on
@@ -14,4 +15,8 @@ const getServerSnapshot = () => false;
  */
 export function useIsPreviewing(): boolean {
   return useSyncExternalStore(subscribeNoop, isPreviewing, getServerSnapshot);
+}
+
+export function useHasHydrated(): boolean {
+  return useSyncExternalStore(subscribeNoop, getClientSnapshot, getServerSnapshot);
 }

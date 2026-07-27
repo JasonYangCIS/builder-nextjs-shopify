@@ -1,7 +1,7 @@
 "use client";
 import { Content } from "@builder.io/sdk-react";
 import { SWRConfig } from "swr";
-import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
+import { useHasHydrated, useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import { config } from "@/config";
 import { customComponents } from "@/builder-registry";
 import type { RenderBuilderContentProps } from "./RenderBuilderContent.types";
@@ -20,17 +20,20 @@ export default function RenderBuilderContent({
   fallback,
   disableTracking = false,
   isNestedRender = false,
+  isNestedRenderOnServer = false,
 }: RenderBuilderContentProps) {
+  const hasHydrated = useHasHydrated();
   const previewing = useIsPreviewing();
   if (!content && !previewing) return null;
   const rendered = (
     <Content
+      key={isNestedRender || (isNestedRenderOnServer && !hasHydrated) ? "nested" : "top-level"}
       content={content ?? undefined}
       apiKey={config.apiKey}
       model={model}
       customComponents={customComponents}
       canTrack={!disableTracking && !previewing}
-      isNestedRender={isNestedRender}
+      isNestedRender={isNestedRender || (isNestedRenderOnServer && !hasHydrated)}
     />
   );
   if (!fallback) return rendered;

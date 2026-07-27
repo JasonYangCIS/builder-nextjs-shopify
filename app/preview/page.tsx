@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { getBuilderSearchParams, fetchOneEntry } from "@builder.io/sdk-react";
-import ClientOnlyBuilderContent from "@/components/builder/ClientOnlyBuilderContent";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
 import PreviewBlogArticleHeader from "@/components/blog/PreviewBlogArticleHeader/PreviewBlogArticleHeader";
 import { config } from "@/config";
@@ -39,10 +38,11 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
           apiKey={config.apiKey}
         />
         <section data-slot="blog-article-body" aria-label="Article content">
-          <ClientOnlyBuilderContent
+          <RenderBuilderContent
             content={content}
             model={config.models.blogPost}
             disableTracking
+            isNestedRenderOnServer
           />
         </section>
       </article>
