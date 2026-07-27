@@ -9,6 +9,7 @@ import {
   normalizeBlogPost,
 } from "@/lib/blog/normalize";
 import { normalizeBlogFilters, paginate, slugifyTag } from "@/lib/blog/urls";
+import { isBuilderEntryLive } from "@/lib/builder/scheduling";
 import type {
   BlogAuthor,
   BlogCategory,
@@ -20,6 +21,9 @@ import type {
 
 const BLOG_LIST_PROJECTION = [
   "id",
+  "published",
+  "startDate",
+  "endDate",
   "lastUpdated",
   "publishedDate",
   "data.slug",
@@ -124,6 +128,7 @@ export async function listBlogTags(): Promise<string[]> {
   ]);
   const tags = new Set<string>();
   for (const entry of entries ?? []) {
+    if (!isBuilderEntryLive(entry)) continue;
     const post = normalizeBlogPost(entry, maps);
     if (!post || post.noIndex) continue;
     for (const tag of post.tags) tags.add(tag);
@@ -149,7 +154,7 @@ export async function getBlogPostBySlug(slug: string): Promise<{
     query: { "data.slug": slug },
     userAttributes: { urlPath: `/blog/${slug}` },
   });
-  if (!content) return null;
+  if (!content || !isBuilderEntryLive(content)) return null;
   const post = normalizeBlogPost(content, await getBlogReferenceMaps());
   return post ? { content, post } : null;
 }
@@ -167,6 +172,7 @@ export async function listPublishedBlogPosts(filters: BlogListFilters = {}): Pro
     getBlogReferenceMaps(),
   ]);
   const posts = (entries ?? [])
+    .filter((entry) => isBuilderEntryLive(entry))
     .map((entry) => normalizeBlogPost(entry, maps))
     .filter((post): post is BlogPost => post !== null)
     .filter((post) => !post.noIndex)
@@ -194,16 +200,18 @@ export async function listBlogPostSlugs(limit = 100): Promise<BlogSlugRecord[]> 
     model: config.models.blogPost,
     apiKey: config.apiKey,
     limit,
-    fields: "data.slug,data.updatedAt,data.noIndex,lastUpdated",
+    fields: "data.slug,data.updatedAt,data.noIndex,lastUpdated,published,startDate,endDate",
     options: { noTargeting: true },
   });
-  return (entries ?? []).flatMap((entry) => {
-    const post = normalizeBlogPost({
-      ...entry,
-      data: { ...(entry.data ?? {}), title: "slug" },
+  return (entries ?? [])
+    .filter((entry) => isBuilderEntryLive(entry))
+    .flatMap((entry) => {
+      const post = normalizeBlogPost({
+        ...entry,
+        data: { ...(entry.data ?? {}), title: "slug" },
+      });
+      return post && !post.noIndex ? [{ slug: post.slug, updatedAt: post.updatedAt }] : [];
     });
-    return post && !post.noIndex ? [{ slug: post.slug, updatedAt: post.updatedAt }] : [];
-  });
 }
 
 export async function listBlogCategorySlugs(limit = 100): Promise<string[]> {
