@@ -6,7 +6,7 @@ This document is the source of truth for Fusion-assisted blog work. It governs e
 
 1. Receive a structured brief and the current approved policy context.
 2. Draft original copy, edit it, assemble blocks, citations, media, SEO, taxonomy, and dates.
-3. Run the deterministic validator with `npm run blog:validate -- path/to/input.json` before every Builder CMS write; a nonzero exit code blocks the write.
+3. Run the deterministic validator with `npm run blog:validate -- path/to/input.json` before every Builder CMS write; a nonzero exit code blocks the write. Scratch validator inputs belong in a gitignored `.tmp-blog/` working directory; delete each temporary input file once its corresponding Builder entry has been created/updated and confirmed, and delete the whole directory once the task's Builder writes are done. Never leave `.tmp-blog/*.json` behind after a task completes.
 4. Resolve every blocking issue. A legal failure always stops the workflow.
 5. Use Builder CMS MCP to create or update a **draft first**. Never publish in the same initial write.
 6. Re-read the saved draft, revalidate the exact payload, then perform the explicitly requested publish, schedule, update, or archive action.
@@ -122,6 +122,23 @@ All CMS operations use authenticated Builder CMS MCP tools. Read the model/schem
 
 If the MCP tool cannot prove the requested state transition, permissions, current entry version, or schedule, stop and report the blocker. Never emulate publishing by changing public application code.
 
+### One entry ID per post — never re-create to change state
+
+A single logical post is exactly one Builder entry ID for its entire lifecycle. Draft → publish/schedule → update → archive are all state changes on that same entry ID, made with an **update** call, never a new **create** call. Creating a second entry to "promote" a draft to published/scheduled produces an orphaned duplicate draft plus a separate live entry, splits their content history, and can leave stale duplicates targeting the same route.
+
+Before every `create_builder_content` call in this workflow:
+
+1. Record the brief's intended slug up front.
+2. Query the `blog-post` model for an existing entry with that exact `data.slug` (and check recent entries created in this same task/session).
+3. If a matching entry already exists, switch to **update** on that entry's ID for every subsequent step (draft edits, publish, schedule) — do not call `create_builder_content` again for that slug.
+4. Only call `create_builder_content` when no entry for that slug exists yet, and capture the returned entry ID immediately for reuse in all later steps.
+
+When a task creates multiple posts in one batch (e.g., "publish N posts"), track each post's entry ID explicitly (slug → entry ID) as soon as it is created, and reuse that map for every later write in the same task instead of re-deriving or re-creating entries.
+
+If a `create_builder_content` call appears to fail or time out, re-query by slug before retrying — the entry may have been created despite the error. Retrying blindly with another `create_builder_content` call is a common source of duplicate entries.
+
+Before reporting a batch of posts as done, list the final entry IDs for every slug and confirm via a fresh query that exactly one `blog-post` entry exists per slug. If a duplicate is found, keep the entry that matches the intended final state (correct status, content, and `userAttributes.urlPath` targeting of `/blog/{slug}`) and archive or clearly mark the other as unused/`noIndex`; report the cleanup explicitly rather than leaving it silent.
+
 ## Preview and release QA
 
 After saving the draft, open the exact Builder override in `/preview` and inspect the rendered article rather than relying only on payloads or tests. Verify:
@@ -135,6 +152,8 @@ After saving the draft, open the exact Builder override in `/preview` and inspec
 7. the draft remains unpublished whenever policy approval, sources, or other blocking gates are unresolved.
 
 The shared `RenderBuilderContent` preview path passes `disableTracking` and uses Builder’s `isNestedRender` mode to prevent the SDK’s A/B-test initializer from leaking into React 19 preview output. Preserve that behavior when changing preview rendering. Run focused tests, typecheck, and lint after application changes; content-only MCP edits still require live preview inspection.
+
+Blog posts render at `/blog/{slug}`, not `/{slug}`. `lib/builder/client.ts` targets entries with `userAttributes: { urlPath: `/blog/${slug}` }`, so every `blog-post` entry's Builder targeting/preview URL path must be set to `/blog/{slug}` (never bare `/{slug}`) or the live route will 404 even though the entry exists and validates.
 
 ## Legal and confidentiality boundary
 
