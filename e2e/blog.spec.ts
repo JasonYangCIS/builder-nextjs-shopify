@@ -24,3 +24,9 @@ test("blog article does not render Builder experiment JavaScript as text", async
   await expect(page.locator('[data-slot="blog-article-title"]')).toBeVisible();
   await expect(page.locator("body")).not.toContainText("window.builderIoAbTest = function");
 });
+
+test("blog preview does not render Builder experiment JavaScript as text", async ({ page }) => {
+  await page.goto("/preview?model=blog-post&urlPath=/blog/complete-deck-all-systems-profile");
+  await expect(page.locator('[data-slot="blog-article-body"]')).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("window.builderIoAbTest = function");
+});
