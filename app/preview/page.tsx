@@ -42,7 +42,7 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
             content={content}
             model={config.models.blogPost}
             disableTracking
-            isNestedRenderOnServer
+            isNestedRender
           />
         </section>
       </article>

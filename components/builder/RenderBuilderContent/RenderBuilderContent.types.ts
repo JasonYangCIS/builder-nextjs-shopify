@@ -12,5 +12,4 @@ export interface RenderBuilderContentProps {
   fallback?: Record<string, unknown>;
   disableTracking?: boolean;
   isNestedRender?: boolean;
-  isNestedRenderOnServer?: boolean;
 }

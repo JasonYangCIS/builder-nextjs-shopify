@@ -1,7 +1,8 @@
 "use client";
-import { Content } from "@builder.io/sdk-react";
+import { Content, createRegisterComponentMessage } from "@builder.io/sdk-react";
+import { useEffect } from "react";
 import { SWRConfig } from "swr";
-import { useHasHydrated, useIsPreviewing } from "@/lib/builder/useIsPreviewing";
+import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import { config } from "@/config";
 import { customComponents } from "@/builder-registry";
 import type { RenderBuilderContentProps } from "./RenderBuilderContent.types";
@@ -20,20 +21,26 @@ export default function RenderBuilderContent({
   fallback,
   disableTracking = false,
   isNestedRender = false,
-  isNestedRenderOnServer = false,
 }: RenderBuilderContentProps) {
-  const hasHydrated = useHasHydrated();
   const previewing = useIsPreviewing();
+
+  useEffect(() => {
+    if (!isNestedRender || !previewing) return;
+
+    customComponents.forEach(({ component: _component, ...componentInfo }) => {
+      window.parent.postMessage(createRegisterComponentMessage(componentInfo), "*");
+    });
+  }, [isNestedRender, previewing]);
+
   if (!content && !previewing) return null;
   const rendered = (
     <Content
-      key={isNestedRender || (isNestedRenderOnServer && !hasHydrated) ? "nested" : "top-level"}
       content={content ?? undefined}
       apiKey={config.apiKey}
       model={model}
       customComponents={customComponents}
       canTrack={!disableTracking && !previewing}
-      isNestedRender={isNestedRender || (isNestedRenderOnServer && !hasHydrated)}
+      isNestedRender={isNestedRender}
     />
   );
   if (!fallback) return rendered;
