@@ -6,7 +6,7 @@ This document is the source of truth for Fusion-assisted blog work. It governs e
 
 1. Receive a structured brief and the current approved policy context.
 2. Draft original copy, edit it, assemble blocks, citations, media, SEO, taxonomy, and dates.
-3. Run the deterministic validator with `npm run blog:validate -- path/to/input.json` before every Builder CMS write; a nonzero exit code blocks the write.
+3. Run the deterministic validator with `npm run blog:validate -- path/to/input.json` before every Builder CMS write; a nonzero exit code blocks the write. Scratch validator inputs belong in a gitignored `.tmp-blog/` working directory; delete each temporary input file once its corresponding Builder entry has been created/updated and confirmed, and delete the whole directory once the task's Builder writes are done. Never leave `.tmp-blog/*.json` behind after a task completes.
 4. Resolve every blocking issue. A legal failure always stops the workflow.
 5. Use Builder CMS MCP to create or update a **draft first**. Never publish in the same initial write.
 6. Re-read the saved draft, revalidate the exact payload, then perform the explicitly requested publish, schedule, update, or archive action.
