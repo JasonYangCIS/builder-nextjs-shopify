@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { getBuilderSearchParams, fetchOneEntry } from "@builder.io/sdk-react";
-import { BlogArticleHeader } from "@jasonyangcis/core-ui";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
 import { config } from "@/config";
-import { normalizeBlogPost } from "@/lib/blog/normalize";
 
 interface SP { [key: string]: string | string[] | undefined }
 
@@ -31,26 +29,11 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
     options: builderParams,
   });
   if (model === config.models.blogPost) {
-    const post = normalizeBlogPost(content);
-    if (post) {
-      return (
-        <article data-slot="blog-article">
-          <BlogArticleHeader
-            title={post.title}
-            eyebrow={post.categories[0]?.name ?? "Dispatch"}
-            description={post.excerpt}
-            readingTime={post.readingTimeMinutes ? `${post.readingTimeMinutes} min read` : null}
-          />
-          <section data-slot="blog-article-body" aria-label="Article content">
-            <RenderBuilderContent
-              content={content}
-              model={config.models.blogPost}
-              disableTracking
-            />
-          </section>
-        </article>
-      );
-    }
+    return (
+      <div data-slot="blog-article-body">
+        <RenderBuilderContent content={content} model={config.models.blogPost} disableTracking />
+      </div>
+    );
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <RenderBuilderContent content={content} model={model as any} disableTracking />;

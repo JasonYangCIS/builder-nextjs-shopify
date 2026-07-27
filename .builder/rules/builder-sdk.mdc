@@ -9,5 +9,6 @@ alwaysApply: false
 - `notFound()` when `fetchOneEntry` returns null on a Builder-only route.
 - `getBuilderSearchParams` only inside `app/preview/page.tsx`.
 - Preview renders pass `disableTracking` to `RenderBuilderContent` (requires `@builder.io/sdk-react@5.2.4+`) so the Builder A/B initializer cannot leak as visible React 19 content. Never pass `isNestedRender` on the root content being edited in `app/preview/page.tsx` — it is internal-only and disables the visual editor's drag/drop `postMessage` listener.
+- In `app/preview/page.tsx`, never render sibling components next to the `RenderBuilderContent` instance being edited (mirror the sibling-free `<RenderBuilderContent />` return in `app/[...page]/page.tsx`) — siblings can trigger a live-editing DOM reconciliation bug that leaks the SDK's personalization-init script as visible text.
 - HTML fields → `utils/sanitize-html.ts`.
 - Re-export Builder field types from `types/*.types.ts` with `string | null`.

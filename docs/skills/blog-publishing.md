@@ -134,7 +134,7 @@ After saving the draft, open the exact Builder override in `/preview` and inspec
 6. no Builder/React bootstrap JavaScript is visible as article text;
 7. the draft remains unpublished whenever policy approval, sources, or other blocking gates are unresolved.
 
-The shared `RenderBuilderContent` preview path passes `disableTracking` to prevent the SDK's A/B-test initializer from leaking into React 19 preview output. Do not add Builder's internal `isNestedRender` prop to the root content being edited in `/preview` — it disables the visual editor's drag/drop listener. Preserve that behavior when changing preview rendering. Run focused tests, typecheck, and lint after application changes; content-only MCP edits still require live preview inspection.
+The shared `RenderBuilderContent` preview path passes `disableTracking` to prevent the SDK's A/B-test initializer from leaking into React 19 preview output. Do not add Builder's internal `isNestedRender` prop to the root content being edited in `/preview` — it disables the visual editor's drag/drop listener. The blog post branch of `app/preview/page.tsx` renders `RenderBuilderContent` with no sibling elements (only a single static wrapper `div`) — do not reintroduce a decorative header or other sibling next to it, as that previously caused the SDK's personalization-init script to leak as visible text during live editing. Preserve that behavior when changing preview rendering. Run focused tests, typecheck, and lint after application changes; content-only MCP edits still require live preview inspection.
 
 ## Legal and confidentiality boundary
 
