@@ -1,0 +1,84 @@
+{
+  "action": "draft",
+  "workflow": { "entryId": null, "currentStatus": "new", "savedDraftRevalidated": false },
+  "brief": {
+    "title": "The Undoing of Destiny",
+    "purpose": "Publish an original flash-fiction piece inspired by a public writing-prompt API, paired with a craft breakdown, as part of a five-post Signal Fiction series.",
+    "audience": "Readers interested in short fiction and writing craft.",
+    "primaryKeyword": "flash fiction ending",
+    "brandVoiceId": "2e65ed29525e422da206f1b714432071",
+    "deliverables": ["Original flash fiction under 300 words", "Craft analysis section", "FAQ section"]
+  },
+  "content": {
+    "title": "The Undoing of Destiny",
+    "slug": "the-undoing-of-destiny",
+    "excerpt": "An original flash-fiction story about mistaking hope for inevitability, paired with a craft note on how flash fiction endings avoid resolving everything.",
+    "seoTitle": "Flash Fiction Craft: The Undoing of Destiny",
+    "seoDescription": "Read an original flash-fiction story about a belief that quietly comes undone, plus a craft breakdown of ambiguous endings from a public writing prompt.",
+    "canonicalUrl": "https://builder-nextjs-shopify-sandbox.vercel.app/blog/the-undoing-of-destiny",
+    "categories": ["Signal Fiction"],
+    "tags": ["flash fiction", "writing craft", "heartbreak", "destiny"],
+    "citations": [
+      {
+        "id": "dummyjson-prompt-5",
+        "title": "DummyJSON Posts API — Post 5",
+        "url": "https://dummyjson.com/posts/5",
+        "publisher": "DummyJSON",
+        "accessedAt": "2026-07-27",
+        "primarySource": true
+      },
+      {
+        "id": "nffd-craft",
+        "title": "National Flash Fiction Day",
+        "url": "https://www.nationalflashfictionday.co.uk/",
+        "publisher": "National Flash Fiction Day",
+        "accessedAt": "2026-07-27",
+        "primarySource": true
+      },
+      {
+        "id": "ffi-definition",
+        "title": "National Flash Fiction Month",
+        "url": "https://flashfictioninstitute.com/resources/nationalflashfictionmonth/",
+        "publisher": "Flash Fiction Institute",
+        "accessedAt": "2026-07-27",
+        "primarySource": true
+      }
+    ],
+    "blocks": [
+      { "id": "b1", "type": "heading", "level": 2, "text": "The prompt" },
+      { "id": "b2", "type": "paragraph", "citationIds": ["dummyjson-prompt-5"], "text": "This piece answers a short writing prompt about a hope that curdles into belief and then collapses, published in the DummyJSON placeholder-content API. The prompt is used only as a starting image; none of its wording or plot is reproduced below." },
+      { "id": "b3", "type": "heading", "level": 2, "text": "The story" },
+      { "id": "b4", "type": "paragraph", "citationIds": ["dummyjson-prompt-5"], "text": "For three years Rina had called it a feeling, and for the fourth year she had started calling it fate, which was a promotion she gave it privately, without telling anyone, the way you might promote yourself in a job no one else knows you're doing. Every small coincidence became evidence: the same coffee order, the same block, the same song twice in one week. She built an entire architecture out of things that meant nothing on their own." },
+      { "id": "b5", "type": "paragraph", "citationIds": ["dummyjson-prompt-5"], "text": "When he finally told her, gently, in the plainest language he had, that he had never once thought of her that way, she found she wasn't surprised so much as embarrassed, the way you're embarrassed to realize you've been rehearsing a speech for an audience that never sat down." },
+      { "id": "b6", "type": "paragraph", "citationIds": ["dummyjson-prompt-5"], "text": "She walked home a different way than usual, past the coffee shop, past the block, and none of it looked like fate anymore. It looked like a street. That was the part that surprised her: not the loss of him, exactly, but the sudden, flat ordinariness of everything she had spent four years insisting was extraordinary." },
+      { "id": "b7", "type": "heading", "level": 2, "text": "Reading the craft" },
+      { "id": "b8", "type": "paragraph", "citationIds": ["nffd-craft"], "text": "National Flash Fiction Day's approach to the form treats an ending as a turn in perception rather than a plot resolution. Rina's story doesn't end with an argument or a confrontation; it ends with a street looking different, which is a quieter and, in this form, more effective way to show a belief collapsing." },
+      { "id": "b9", "type": "paragraph", "citationIds": ["ffi-definition"], "text": "Because the Flash Fiction Institute defines the form as complete in well under a thousand words, the piece has to compress four years into a handful of image-based details — a coffee order, a repeated song — rather than narrating the relationship's history directly." },
+      { "id": "b10", "type": "heading", "level": 2, "text": "What the scene leaves out" },
+      { "id": "b11", "type": "paragraph", "citationIds": ["ffi-definition"], "text": "Following the Flash Fiction Institute's emphasis on omission, the story never shows the actual conversation where he tells her the truth, staying instead in the after. That choice keeps the focus on Rina's re-reading of her own evidence rather than on a scene of confrontation the form doesn't have room for." },
+      { "id": "b12", "type": "heading", "level": 2, "text": "Frequently asked questions" },
+      { "id": "b13", "type": "heading", "level": 3, "text": "Is Rina based on a real person?" },
+      { "id": "b14", "type": "paragraph", "citationIds": ["dummyjson-prompt-5"], "text": "No. She is an original character created for this Signal Fiction series in response to a public API prompt about hope collapsing into disappointment." },
+      { "id": "b15", "type": "heading", "level": 3, "text": "Why does the story skip the actual conversation?" },
+      { "id": "b16", "type": "paragraph", "citationIds": ["ffi-definition"], "text": "Flash fiction's brevity often works better by dramatizing the aftermath of an event than the event itself, letting a single changed detail carry the emotional turn instead of a full dialogue scene." }
+    ],
+    "createdAt": "2026-07-27T18:00:00Z",
+    "updatedAt": "2026-07-27T18:00:00Z",
+    "publishedAt": null,
+    "scheduledAt": null
+  },
+  "policy": {
+    "now": "2026-07-27T18:00:00Z",
+    "approvedBrandVoiceIds": ["2e65ed29525e422da206f1b714432071"],
+    "allowedBlockTypes": ["heading", "paragraph", "list", "image", "embed"],
+    "approvedCategories": ["Signal Fiction"],
+    "approvedTags": ["flash fiction", "writing craft", "courtroom drama", "culinary craft", "wildfire", "family", "convenience store", "restraint", "heartbreak", "destiny"],
+    "approvedCanonicalOrigins": ["https://builder-nextjs-shopify-sandbox.vercel.app"]
+  },
+  "attestations": {
+    "copyEdited": true,
+    "originalityReviewed": true,
+    "noKnownLegalIssue": true,
+    "containsNoSecretsOrChainOfThought": true
+  }
+}
