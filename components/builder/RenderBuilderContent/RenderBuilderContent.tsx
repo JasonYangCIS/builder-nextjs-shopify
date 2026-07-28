@@ -1,5 +1,6 @@
 "use client";
-import { Content } from "@builder.io/sdk-react";
+import { Content, createRegisterComponentMessage } from "@builder.io/sdk-react";
+import { useEffect } from "react";
 import { SWRConfig } from "swr";
 import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import { config } from "@/config";
@@ -22,6 +23,15 @@ export default function RenderBuilderContent({
   isNestedRender = false,
 }: RenderBuilderContentProps) {
   const previewing = useIsPreviewing();
+
+  useEffect(() => {
+    if (!isNestedRender || !previewing) return;
+
+    customComponents.forEach(({ component: _component, ...componentInfo }) => {
+      window.parent.postMessage(createRegisterComponentMessage(componentInfo), "*");
+    });
+  }, [isNestedRender, previewing]);
+
   if (!content && !previewing) return null;
   const rendered = (
     <Content
