@@ -19,6 +19,7 @@ export default function ProductGridClient({
   query,
   limit = 12,
   heading,
+  presentation = "default",
 }: ProductGridProps) {
   const key = productGridKey({ collectionHandle, query, limit });
 
@@ -82,7 +83,7 @@ export default function ProductGridClient({
               className={styles.gridItem}
               style={{ "--delay": `${i * 70}ms` } as React.CSSProperties}
             >
-              <ProductCard product={p} />
+              <ProductCard product={p} presentation={presentation} />
             </li>
           ))}
         </ul>
