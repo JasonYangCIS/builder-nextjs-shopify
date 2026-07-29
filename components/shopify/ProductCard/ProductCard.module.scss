@@ -59,3 +59,28 @@
   letter-spacing: 0.06em;
   color: var(--ink-0);
 }
+
+.quickAddCard {
+  position: relative;
+}
+
+.quickAdd {
+  position: absolute;
+  right: var(--s-3);
+  bottom: var(--s-3);
+  left: var(--s-3);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(var(--s-2));
+  transition:
+    opacity 0.18s,
+    transform 0.18s;
+}
+
+.quickAddCard:hover .quickAdd,
+.quickAddCard:focus-within .quickAdd {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
