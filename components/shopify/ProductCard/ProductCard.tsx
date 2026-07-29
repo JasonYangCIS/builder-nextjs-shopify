@@ -65,12 +65,15 @@ export default function ProductCard({
         <Link href={`/products/${product.handle}`} className={styles.card}>
           {cardContent}
         </Link>
-        <AddToCartButton
-          variantId={firstVariant?.id ?? ""}
-          availableForSale={firstVariant?.availableForSale ?? false}
-          label="Add to cart"
-          className={styles.quickAdd}
-        />
+        <div className={styles.quickAddLayer}>
+          <div aria-hidden="true" className={styles.quickAddOverlay} />
+          <AddToCartButton
+            variantId={firstVariant?.id ?? ""}
+            availableForSale={firstVariant?.availableForSale ?? false}
+            label="Add to cart"
+            className={styles.quickAdd}
+          />
+        </div>
       </article>
     );
   }
