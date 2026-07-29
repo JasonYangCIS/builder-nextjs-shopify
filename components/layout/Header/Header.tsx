@@ -13,8 +13,9 @@ const TICKER_ITEMS = [
 
 const NAV_LINKS = [
   { href: "/collections/all", label: "Catalogue",    num: "01" },
-  { href: "/design-system",   label: "Design Codex", num: "02" },
-  { href: "/account",         label: "Account",       num: "03" },
+  { href: "/blog",            label: "Blog",           num: "02" },
+  { href: "/design-system",   label: "Design Codex", num: "03" },
+  { href: "/account",         label: "Account",       num: "04" },
 ];
 
 export default function Header() {

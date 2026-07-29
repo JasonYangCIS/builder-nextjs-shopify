@@ -24,6 +24,7 @@ export default function Footer() {
             <span className={`t-eyebrow ${styles.eyebrow}`}>Navigate</span>
             {[
               { href: "/collections/all", label: "Catalogue" },
+              { href: "/blog",            label: "Blog" },
               { href: "/account",         label: "Account" },
               { href: "/cart",            label: "Cart" },
             ].map((link) => (

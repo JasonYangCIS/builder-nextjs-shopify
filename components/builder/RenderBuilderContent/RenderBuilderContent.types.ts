@@ -10,4 +10,6 @@ export interface RenderBuilderContentProps {
    * with no client request. Used for SSR/SSG of data-driven blocks.
    */
   fallback?: Record<string, unknown>;
+  disableTracking?: boolean;
+  isNestedRender?: boolean;
 }

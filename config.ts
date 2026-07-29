@@ -9,6 +9,10 @@ export const config = {
     product: "product",
     collection: "collection",
     announcementBar: "announcement-bar",
+    blogPost: "blog-post",
+    blogAuthor: "blog-author",
+    blogCategory: "blog-category",
+    editorialProfile: "editorial-profile",
   },
 } as const;
 
