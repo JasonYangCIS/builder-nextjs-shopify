@@ -21,17 +21,17 @@ export async function GET(request: Request) {
     `- [Blog](${origin}/blog): Editorial dispatch index.`,
     `- [Sitemap](${origin}/sitemap.xml): Full public URL inventory.`,
     "",
+    "## For agents",
+    "",
+    "Every `/blog/<slug>` article also resolves as plain Markdown at `/blog/<slug>.md` — same content, no HTML markup. Append `.md` to any blog URL below (or any blog URL you discover elsewhere on this site) to fetch that version instead of parsing HTML.",
+    "",
     "## Blog posts",
     "",
     ...posts.map((post) => {
       const canonical = post.canonicalUrl ?? `${origin}/blog/${post.slug}`;
       const description = post.excerpt ? ` — ${markdownText(post.excerpt)}` : "";
-      return `- [${markdownText(post.title)} (Markdown)](${origin}/blog/${post.slug}.md): Canonical HTML: ${canonical}.${description}`;
+      return `- [${markdownText(post.title)}](${canonical}).${description}`;
     }),
-    "",
-    "## Usage",
-    "",
-    "Use canonical HTML pages for citations and user-facing links. Markdown routes provide a compact, structured representation of the same published article; check the canonical page for current availability, product details, and source context.",
     "",
   ];
 
