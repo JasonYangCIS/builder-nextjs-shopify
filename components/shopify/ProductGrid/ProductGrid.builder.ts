@@ -9,5 +9,12 @@ export const productGridConfig: RegisteredComponent = {
     { name: "collectionHandle", type: "ShopifyCollectionHandle", helperText: "Pick a Shopify collection (optional)" },
     { name: "query", type: "string", helperText: "Storefront search query (optional)" },
     { name: "limit", type: "number", defaultValue: 12 },
+    {
+      name: "presentation",
+      type: "string",
+      enum: ["default", "hover-add-to-cart"],
+      defaultValue: "default",
+      helperText: "Choose whether a quick-add control appears on hover.",
+    },
   ],
 };
