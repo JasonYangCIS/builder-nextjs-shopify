@@ -3,6 +3,7 @@ import { Button, Badge, Card, Input, Label, AnnouncementBar } from "@jasonyangci
 import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
 import FaqList from "@/components/marketing/FaqList/FaqList";
+import ListIcon from "@/components/marketing/ListIcon/ListIcon";
 import SigilForge from "@/components/marketing/SigilForge/SigilForge";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
@@ -352,6 +353,18 @@ export default function DesignSystemPage() {
                   question: "Can I return a depleted relic?",
                   answerHtml: "<p>Depleted relics may be exchanged within 30 cycles of acquisition.</p>",
                 },
+              ]}
+            />
+          </div>
+
+          <div>
+            <p className="t-eyebrow mb-4">ListIcon</p>
+            <ListIcon
+              items={[
+                { icon: "waves", label: "Broadcast from the deep sector" },
+                { icon: "zap", label: "Bioluminescent charge, always on" },
+                { icon: "droplet", label: "Refined xenospheric alloy" },
+                { icon: "scale", label: "Calibrated to 7.7pH resonance" },
               ]}
             />
           </div>
