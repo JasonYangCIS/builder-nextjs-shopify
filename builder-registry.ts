@@ -10,6 +10,7 @@ import { orderHistoryListConfig } from "@/components/shopify/OrderHistoryList/Or
 import { heroSplitConfig } from "@/components/marketing/HeroSplit/HeroSplit.builder";
 import { heroCenteredConfig } from "@/components/marketing/HeroCentered/HeroCentered.builder";
 import { faqListConfig } from "@/components/marketing/FaqList/FaqList.builder";
+import { listIconConfig } from "@/components/marketing/ListIcon/ListIcon.builder";
 import { sigilForgeConfig } from "@/components/marketing/SigilForge/SigilForge.builder";
 import { announcementBarConfig } from "@jasonyangcis/core-ui/components/AnnouncementBar/AnnouncementBar.builder";
 import { createBlogEditorialBuilderConfigs } from "@jasonyangcis/core-ui/builder";
@@ -35,6 +36,7 @@ export const customComponents: RegisteredComponent[] = [
   heroCenteredConfig,
   announcementBarConfig,
   faqListConfig,
+  listIconConfig,
   productCardConfig,
   inventoryBadgeConfig,
   loginButtonConfig,
