@@ -34,6 +34,7 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
     fetcher,
   );
   const product = data?.products[0];
+  const sidebarHeading = product?.title ?? selected?.label ?? "";
 
   if (items.length === 0) return null;
 
@@ -75,10 +76,10 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
           {selected && (
             <div className={styles.sidebar}>
               <DialogTitle className={`t-display ${styles.sidebarTitle}`}>
-                {selected.label}
+                {sidebarHeading}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                More details about {selected.label}
+                More details about {sidebarHeading}
               </DialogDescription>
 
               {selected.productHandle && (
@@ -119,7 +120,6 @@ function ProductVariantPanel({ product }: { product: Product }) {
           />
         </div>
       )}
-      <h3 className={`t-display ${styles.productTitle}`}>{product.title}</h3>
       <div className="flex items-center gap-3">
         <PriceDisplay
           price={variant?.price ?? product.priceRange.minVariantPrice}
