@@ -4,6 +4,7 @@ import "@/components/builder/BuilderDesignTokens/BuilderDesignTokens";
 import { productGridConfig } from "@/components/shopify/ProductGrid/ProductGrid.builder";
 import { productGridSelectedConfig } from "@/components/shopify/ProductGridSelected/ProductGridSelected.builder";
 import { productCardConfig } from "@/components/shopify/ProductCard/ProductCard.builder";
+import { compareCardsConfig } from "@/components/shopify/CompareCards/CompareCards.builder";
 import { inventoryBadgeConfig } from "@/components/shopify/InventoryBadge/InventoryBadge.builder";
 import { loginButtonConfig } from "@/components/shopify/LoginButton/LoginButton.builder";
 import { orderHistoryListConfig } from "@/components/shopify/OrderHistoryList/OrderHistoryList.builder";
@@ -36,6 +37,7 @@ export const customComponents: RegisteredComponent[] = [
   announcementBarConfig,
   faqListConfig,
   productCardConfig,
+  compareCardsConfig,
   inventoryBadgeConfig,
   loginButtonConfig,
   orderHistoryListConfig,

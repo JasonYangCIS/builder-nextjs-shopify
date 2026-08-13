@@ -8,6 +8,7 @@ import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
 import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCodeInput";
+import CompareCards from "@/components/shopify/CompareCards/CompareCards";
 import styles from "./page.module.scss";
 
 const PLACEHOLDER_IMAGE =
@@ -395,6 +396,32 @@ export default function DesignSystemPage() {
               <DiscountCodeInput />
             </div>
           </div>
+        </div>
+      </Section>
+
+      {/* ── Compare cards ─────────────────────────────────────── */}
+      <Section title="CompareCards" num="12">
+        <div className="flex flex-col gap-4">
+          <p className="t-eyebrow">Click a card to open its sidebar</p>
+          <CompareCards
+            items={[
+              {
+                image: PLACEHOLDER_IMAGE,
+                imageAlt: "Trail artifact",
+                label: "Trail",
+                productHandle: "the-inventory-not-tracked-snowboard",
+                sidebarContent:
+                  "<p>Built for uneven terrain with reinforced tread and adaptive grip.</p>",
+              },
+              {
+                image: PLACEHOLDER_IMAGE,
+                imageAlt: "Runner artifact",
+                label: "Runner",
+                productHandle: null,
+                sidebarContent: "<p>Lightweight profile tuned for pace, with no live product link.</p>",
+              },
+            ]}
+          />
         </div>
       </Section>
 
