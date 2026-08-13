@@ -120,6 +120,27 @@
   background: var(--void-3);
 }
 
+.productImageSwiper {
+  width: 100%;
+  height: 100%;
+
+  :global(.swiper-pagination-bullet) {
+    background: var(--ink-0);
+    opacity: 0.5;
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    opacity: 1;
+    background: var(--cyan-3);
+  }
+}
+
+.productImageSlide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .productImage {
   object-fit: cover;
 }

@@ -1,17 +1,22 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import type { Swiper as SwiperInstance } from "swiper";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@jasonyangcis/core-ui";
 import BlogRichText from "@/components/blog/BlogRichText/BlogRichText";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import VariantPicker from "@/components/shopify/VariantPicker/VariantPicker";
 import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButton";
-import type { Product, ProductVariant } from "@/lib/shopify/types";
+import type { Product, ProductVariant, ShopifyImage } from "@/lib/shopify/types";
 import type { CompareCardItem } from "./CompareCards.types";
 import styles from "./CompareCards.module.scss";
+import "swiper/css";
+import "swiper/css/pagination";
 
 interface CompareCardsClientProps {
   items: CompareCardItem[];
@@ -118,21 +123,71 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
   );
 }
 
+/** Dedupes the featured, catalog, and per-variant images so the carousel can show every
+ * shot even when a variant's image isn't part of `product.images`. */
+function buildGalleryImages(product: Product): ShopifyImage[] {
+  const seen = new Set<string>();
+  const gallery: ShopifyImage[] = [];
+
+  const addImage = (image: ShopifyImage | null | undefined) => {
+    if (!image?.url || seen.has(image.url)) return;
+    seen.add(image.url);
+    gallery.push(image);
+  };
+
+  addImage(product.featuredImage);
+  (Array.isArray(product.images) ? product.images : []).forEach(addImage);
+  (Array.isArray(product.variants) ? product.variants : []).forEach((v) => addImage(v.image));
+
+  return gallery;
+}
+
 function ProductVariantPanel({ product }: { product: Product }) {
   const [variant, setVariant] = useState<ProductVariant | null>(product.variants[0] ?? null);
-  const img = variant?.image ?? product.featuredImage;
+  const images = useMemo(() => buildGalleryImages(product), [product]);
+  const swiperRef = useRef<SwiperInstance | null>(null);
+  const skipNextScroll = useRef(true);
+
+  useEffect(() => {
+    if (skipNextScroll.current) {
+      skipNextScroll.current = false;
+      return;
+    }
+    if (!variant?.image?.url || images.length === 0) return;
+    const index = images.findIndex((image) => image.url === variant.image?.url);
+    if (index !== -1) swiperRef.current?.slideTo(index);
+  }, [variant, images]);
 
   return (
     <>
-      {img && (
+      {images.length > 0 ? (
         <div className={styles.productImageWrap}>
-          <Image
-            src={img.url}
-            alt={img.altText ?? product.title}
-            fill
-            sizes="400px"
-            className={styles.productImage}
-          />
+          <Swiper
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            onSwiper={(instance) => {
+              swiperRef.current = instance;
+            }}
+            className={styles.productImageSwiper}
+          >
+            {images.map((image, index) => (
+              <SwiperSlide key={`${image.url}-${index}`} className={styles.productImageSlide}>
+                <Image
+                  src={image.url}
+                  alt={image.altText ?? product.title}
+                  fill
+                  sizes="400px"
+                  className={styles.productImage}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      ) : (
+        <div className={styles.productImageWrap}>
+          <span className={styles.imageFallback} aria-hidden="true">
+            <span className={styles.imageFallbackGlyph}>◈</span>
+          </span>
         </div>
       )}
       <div className="flex items-center gap-3">
