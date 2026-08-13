@@ -45,6 +45,20 @@
   }
 }
 
+.imageFallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+}
+
+.imageFallbackGlyph {
+  font-size: 32px;
+  opacity: 0.4;
+}
+
 .scrim {
   position: absolute;
   inset: auto 0 0 0;

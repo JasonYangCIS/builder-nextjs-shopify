@@ -33,7 +33,7 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
       : null,
     fetcher,
   );
-  const product = data?.products[0];
+  const product = data?.products?.[0];
   const sidebarHeading = product?.title ?? selected?.label ?? "";
 
   if (items.length === 0) return null;
@@ -49,13 +49,19 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
             onClick={() => setSelectedIndex(index)}
           >
             <span className={styles.imageWrap}>
-              <Image
-                src={item.image}
-                alt={item.imageAlt ?? item.label}
-                fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                className={styles.image}
-              />
+              {item.image ? (
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt || item.label}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                  className={styles.image}
+                />
+              ) : (
+                <span className={styles.imageFallback} aria-hidden="true">
+                  <span className={styles.imageFallbackGlyph}>◈</span>
+                </span>
+              )}
               <span className={styles.scrim} aria-hidden="true" />
             </span>
             <span className={styles.plusIcon} aria-hidden="true">
