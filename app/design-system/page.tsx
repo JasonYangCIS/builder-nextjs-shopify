@@ -8,17 +8,43 @@ import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
 import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCodeInput";
+import CompareCards from "@/components/shopify/CompareCards/CompareCards";
+import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
+import { getProductByHandle } from "@/lib/shopify/product";
+import TableOfContents from "./TableOfContents";
+import BackToTop from "./BackToTop";
 import styles from "./page.module.scss";
+
+const EXAMPLE_PRODUCT_HANDLE = "the-complete-snowboard";
 
 const PLACEHOLDER_IMAGE =
   "https://cdn.builder.io/api/v1/image/assets%2F2ba2a4f70b3344978de5230adda60dd3%2F06376fd985e8499fb5b004850080dd09?format=webp&width=800&height=1200";
+
+/** Single source of truth for section metadata, shared by the TOC and each `<Section>`. */
+const SECTIONS = [
+  { id: "color-palette", num: "01", title: "Color Palette" },
+  { id: "typography", num: "02", title: "Typography" },
+  { id: "buttons", num: "03", title: "Buttons" },
+  { id: "badges", num: "04", title: "Badges" },
+  { id: "form-elements", num: "05", title: "Form Elements" },
+  { id: "cards", num: "06", title: "Cards" },
+  { id: "shadows-glows", num: "07", title: "Shadows & Glows" },
+  { id: "spacing-scale", num: "08", title: "Spacing Scale" },
+  { id: "marketing-components", num: "09", title: "Marketing Components" },
+  { id: "commerce-primitives", num: "10", title: "Commerce Primitives" },
+  { id: "compare-cards", num: "11", title: "CompareCards" },
+  { id: "product-variants", num: "12", title: "Product Variants" },
+  { id: "interactive-artifact", num: "13", title: "Interactive Artifact" },
+] as const;
 
 export const metadata: Metadata = {
   title: "Design Codex",
   description: "XENOSPHERE design system — tokens, typography, and components.",
 };
 
-export default function DesignSystemPage() {
+export default async function DesignSystemPage() {
+  const exampleProduct = await getProductByHandle(EXAMPLE_PRODUCT_HANDLE).catch(() => null);
+
   return (
     <div className="flex flex-col gap-20 pb-20">
 
@@ -37,8 +63,11 @@ export default function DesignSystemPage() {
         </p>
       </section>
 
+      {/* ── Table of contents ─────────────────────────────────── */}
+      <TableOfContents sections={SECTIONS} />
+
       {/* ── Color palette ─────────────────────────────────────── */}
-      <Section title="Color Palette" num="01">
+      <Section {...SECTIONS[0]}>
         <div className="flex flex-col gap-8">
           <ColorGroup label="Void — backgrounds" swatches={[
             { name: "--void-0", hex: "#06090f", label: "Deepest" },
@@ -76,7 +105,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Typography ────────────────────────────────────────── */}
-      <Section title="Typography" num="02">
+      <Section {...SECTIONS[1]}>
         <div className="flex flex-col gap-10">
           <div>
             <p className="t-eyebrow mb-4">Display — Orbitron</p>
@@ -132,7 +161,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Buttons ───────────────────────────────────────────── */}
-      <Section title="Buttons" num="03">
+      <Section {...SECTIONS[2]}>
         <div className="flex flex-col gap-8">
           <div>
             <p className="t-eyebrow mb-4">Variants</p>
@@ -165,7 +194,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Badges ────────────────────────────────────────────── */}
-      <Section title="Badges" num="04">
+      <Section {...SECTIONS[3]}>
         <p className="t-eyebrow mb-4">Variants</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="default">In stock</Badge>
@@ -177,7 +206,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Form elements ─────────────────────────────────────── */}
-      <Section title="Form Elements" num="05">
+      <Section {...SECTIONS[4]}>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="flex flex-col gap-2">
             <Label htmlFor="ds-text">Text input</Label>
@@ -200,7 +229,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Cards ─────────────────────────────────────────────── */}
-      <Section title="Cards" num="06">
+      <Section {...SECTIONS[5]}>
         <div className="grid gap-4 sm:grid-cols-3">
           <Card className="p-6">
             <p className="t-eyebrow mb-2">Standard panel</p>
@@ -230,7 +259,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Shadows & glows ───────────────────────────────────── */}
-      <Section title="Shadows & Glows" num="07">
+      <Section {...SECTIONS[6]}>
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             { label: "Cyan SM",   shadow: "var(--glow-cyan-sm)",   border: "var(--cyan-line)" },
@@ -252,7 +281,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Spacing ───────────────────────────────────────────── */}
-      <Section title="Spacing Scale" num="08">
+      <Section {...SECTIONS[7]}>
         <div className="flex flex-col gap-2">
           {[
             { token: "--s-1",  px: "4px" },
@@ -275,7 +304,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Marketing components ──────────────────────────────── */}
-      <Section title="Marketing Components" num="09">
+      <Section {...SECTIONS[8]}>
         <div className="flex flex-col gap-12">
           <div>
             <p className="t-eyebrow mb-4">AnnouncementBar</p>
@@ -359,7 +388,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Commerce primitives ───────────────────────────────── */}
-      <Section title="Commerce Primitives" num="10">
+      <Section {...SECTIONS[9]}>
         <div className="flex flex-col gap-10">
           <div>
             <p className="t-eyebrow mb-4">PriceDisplay</p>
@@ -398,22 +427,80 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
+      {/* ── Compare cards ─────────────────────────────────────── */}
+      <Section {...SECTIONS[10]}>
+        <div className="flex flex-col gap-4">
+          <p className="t-eyebrow">Click a card to open its sidebar</p>
+          <CompareCards
+            items={[
+              {
+                image:
+                  "https://cdn.shopify.com/s/files/1/0997/5581/9317/files/Main_589fc064-24a2-4236-9eaf-13b2bd35d21d.jpg?v=1777063122",
+                imageAlt: "The Complete Snowboard",
+                label: "The Complete Snowboard",
+                productHandle: "the-complete-snowboard",
+                sidebarContent:
+                  "<p>Built for uneven terrain with reinforced tread and adaptive grip.</p>",
+              },
+              {
+                image: PLACEHOLDER_IMAGE,
+                imageAlt: "Runner artifact",
+                label: "Runner",
+                productHandle: null,
+                sidebarContent: "<p>Lightweight profile tuned for pace, with no live product link.</p>",
+              },
+            ]}
+          />
+        </div>
+      </Section>
+
+      {/* ── Product variants (live Shopify data) ───────────────── */}
+      <Section {...SECTIONS[11]}>
+        <div className="flex flex-col gap-4">
+          <p className="t-eyebrow">ProductDetail — live Shopify product with variant selection</p>
+          {exampleProduct ? (
+            <div className={styles.componentFrame}>
+              <ProductDetail product={exampleProduct} />
+            </div>
+          ) : (
+            <p className={styles.cardBody}>
+              Product not found in this store&apos;s catalog. Update{" "}
+              <code className={styles.cardCode}>EXAMPLE_PRODUCT_HANDLE</code> in{" "}
+              <code className={styles.cardCode}>app/design-system/page.tsx</code> to a product handle
+              that exists in the connected Shopify store.
+            </p>
+          )}
+        </div>
+      </Section>
+
       {/* ── Interactive artifact ──────────────────────────────── */}
-      <Section title="Interactive Artifact" num="11">
+      <Section {...SECTIONS[12]}>
         <div className="flex flex-col gap-4">
           <p className="t-eyebrow">SigilForge</p>
           <SigilForge />
         </div>
       </Section>
 
+      <BackToTop />
+
     </div>
   );
 }
 
 /* ── Section wrapper ──────────────────────────────────────── */
-function Section({ title, num, children }: { title: string; num: string; children: React.ReactNode }) {
+function Section({
+  id,
+  title,
+  num,
+  children,
+}: {
+  id: string;
+  title: string;
+  num: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section>
+    <section id={id} className={styles.section}>
       <div className="flex items-center gap-4 mb-8">
         <span className={`t-mono ${styles.sectionNum}`}>§ {num}</span>
         <h2 className={`t-display ${styles.sectionHeading}`}>{title}</h2>

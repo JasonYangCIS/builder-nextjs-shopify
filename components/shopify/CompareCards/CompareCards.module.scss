@@ -1,0 +1,143 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 280px));
+  gap: var(--s-6);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 4px solid var(--ring);
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow 0.18s;
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: var(--glow-cyan-sm);
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.imageWrap {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--void-3);
+}
+
+.image {
+  object-fit: cover;
+  transition-property: opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+
+  .card:hover &,
+  .card:focus-visible & {
+    opacity: 0.85;
+  }
+}
+
+.imageFallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+}
+
+.imageFallbackGlyph {
+  font-size: 32px;
+  opacity: 0.4;
+}
+
+.scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(6, 9, 15, 0.75), transparent);
+  pointer-events: none;
+}
+
+.plusIcon {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--ink-0);
+  background: rgba(6, 9, 15, 0.5);
+  border-radius: var(--r-pill);
+}
+
+.label {
+  position: absolute;
+  right: 0;
+  bottom: var(--s-3);
+  left: 0;
+  font-weight: 500;
+  letter-spacing: 1.12px;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--ink-0);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebarTitle {
+  font-size: var(--t-xl);
+  letter-spacing: 0.06em;
+}
+
+.productSummary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.productImageWrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--void-3);
+}
+
+.productImage {
+  object-fit: cover;
+}
+
+.viewProductLink {
+  width: fit-content;
+  color: var(--cyan-3);
+  text-decoration: underline;
+}
+
+.placeholder {
+  color: var(--ink-2);
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sidebarContent {
+  color: var(--ink-1);
+  line-height: 1.6;
+}
