@@ -9,7 +9,11 @@ import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
 import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCodeInput";
 import CompareCards from "@/components/shopify/CompareCards/CompareCards";
+import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
+import { getProductByHandle } from "@/lib/shopify/product";
 import styles from "./page.module.scss";
+
+const EXAMPLE_PRODUCT_HANDLE = "the-complete-snowboard";
 
 const PLACEHOLDER_IMAGE =
   "https://cdn.builder.io/api/v1/image/assets%2F2ba2a4f70b3344978de5230adda60dd3%2F06376fd985e8499fb5b004850080dd09?format=webp&width=800&height=1200";
@@ -19,7 +23,9 @@ export const metadata: Metadata = {
   description: "XENOSPHERE design system — tokens, typography, and components.",
 };
 
-export default function DesignSystemPage() {
+export default async function DesignSystemPage() {
+  const exampleProduct = await getProductByHandle(EXAMPLE_PRODUCT_HANDLE);
+
   return (
     <div className="flex flex-col gap-20 pb-20">
 
@@ -400,7 +406,7 @@ export default function DesignSystemPage() {
       </Section>
 
       {/* ── Compare cards ─────────────────────────────────────── */}
-      <Section title="CompareCards" num="12">
+      <Section title="CompareCards" num="11">
         <div className="flex flex-col gap-4">
           <p className="t-eyebrow">Click a card to open its sidebar</p>
           <CompareCards
@@ -425,8 +431,27 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
+      {/* ── Product variants (live Shopify data) ───────────────── */}
+      <Section title="Product Variants" num="12">
+        <div className="flex flex-col gap-4">
+          <p className="t-eyebrow">ProductDetail — live Shopify product with variant selection</p>
+          {exampleProduct ? (
+            <div className={styles.componentFrame}>
+              <ProductDetail product={exampleProduct} />
+            </div>
+          ) : (
+            <p className={styles.cardBody}>
+              Product not found in this store&apos;s catalog. Update{" "}
+              <code className={styles.cardCode}>EXAMPLE_PRODUCT_HANDLE</code> in{" "}
+              <code className={styles.cardCode}>app/design-system/page.tsx</code> to a product handle
+              that exists in the connected Shopify store.
+            </p>
+          )}
+        </div>
+      </Section>
+
       {/* ── Interactive artifact ──────────────────────────────── */}
-      <Section title="Interactive Artifact" num="11">
+      <Section title="Interactive Artifact" num="13">
         <div className="flex flex-col gap-4">
           <p className="t-eyebrow">SigilForge</p>
           <SigilForge />
