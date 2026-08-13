@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,6 +26,7 @@ const fetcher = async (url: string): Promise<{ products: Product[] }> => {
 export default function CompareCardsClient({ items }: CompareCardsClientProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const selected = selectedIndex !== null ? items[selectedIndex] : null;
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const { data, isLoading } = useSWR(
     selected?.productHandle
@@ -46,7 +47,10 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
             key={`${item.label}-${index}`}
             type="button"
             className={styles.card}
-            onClick={() => setSelectedIndex(index)}
+            onClick={(event) => {
+              triggerRef.current = event.currentTarget;
+              setSelectedIndex(index);
+            }}
           >
             <span className={styles.imageWrap}>
               {item.image ? (
@@ -78,7 +82,12 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
           if (!open) setSelectedIndex(null);
         }}
       >
-        <DialogContent>
+        <DialogContent
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            triggerRef.current?.focus();
+          }}
+        >
           {selected && (
             <div className={styles.sidebar}>
               <DialogTitle className={`t-display ${styles.sidebarTitle}`}>

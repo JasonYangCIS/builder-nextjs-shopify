@@ -123,4 +123,17 @@ describe("CompareCardsClient", () => {
     expect(screen.queryByText("Loading...")).toBeNull();
     expect(global.fetch).not.toHaveBeenCalled();
   });
+
+  it("returns keyboard focus to the activating card after closing the dialog", async () => {
+    render(<CompareCardsClient items={items} />);
+    const trailButton = screen.getByText("Trail").closest("button")!;
+
+    trailButton.focus();
+    fireEvent.click(trailButton);
+    await waitFor(() => expect(screen.getByRole("dialog")).toBeTruthy());
+
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(document.activeElement).toBe(trailButton);
+  });
 });

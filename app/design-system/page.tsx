@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DesignSystemPage() {
-  const exampleProduct = await getProductByHandle(EXAMPLE_PRODUCT_HANDLE);
+  const exampleProduct = await getProductByHandle(EXAMPLE_PRODUCT_HANDLE).catch(() => null);
 
   return (
     <div className="flex flex-col gap-20 pb-20">
