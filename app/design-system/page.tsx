@@ -415,7 +415,7 @@ export default async function DesignSystemPage() {
                 image: PLACEHOLDER_IMAGE,
                 imageAlt: "Trail artifact",
                 label: "Trail",
-                productHandle: "the-inventory-not-tracked-snowboard",
+                productHandle: "the-complete-snowboard",
                 sidebarContent:
                   "<p>Built for uneven terrain with reinforced tread and adaptive grip.</p>",
               },

@@ -48,12 +48,33 @@ const product: Product = {
     height: 800,
   },
   images: [],
-  options: [],
+  options: [{ name: "Size", values: ["8", "9"] }],
   priceRange: {
     minVariantPrice: { amount: "120.00", currencyCode: "USD" },
-    maxVariantPrice: { amount: "120.00", currencyCode: "USD" },
+    maxVariantPrice: { amount: "140.00", currencyCode: "USD" },
   },
-  variants: [],
+  variants: [
+    {
+      id: "gid://shopify/ProductVariant/1",
+      title: "8",
+      availableForSale: true,
+      quantityAvailable: 5,
+      price: { amount: "120.00", currencyCode: "USD" },
+      compareAtPrice: null,
+      selectedOptions: [{ name: "Size", value: "8" }],
+      image: null,
+    },
+    {
+      id: "gid://shopify/ProductVariant/2",
+      title: "9",
+      availableForSale: true,
+      quantityAvailable: 2,
+      price: { amount: "140.00", currencyCode: "USD" },
+      compareAtPrice: null,
+      selectedOptions: [{ name: "Size", value: "9" }],
+      image: null,
+    },
+  ],
   tags: [],
   productType: "Shoes",
   availableForSale: true,
@@ -82,6 +103,17 @@ describe("CompareCardsClient", () => {
 
     await waitFor(() => expect(screen.getByText("Trail Shoe")).toBeTruthy());
     expect(global.fetch).toHaveBeenCalledWith("/api/products?handle=trail-shoe");
+  });
+
+  it("lets the shopper pick a variant and updates the price", async () => {
+    render(<CompareCardsClient items={items} />);
+    fireEvent.click(screen.getByText("Trail").closest("button")!);
+
+    await waitFor(() => expect(screen.getByText("Trail Shoe")).toBeTruthy());
+    expect(screen.getByText("$120.00")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    expect(screen.getByText("$140.00")).toBeTruthy();
   });
 
   it("skips the product fetch and renders sidebar content when no handle is set", () => {

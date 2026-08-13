@@ -6,7 +6,10 @@ import Link from "next/link";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@jasonyangcis/core-ui";
 import BlogRichText from "@/components/blog/BlogRichText/BlogRichText";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
-import type { Product } from "@/lib/shopify/types";
+import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
+import VariantPicker from "@/components/shopify/VariantPicker/VariantPicker";
+import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButton";
+import type { Product, ProductVariant } from "@/lib/shopify/types";
 import type { CompareCardItem } from "./CompareCards.types";
 import styles from "./CompareCards.module.scss";
 
@@ -81,29 +84,7 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
               {selected.productHandle && (
                 <div className={styles.productSummary}>
                   {isLoading && <p className={`t-mono ${styles.placeholder}`}>Loading...</p>}
-                  {!isLoading && product && (
-                    <>
-                      {product.featuredImage && (
-                        <div className={styles.productImageWrap}>
-                          <Image
-                            src={product.featuredImage.url}
-                            alt={product.featuredImage.altText ?? product.title}
-                            fill
-                            sizes="400px"
-                            className={styles.productImage}
-                          />
-                        </div>
-                      )}
-                      <h3 className={`t-display ${styles.productTitle}`}>{product.title}</h3>
-                      <PriceDisplay price={product.priceRange.minVariantPrice} />
-                      <Link
-                        href={`/products/${product.handle}`}
-                        className={`t-mono ${styles.viewProductLink}`}
-                      >
-                        View product
-                      </Link>
-                    </>
-                  )}
+                  {!isLoading && product && <ProductVariantPanel key={product.id} product={product} />}
                   {!isLoading && !product && (
                     <p className={`t-mono ${styles.placeholder}`}>Product not found</p>
                   )}
@@ -117,6 +98,43 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
           )}
         </DialogContent>
       </Dialog>
+    </>
+  );
+}
+
+function ProductVariantPanel({ product }: { product: Product }) {
+  const [variant, setVariant] = useState<ProductVariant | null>(product.variants[0] ?? null);
+  const img = variant?.image ?? product.featuredImage;
+
+  return (
+    <>
+      {img && (
+        <div className={styles.productImageWrap}>
+          <Image
+            src={img.url}
+            alt={img.altText ?? product.title}
+            fill
+            sizes="400px"
+            className={styles.productImage}
+          />
+        </div>
+      )}
+      <h3 className={`t-display ${styles.productTitle}`}>{product.title}</h3>
+      <div className="flex items-center gap-3">
+        <PriceDisplay
+          price={variant?.price ?? product.priceRange.minVariantPrice}
+          compareAtPrice={variant?.compareAtPrice}
+        />
+        <InventoryBadge
+          availableForSale={variant?.availableForSale ?? product.availableForSale}
+          quantityAvailable={variant?.quantityAvailable ?? null}
+        />
+      </div>
+      <VariantPicker product={product} onSelect={setVariant} />
+      {variant && <AddToCartButton variantId={variant.id} availableForSale={variant.availableForSale} />}
+      <Link href={`/products/${product.handle}`} className={`t-mono ${styles.viewProductLink}`}>
+        View product
+      </Link>
     </>
   );
 }
