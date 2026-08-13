@@ -412,9 +412,10 @@ export default async function DesignSystemPage() {
           <CompareCards
             items={[
               {
-                image: PLACEHOLDER_IMAGE,
-                imageAlt: "Trail artifact",
-                label: "Trail",
+                image:
+                  "https://cdn.shopify.com/s/files/1/0997/5581/9317/files/Main_589fc064-24a2-4236-9eaf-13b2bd35d21d.jpg?v=1777063122",
+                imageAlt: "The Complete Snowboard",
+                label: "The Complete Snowboard",
                 productHandle: "the-complete-snowboard",
                 sidebarContent:
                   "<p>Built for uneven terrain with reinforced tread and adaptive grip.</p>",
