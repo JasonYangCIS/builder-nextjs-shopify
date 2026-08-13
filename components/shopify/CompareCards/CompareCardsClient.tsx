@@ -4,7 +4,7 @@ import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperInstance } from "swiper";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@jasonyangcis/core-ui";
 import BlogRichText from "@/components/blog/BlogRichText/BlogRichText";
@@ -17,6 +17,7 @@ import type { CompareCardItem } from "./CompareCards.types";
 import styles from "./CompareCards.module.scss";
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 interface CompareCardsClientProps {
   items: CompareCardItem[];
@@ -147,6 +148,8 @@ function ProductVariantPanel({ product }: { product: Product }) {
   const images = useMemo(() => buildGalleryImages(product), [product]);
   const swiperRef = useRef<SwiperInstance | null>(null);
   const skipNextScroll = useRef(true);
+  const prevButtonRef = useRef<HTMLButtonElement | null>(null);
+  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (skipNextScroll.current) {
@@ -163,8 +166,15 @@ function ProductVariantPanel({ product }: { product: Product }) {
       {images.length > 0 ? (
         <div className={styles.productImageWrap}>
           <Swiper
-            modules={[Pagination]}
+            modules={[Pagination, Navigation]}
             pagination={{ clickable: true }}
+            navigation={{ prevEl: prevButtonRef.current, nextEl: nextButtonRef.current }}
+            onBeforeInit={(instance) => {
+              if (typeof instance.params.navigation === "object" && instance.params.navigation) {
+                instance.params.navigation.prevEl = prevButtonRef.current;
+                instance.params.navigation.nextEl = nextButtonRef.current;
+              }
+            }}
             onSwiper={(instance) => {
               swiperRef.current = instance;
             }}
@@ -182,6 +192,26 @@ function ProductVariantPanel({ product }: { product: Product }) {
               </SwiperSlide>
             ))}
           </Swiper>
+          {images.length > 1 && (
+            <>
+              <button
+                ref={prevButtonRef}
+                type="button"
+                aria-label="Previous image"
+                className={`${styles.navButton} ${styles.navButtonPrev}`}
+              >
+                <ChevronIcon direction="left" />
+              </button>
+              <button
+                ref={nextButtonRef}
+                type="button"
+                aria-label="Next image"
+                className={`${styles.navButton} ${styles.navButtonNext}`}
+              >
+                <ChevronIcon direction="right" />
+              </button>
+            </>
+          )}
         </div>
       ) : (
         <div className={styles.productImageWrap}>
@@ -221,6 +251,22 @@ function PlusIcon() {
       aria-hidden="true"
     >
       <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
+      <path d={direction === "left" ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"} />
     </svg>
   );
 }
