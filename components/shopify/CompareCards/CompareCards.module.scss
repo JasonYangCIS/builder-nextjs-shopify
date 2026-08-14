@@ -116,7 +116,7 @@
 
 .dialogContentWide {
   &:global([data-slot="dialog-content"]) {
-    max-width: 44rem;
+    max-width: 56rem;
     padding: 0;
   }
 }
@@ -133,7 +133,7 @@
 
 .galleryColumn {
   position: relative;
-  flex: 0 0 55%;
+  flex: 0 0 48%;
   background: var(--void-3);
   overflow: hidden;
 
