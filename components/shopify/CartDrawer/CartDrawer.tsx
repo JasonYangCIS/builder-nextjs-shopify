@@ -10,15 +10,17 @@ import CartLineItem from "@/components/shopify/CartLineItem/CartLineItem";
 import DiscountCodeInput from "@/components/shopify/DiscountCodeInput/DiscountCodeInput";
 import CheckoutButton from "@/components/shopify/CheckoutButton/CheckoutButton";
 import { useCart } from "@/lib/cart/useCart";
+import { useCartDrawer } from "@/lib/cart/useCartDrawer";
 import { formatMoney } from "@/utils/date";
 import styles from "./CartDrawer.module.scss";
 
 export default function CartDrawer() {
   const { cart } = useCart();
+  const { open, setOpen } = useCartDrawer();
   const count = cart?.totalQuantity ?? 0;
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
           aria-label={`Open cart, ${count} items`}

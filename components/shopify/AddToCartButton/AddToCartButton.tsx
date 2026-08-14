@@ -2,6 +2,7 @@
 import { useState, useTransition } from "react";
 import { Button } from "@jasonyangcis/core-ui";
 import { useCart } from "@/lib/cart/useCart";
+import { useCartDrawer } from "@/lib/cart/useCartDrawer";
 import type { AddToCartButtonProps } from "./AddToCartButton.types";
 
 export default function AddToCartButton({
@@ -12,6 +13,7 @@ export default function AddToCartButton({
   className,
 }: AddToCartButtonProps) {
   const { mutate } = useCart();
+  const { setOpen } = useCartDrawer();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -36,6 +38,7 @@ export default function AddToCartButton({
         return;
       }
       await mutate();
+      setOpen(true);
     });
   }
 

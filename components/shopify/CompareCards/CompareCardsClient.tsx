@@ -4,7 +4,7 @@ import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import type { Swiper as SwiperInstance } from "swiper";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@jasonyangcis/core-ui";
 import BlogRichText from "@/components/blog/BlogRichText/BlogRichText";
@@ -17,7 +17,6 @@ import type { CompareCardItem } from "./CompareCards.types";
 import styles from "./CompareCards.module.scss";
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/navigation";
 
 interface CompareCardsClientProps {
   items: CompareCardItem[];
@@ -42,7 +41,8 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
   );
   const product = data?.products?.[0];
   const sidebarHeading = product?.title ?? selected?.label ?? "";
-  const showGalleryLayout = Boolean(selected?.productHandle) && !isLoading && Boolean(product);
+  const hasProductLayout = Boolean(selected?.productHandle);
+  const showGalleryLayout = hasProductLayout && !isLoading && Boolean(product);
 
   if (items.length === 0) return null;
 
@@ -90,7 +90,7 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
         }}
       >
         <DialogContent
-          className={showGalleryLayout ? styles.dialogContentWide : undefined}
+          className={hasProductLayout ? styles.dialogContentWide : undefined}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             triggerRef.current?.focus();
@@ -158,8 +158,7 @@ function ProductDialogBody({
   const images = useMemo(() => buildGalleryImages(product), [product]);
   const swiperRef = useRef<SwiperInstance | null>(null);
   const skipNextScroll = useRef(true);
-  const prevButtonRef = useRef<HTMLButtonElement | null>(null);
-  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [navState, setNavState] = useState({ isBeginning: true, isEnd: images.length <= 1 });
 
   useEffect(() => {
     if (skipNextScroll.current) {
@@ -177,18 +176,15 @@ function ProductDialogBody({
         {images.length > 0 ? (
           <>
             <Swiper
-              modules={[Pagination, Navigation]}
+              modules={[Pagination]}
               pagination={{ clickable: true }}
-              navigation={{ prevEl: prevButtonRef.current, nextEl: nextButtonRef.current }}
-              onBeforeInit={(instance) => {
-                if (typeof instance.params.navigation === "object" && instance.params.navigation) {
-                  instance.params.navigation.prevEl = prevButtonRef.current;
-                  instance.params.navigation.nextEl = nextButtonRef.current;
-                }
-              }}
               onSwiper={(instance) => {
                 swiperRef.current = instance;
+                setNavState({ isBeginning: instance.isBeginning, isEnd: instance.isEnd });
               }}
+              onSlideChange={(instance) =>
+                setNavState({ isBeginning: instance.isBeginning, isEnd: instance.isEnd })
+              }
               className={styles.productImageSwiper}
             >
               {images.map((image, index) => (
@@ -206,18 +202,20 @@ function ProductDialogBody({
             {images.length > 1 && (
               <>
                 <button
-                  ref={prevButtonRef}
                   type="button"
                   aria-label="Previous image"
                   className={`${styles.navButton} ${styles.navButtonPrev}`}
+                  disabled={navState.isBeginning}
+                  onClick={() => swiperRef.current?.slidePrev()}
                 >
                   <ChevronIcon direction="left" />
                 </button>
                 <button
-                  ref={nextButtonRef}
                   type="button"
                   aria-label="Next image"
                   className={`${styles.navButton} ${styles.navButtonNext}`}
+                  disabled={navState.isEnd}
+                  onClick={() => swiperRef.current?.slideNext()}
                 >
                   <ChevronIcon direction="right" />
                 </button>
