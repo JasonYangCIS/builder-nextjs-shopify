@@ -221,7 +221,7 @@
     outline: none;
   }
 
-  &:global(.swiper-button-disabled) {
+  &:disabled {
     opacity: 0.35;
     pointer-events: none;
   }
@@ -254,5 +254,15 @@
 
 .sidebarContent {
   color: var(--ink-1);
+  font-family: var(--font-body);
+  font-size: var(--t-sm);
   line-height: 1.6;
+
+  :global(h2),
+  :global(h3),
+  :global(h4) {
+    font-family: var(--font-body);
+    font-size: var(--t-md);
+    font-weight: 600;
+  }
 }
