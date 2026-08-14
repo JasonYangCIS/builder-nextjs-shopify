@@ -119,6 +119,15 @@
     max-width: 56rem;
     padding: 0;
   }
+
+  :global([data-slot="dialog-close-button"]) {
+    top: var(--s-3);
+    right: var(--s-3);
+    z-index: 2;
+    color: var(--ink-0);
+    background: rgba(6, 9, 15, 0.55);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
 }
 
 .dialogLayout {
