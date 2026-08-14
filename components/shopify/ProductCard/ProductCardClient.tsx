@@ -11,7 +11,10 @@ const fetcher = async (url: string): Promise<{ products: Product[] }> => {
   return (await res.json()) as { products: Product[] };
 };
 
-export default function ProductCardClient({ productHandle }: ProductCardClientProps) {
+export default function ProductCardClient({
+  productHandle,
+  presentation = "default",
+}: ProductCardClientProps) {
   const { data, isLoading } = useSWR(
     productHandle ? `/api/products?handle=${encodeURIComponent(productHandle)}` : null,
     fetcher,
@@ -30,5 +33,5 @@ export default function ProductCardClient({ productHandle }: ProductCardClientPr
     return <p className={`t-mono ${styles.placeholder}`}>⌁ No artifact found</p>;
   }
 
-  return <ProductCard product={product} />;
+  return <ProductCard product={product} presentation={presentation} />;
 }

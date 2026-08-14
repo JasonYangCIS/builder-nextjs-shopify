@@ -1,16 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButton";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import type { ProductCardProps } from "./ProductCard.types";
 import styles from "./ProductCard.module.scss";
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  presentation = "default",
+}: ProductCardProps) {
   const img = product.featuredImage;
   const firstVariant = product.variants[0];
-
-  return (
-    <Link href={`/products/${product.handle}`} className={`group ${styles.card}`}>
+  const cardContent = (
+    <>
       <span className="corner-tl" aria-hidden="true" />
       <span className="corner-br" aria-hidden="true" />
 
@@ -53,6 +56,31 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         </div>
       </div>
+    </>
+  );
+
+  if (presentation === "hover-add-to-cart") {
+    return (
+      <article className={`group ${styles.quickAddCard}`}>
+        <Link href={`/products/${product.handle}`} className={styles.card}>
+          {cardContent}
+        </Link>
+        <div className={styles.quickAddLayer}>
+          <div aria-hidden="true" className={styles.quickAddOverlay} />
+          <AddToCartButton
+            variantId={firstVariant?.id ?? ""}
+            availableForSale={firstVariant?.availableForSale ?? false}
+            label="Add to cart"
+            className={styles.quickAdd}
+          />
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <Link href={`/products/${product.handle}`} className={`group ${styles.card}`}>
+      {cardContent}
     </Link>
   );
 }
