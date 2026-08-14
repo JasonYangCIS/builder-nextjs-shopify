@@ -42,6 +42,7 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
   );
   const product = data?.products?.[0];
   const sidebarHeading = product?.title ?? selected?.label ?? "";
+  const showGalleryLayout = Boolean(selected?.productHandle) && !isLoading && Boolean(product);
 
   if (items.length === 0) return null;
 
@@ -89,35 +90,38 @@ export default function CompareCardsClient({ items }: CompareCardsClientProps) {
         }}
       >
         <DialogContent
+          className={showGalleryLayout ? styles.dialogContentWide : undefined}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             triggerRef.current?.focus();
           }}
         >
-          {selected && (
-            <div className={styles.sidebar}>
-              <DialogTitle className={`t-display ${styles.sidebarTitle}`}>
-                {sidebarHeading}
-              </DialogTitle>
-              <DialogDescription className="sr-only">
-                More details about {sidebarHeading}
-              </DialogDescription>
+          {selected &&
+            (showGalleryLayout && product ? (
+              <ProductDialogBody key={product.id} product={product} sidebarContent={selected.sidebarContent} />
+            ) : (
+              <div className={styles.sidebar}>
+                <DialogTitle className={`t-display ${styles.sidebarTitle}`}>
+                  {sidebarHeading}
+                </DialogTitle>
+                <DialogDescription className="sr-only">
+                  More details about {sidebarHeading}
+                </DialogDescription>
 
-              {selected.productHandle && (
-                <div className={styles.productSummary}>
-                  {isLoading && <p className={`t-mono ${styles.placeholder}`}>Loading...</p>}
-                  {!isLoading && product && <ProductVariantPanel key={product.id} product={product} />}
-                  {!isLoading && !product && (
-                    <p className={`t-mono ${styles.placeholder}`}>Product not found</p>
-                  )}
-                </div>
-              )}
+                {selected.productHandle && (
+                  <div className={styles.productSummary}>
+                    {isLoading && <p className={`t-mono ${styles.placeholder}`}>Loading...</p>}
+                    {!isLoading && !product && (
+                      <p className={`t-mono ${styles.placeholder}`}>Product not found</p>
+                    )}
+                  </div>
+                )}
 
-              {selected.sidebarContent && (
-                <BlogRichText html={selected.sidebarContent} className={styles.sidebarContent} />
-              )}
-            </div>
-          )}
+                {selected.sidebarContent && (
+                  <BlogRichText html={selected.sidebarContent} className={styles.sidebarContent} />
+                )}
+              </div>
+            ))}
         </DialogContent>
       </Dialog>
     </>
@@ -143,7 +147,13 @@ function buildGalleryImages(product: Product): ShopifyImage[] {
   return gallery;
 }
 
-function ProductVariantPanel({ product }: { product: Product }) {
+function ProductDialogBody({
+  product,
+  sidebarContent,
+}: {
+  product: Product;
+  sidebarContent: string | null;
+}) {
   const [variant, setVariant] = useState<ProductVariant | null>(product.variants[0] ?? null);
   const images = useMemo(() => buildGalleryImages(product), [product]);
   const swiperRef = useRef<SwiperInstance | null>(null);
@@ -162,80 +172,90 @@ function ProductVariantPanel({ product }: { product: Product }) {
   }, [variant, images]);
 
   return (
-    <>
-      {images.length > 0 ? (
-        <div className={styles.productImageWrap}>
-          <Swiper
-            modules={[Pagination, Navigation]}
-            pagination={{ clickable: true }}
-            navigation={{ prevEl: prevButtonRef.current, nextEl: nextButtonRef.current }}
-            onBeforeInit={(instance) => {
-              if (typeof instance.params.navigation === "object" && instance.params.navigation) {
-                instance.params.navigation.prevEl = prevButtonRef.current;
-                instance.params.navigation.nextEl = nextButtonRef.current;
-              }
-            }}
-            onSwiper={(instance) => {
-              swiperRef.current = instance;
-            }}
-            className={styles.productImageSwiper}
-          >
-            {images.map((image, index) => (
-              <SwiperSlide key={`${image.url}-${index}`} className={styles.productImageSlide}>
-                <Image
-                  src={image.url}
-                  alt={image.altText ?? product.title}
-                  fill
-                  sizes="400px"
-                  className={styles.productImage}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          {images.length > 1 && (
-            <>
-              <button
-                ref={prevButtonRef}
-                type="button"
-                aria-label="Previous image"
-                className={`${styles.navButton} ${styles.navButtonPrev}`}
-              >
-                <ChevronIcon direction="left" />
-              </button>
-              <button
-                ref={nextButtonRef}
-                type="button"
-                aria-label="Next image"
-                className={`${styles.navButton} ${styles.navButtonNext}`}
-              >
-                <ChevronIcon direction="right" />
-              </button>
-            </>
-          )}
-        </div>
-      ) : (
-        <div className={styles.productImageWrap}>
+    <div className={styles.dialogLayout}>
+      <div className={styles.galleryColumn}>
+        {images.length > 0 ? (
+          <>
+            <Swiper
+              modules={[Pagination, Navigation]}
+              pagination={{ clickable: true }}
+              navigation={{ prevEl: prevButtonRef.current, nextEl: nextButtonRef.current }}
+              onBeforeInit={(instance) => {
+                if (typeof instance.params.navigation === "object" && instance.params.navigation) {
+                  instance.params.navigation.prevEl = prevButtonRef.current;
+                  instance.params.navigation.nextEl = nextButtonRef.current;
+                }
+              }}
+              onSwiper={(instance) => {
+                swiperRef.current = instance;
+              }}
+              className={styles.productImageSwiper}
+            >
+              {images.map((image, index) => (
+                <SwiperSlide key={`${image.url}-${index}`} className={styles.productImageSlide}>
+                  <Image
+                    src={image.url}
+                    alt={image.altText ?? product.title}
+                    fill
+                    sizes="(min-width: 640px) 40vw, 100vw"
+                    className={styles.productImage}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            {images.length > 1 && (
+              <>
+                <button
+                  ref={prevButtonRef}
+                  type="button"
+                  aria-label="Previous image"
+                  className={`${styles.navButton} ${styles.navButtonPrev}`}
+                >
+                  <ChevronIcon direction="left" />
+                </button>
+                <button
+                  ref={nextButtonRef}
+                  type="button"
+                  aria-label="Next image"
+                  className={`${styles.navButton} ${styles.navButtonNext}`}
+                >
+                  <ChevronIcon direction="right" />
+                </button>
+              </>
+            )}
+          </>
+        ) : (
           <span className={styles.imageFallback} aria-hidden="true">
             <span className={styles.imageFallbackGlyph}>◈</span>
           </span>
-        </div>
-      )}
-      <div className="flex items-center gap-3">
-        <PriceDisplay
-          price={variant?.price ?? product.priceRange.minVariantPrice}
-          compareAtPrice={variant?.compareAtPrice}
-        />
-        <InventoryBadge
-          availableForSale={variant?.availableForSale ?? product.availableForSale}
-          quantityAvailable={variant?.quantityAvailable ?? null}
-        />
+        )}
       </div>
-      <VariantPicker product={product} onSelect={setVariant} />
-      {variant && <AddToCartButton variantId={variant.id} availableForSale={variant.availableForSale} />}
-      <Link href={`/products/${product.handle}`} className={`t-mono ${styles.viewProductLink}`}>
-        View product
-      </Link>
-    </>
+
+      <div className={styles.infoColumn}>
+        <DialogTitle className={`t-display ${styles.sidebarTitle}`}>{product.title}</DialogTitle>
+        <DialogDescription className="sr-only">More details about {product.title}</DialogDescription>
+
+        <div className="flex items-center gap-3">
+          <PriceDisplay
+            price={variant?.price ?? product.priceRange.minVariantPrice}
+            compareAtPrice={variant?.compareAtPrice}
+          />
+          <InventoryBadge
+            availableForSale={variant?.availableForSale ?? product.availableForSale}
+            quantityAvailable={variant?.quantityAvailable ?? null}
+          />
+        </div>
+        <VariantPicker product={product} onSelect={setVariant} />
+        {variant && <AddToCartButton variantId={variant.id} availableForSale={variant.availableForSale} />}
+        <Link href={`/products/${product.handle}`} className={`t-mono ${styles.viewProductLink}`}>
+          View product
+        </Link>
+
+        {sidebarContent && (
+          <BlogRichText html={sidebarContent} className={styles.sidebarContent} />
+        )}
+      </div>
+    </div>
   );
 }
 

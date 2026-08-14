@@ -114,6 +114,44 @@
   border-bottom: 1px solid var(--border);
 }
 
+.dialogContentWide {
+  &:global([data-slot="dialog-content"]) {
+    max-width: 44rem;
+    padding: 0;
+  }
+}
+
+.dialogLayout {
+  display: flex;
+  height: 100%;
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+}
+
+.galleryColumn {
+  position: relative;
+  flex: 0 0 55%;
+  background: var(--void-3);
+  overflow: hidden;
+
+  @media (max-width: 720px) {
+    flex: 0 0 320px;
+  }
+}
+
+.infoColumn {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
 .productImageWrap {
   position: relative;
   aspect-ratio: 4 / 5;
