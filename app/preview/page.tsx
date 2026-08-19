@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { getBuilderSearchParams, fetchOneEntry } from "@builder.io/sdk-react";
 import RenderBuilderContent from "@/components/builder/RenderBuilderContent/RenderBuilderContent";
 import PreviewBlogArticleHeader from "@/components/blog/PreviewBlogArticleHeader/PreviewBlogArticleHeader";
+import ProductDetail from "@/components/shopify/ProductDetail/ProductDetail";
+import { prefetchBuilderFallback } from "@/components/builder/prefetchBuilderFallback";
+import { getProductByHandle } from "@/lib/shopify/product";
 import { config } from "@/config";
 
 interface SP { [key: string]: string | string[] | undefined }
@@ -46,6 +49,24 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
           />
         </section>
       </article>
+    );
+  }
+  if (model === config.models.product) {
+    const handle = urlPath.replace(/^\/products\//, "").replace(/\/$/, "");
+    const product = handle ? await getProductByHandle(handle) : null;
+    const fallback = await prefetchBuilderFallback(content);
+    return (
+      <>
+        {product ? <ProductDetail product={product} /> : null}
+        <section aria-label="Additional product content">
+          <RenderBuilderContent
+            content={content}
+            model={config.models.product}
+            fallback={fallback}
+            disableTracking
+          />
+        </section>
+      </>
     );
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
