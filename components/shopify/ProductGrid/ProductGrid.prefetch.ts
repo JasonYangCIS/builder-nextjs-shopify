@@ -7,5 +7,5 @@ import type { ProductGridProps } from "./ProductGrid.types";
 export const productGridPrefetcher: ComponentPrefetcher<ProductGridProps> = {
   componentName: "ProductGrid",
   getKey: (options) => productGridKey(options),
-  fetchData: async (options) => ({ products: await resolveProductGrid(options) }),
+  fetchData: async (options) => resolveProductGrid(options),
 };

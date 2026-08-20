@@ -66,3 +66,49 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
+
+.controls {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sortSelect {
+  padding: 8px 12px;
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink-1);
+  clip-path: var(--chamfer-sm);
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--cyan-line);
+  }
+}
+
+.filterGroups {
+  padding-top: 8px;
+}
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend {
+  margin-bottom: 8px;
+  color: var(--ink-2);
+}
+
+.filterOption {
+  color: var(--ink-1);
+  font-size: var(--t-xs);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ink-0);
+  }
+}

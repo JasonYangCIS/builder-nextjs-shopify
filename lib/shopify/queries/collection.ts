@@ -2,7 +2,13 @@ import { PRODUCT_FRAGMENT } from "./product";
 
 export const GET_COLLECTION = /* GraphQL */ `
   ${PRODUCT_FRAGMENT}
-  query GetCollection($handle: String!, $first: Int!) {
+  query GetCollection(
+    $handle: String!
+    $first: Int!
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
+    $filters: [ProductFilter!]
+  ) {
     collection(handle: $handle) {
       id
       handle
@@ -10,7 +16,10 @@ export const GET_COLLECTION = /* GraphQL */ `
       description
       descriptionHtml
       image { url altText width height }
-      products(first: $first) { edges { node { ...ProductFields } } }
+      products(first: $first, sortKey: $sortKey, reverse: $reverse, filters: $filters) {
+        edges { node { ...ProductFields } }
+        filters { id label type values { id label count input } }
+      }
     }
   }
 `;

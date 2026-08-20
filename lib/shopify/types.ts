@@ -44,6 +44,31 @@ export interface SelectedProductResult {
   fetchError: boolean;
 }
 
+/** One selectable value within a `ProductFacet`, as returned by Shopify's `Filter.values`. */
+export interface ProductFacetValue {
+  id: string;
+  label: string;
+  count: number;
+  /** Exact JSON string Shopify expects back in `filters: [ProductFilter!]` to apply this value. */
+  input: string;
+}
+
+/** A dynamically-returned filterable facet (availability, product type, vendor, tags, price, variant option, ...). */
+export interface ProductFacet {
+  id: string;
+  label: string;
+  type: string;
+  values: ProductFacetValue[];
+}
+
+/** A sort option surfaced in the ProductGrid toolbar. */
+export interface ProductSortOption {
+  id: string;
+  label: string;
+  sortKey: string;
+  reverse: boolean;
+}
+
 export interface CartLine {
   id: string;
   quantity: number;
