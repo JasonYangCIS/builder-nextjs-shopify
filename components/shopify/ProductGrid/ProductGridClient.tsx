@@ -39,11 +39,17 @@ export default function ProductGridClient({
 
   const filters = useMemo(() => Object.values(activeFilters).flat(), [activeFilters]);
 
+  // `Collection.products` has no text-search argument in the Storefront API,
+  // so search only affects results for the root (non-collection) listing.
+  const supportsSearch = !collectionHandle;
+
   const key = productGridKey({
     collectionHandle,
     query,
     limit,
-    ...(enableControls ? { search: debouncedSearch, sort, filters } : {}),
+    ...(enableControls
+      ? { search: supportsSearch ? debouncedSearch : undefined, sort, filters }
+      : {}),
   });
 
   // In the Builder editor we revalidate freely so admins see real-time product
@@ -99,6 +105,7 @@ export default function ProductGridClient({
 
       {enableControls && (
         <ProductGridControls
+          showSearch={supportsSearch}
           search={search}
           onSearchChange={setSearch}
           sortOptions={PRODUCT_SORT_OPTIONS}

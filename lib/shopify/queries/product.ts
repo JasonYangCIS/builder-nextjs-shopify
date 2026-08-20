@@ -42,15 +42,14 @@ export const GET_PRODUCT_BY_HANDLE = /* GraphQL */ `
 `;
 
 // The root `products` field (2024-10 Storefront API) does not accept a
-// `filters` argument — only `Collection.products` does. It still exposes the
-// `filters` facet field so the UI can show available facets, but applying a
-// facet only works once a collection is selected.
+// `filters` argument — only `Collection.products` does. We deliberately don't
+// select the `filters` facet field here either: surfacing facets the UI can't
+// apply would render non-functional checkboxes.
 export const LIST_PRODUCTS = /* GraphQL */ `
   ${PRODUCT_FRAGMENT}
   query ListProducts($first: Int!, $query: String, $sortKey: ProductSortKeys, $reverse: Boolean) {
     products(first: $first, query: $query, sortKey: $sortKey, reverse: $reverse) {
       edges { node { ...ProductFields } }
-      filters { id label type values { id label count input } }
     }
   }
 `;

@@ -2,7 +2,18 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getProductByHandle, resolveProductsByHandles, resolveProductGrid } from "@/lib/shopify/product";
 
-const filtersSchema = z.array(z.string()).max(20);
+const filtersSchema = z
+  .array(
+    z.string().refine((value) => {
+      try {
+        JSON.parse(value);
+        return true;
+      } catch {
+        return false;
+      }
+    }, "must be a valid JSON string"),
+  )
+  .max(20);
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

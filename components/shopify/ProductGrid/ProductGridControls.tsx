@@ -4,6 +4,7 @@ import type { ProductFacet, ProductSortOption } from "@/lib/shopify/types";
 import styles from "./ProductGrid.module.scss";
 
 export interface ProductGridControlsProps {
+  showSearch: boolean;
   search: string;
   onSearchChange: (value: string) => void;
   sortOptions: ProductSortOption[];
@@ -15,6 +16,7 @@ export interface ProductGridControlsProps {
 }
 
 export default function ProductGridControls({
+  showSearch,
   search,
   onSearchChange,
   sortOptions,
@@ -27,16 +29,18 @@ export default function ProductGridControls({
   return (
     <div className={`flex flex-col gap-4 ${styles.controls}`}>
       <div className="flex flex-wrap items-end gap-4">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="product-grid-search">Search</Label>
-          <Input
-            id="product-grid-search"
-            type="search"
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search products"
-          />
-        </div>
+        {showSearch && (
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="product-grid-search">Search</Label>
+            <Input
+              id="product-grid-search"
+              type="search"
+              value={search}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="Search products"
+            />
+          </div>
+        )}
         <div className="flex flex-col gap-2">
           <Label htmlFor="product-grid-sort">Sort by</Label>
           <select

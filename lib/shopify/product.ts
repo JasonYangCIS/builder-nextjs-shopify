@@ -109,7 +109,7 @@ export async function listProducts(opts: {
 } = {}): Promise<ProductGridResult> {
   const { first = 24, query, sortKey, reverse } = opts;
   const { data } = await shopifyFetch<{
-    products: { edges: { node: RawProduct }[]; filters: ProductFacet[] };
+    products: { edges: { node: RawProduct }[] };
   }>({
     query: LIST_PRODUCTS,
     variables: { first, query, sortKey, reverse },
@@ -117,7 +117,8 @@ export async function listProducts(opts: {
   });
   return {
     products: data.products.edges.map((e) => normalizeProduct(e.node)!).filter(Boolean),
-    facets: data.products.filters ?? [],
+    // The root `products` field has no `filters` argument, so facets would be non-actionable here.
+    facets: [],
   };
 }
 
