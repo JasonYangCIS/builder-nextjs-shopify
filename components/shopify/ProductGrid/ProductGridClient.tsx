@@ -23,7 +23,7 @@ export default function ProductGridClient({
   query,
   limit = 12,
   heading,
-  enableControls = true,
+  enableControls,
 }: ProductGridProps) {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
