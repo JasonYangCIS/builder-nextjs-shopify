@@ -2,7 +2,8 @@ import "server-only";
 import { shopifyFetch } from "./storefront-client";
 import { GET_PRODUCT_BY_HANDLE, LIST_PRODUCTS, LIST_PRODUCT_HANDLES } from "./queries/product";
 import { GET_COLLECTION, LIST_COLLECTION_HANDLES } from "./queries/collection";
-import type { Product, SelectedProductResult } from "./types";
+import type { Product, ProductFacet, SelectedProductResult } from "./types";
+import { PRODUCT_SORT_OPTIONS } from "./sort-options";
 
 /** Upper bound on handles resolved in a single selected-products request. */
 export const SELECTED_PRODUCTS_MAX_HANDLES = 24;
@@ -66,27 +67,59 @@ export const PRODUCT_GRID_MAX_LIMIT = 48;
  * the `/api/products` handler and the server-side SSR prefetch so both produce
  * identical results for the same query string.
  */
+export interface ProductGridResult {
+  products: Product[];
+  facets: ProductFacet[];
+}
+
 export async function resolveProductGrid(opts: {
   collectionHandle?: string | null;
   query?: string | null;
   limit?: number | string | null;
-}): Promise<Product[]> {
+  sort?: string | null;
+  filters?: string[] | null;
+}): Promise<ProductGridResult> {
   const limit = Math.min(PRODUCT_GRID_MAX_LIMIT, Number(opts.limit ?? 12));
+  const filters = opts.filters?.map((f) => JSON.parse(f) as Record<string, unknown>);
+  const sortOption = opts.sort ? PRODUCT_SORT_OPTIONS.find((o) => o.id === opts.sort) : undefined;
   if (opts.collectionHandle) {
-    const collection = await getCollection(opts.collectionHandle, limit);
-    return collection?.products ?? [];
+    const collection = await getCollection(opts.collectionHandle, limit, {
+      sortKey: sortOption?.sortKey,
+      reverse: sortOption?.reverse,
+      filters,
+    });
+    return { products: collection?.products ?? [], facets: collection?.facets ?? [] };
   }
-  return listProducts({ first: limit, query: opts.query ?? undefined });
+  // The root `products` field has no `filters` argument (only `Collection.products` does),
+  // so a facet selection with no collection selected can't be applied.
+  return listProducts({
+    first: limit,
+    query: opts.query ?? undefined,
+    // The root `products` field uses `ProductSortKeys`, which spells "created at" differently.
+    sortKey: sortOption?.sortKey === "CREATED" ? "CREATED_AT" : sortOption?.sortKey,
+    reverse: sortOption?.reverse,
+  });
 }
 
-export async function listProducts(opts: { first?: number; query?: string } = {}): Promise<Product[]> {
-  const { first = 24, query } = opts;
-  const { data } = await shopifyFetch<{ products: { edges: { node: RawProduct }[] } }>({
+export async function listProducts(opts: {
+  first?: number;
+  query?: string;
+  sortKey?: string;
+  reverse?: boolean;
+} = {}): Promise<ProductGridResult> {
+  const { first = 24, query, sortKey, reverse } = opts;
+  const { data } = await shopifyFetch<{
+    products: { edges: { node: RawProduct }[] };
+  }>({
     query: LIST_PRODUCTS,
-    variables: { first, query },
+    variables: { first, query, sortKey, reverse },
     tags: ["products"],
   });
-  return data.products.edges.map((e) => normalizeProduct(e.node)!).filter(Boolean);
+  return {
+    products: data.products.edges.map((e) => normalizeProduct(e.node)!).filter(Boolean),
+    // The root `products` field has no `filters` argument, so facets would be non-actionable here.
+    facets: [],
+  };
 }
 
 export async function listProductHandles(first = 250): Promise<string[]> {
@@ -98,22 +131,27 @@ export async function listProductHandles(first = 250): Promise<string[]> {
   return data.products.edges.map((e) => e.node.handle);
 }
 
-export async function getCollection(handle: string, first = 24) {
+export async function getCollection(
+  handle: string,
+  first = 24,
+  opts: { sortKey?: string; reverse?: boolean; filters?: Record<string, unknown>[] } = {},
+) {
   const { data } = await shopifyFetch<{
     collection:
       | (Omit<Product, "variants" | "images" | "options" | "priceRange" | "tags" | "availableForSale"> & {
-          products: { edges: { node: RawProduct }[] };
+          products: { edges: { node: RawProduct }[]; filters: ProductFacet[] };
         })
       | null;
   }>({
     query: GET_COLLECTION,
-    variables: { handle, first },
+    variables: { handle, first, sortKey: opts.sortKey, reverse: opts.reverse, filters: opts.filters },
     tags: [`collection:${handle}`],
   });
   if (!data.collection) return null;
   return {
     ...data.collection,
     products: data.collection.products.edges.map((e) => normalizeProduct(e.node)!).filter(Boolean),
+    facets: data.collection.products.filters ?? [],
   };
 }
 

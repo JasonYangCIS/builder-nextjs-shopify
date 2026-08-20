@@ -1,17 +1,21 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
 import ProductCard from "@/components/shopify/ProductCard/ProductCard";
-import type { Product } from "@/lib/shopify/types";
+import type { Product, ProductFacet } from "@/lib/shopify/types";
+import { PRODUCT_SORT_OPTIONS } from "@/lib/shopify/sort-options";
 import type { ProductGridProps } from "./ProductGrid.types";
 import { productGridKey } from "./ProductGrid.shared";
+import ProductGridControls from "./ProductGridControls";
 import styles from "./ProductGrid.module.scss";
 
-const fetcher = async (url: string): Promise<{ products: Product[] }> => {
+const SEARCH_DEBOUNCE_MS = 300;
+
+const fetcher = async (url: string): Promise<{ products: Product[]; facets: ProductFacet[] }> => {
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to load products");
-  return (await res.json()) as { products: Product[] };
+  return (await res.json()) as { products: Product[]; facets: ProductFacet[] };
 };
 
 export default function ProductGridClient({
@@ -19,8 +23,34 @@ export default function ProductGridClient({
   query,
   limit = 12,
   heading,
+  enableControls,
 }: ProductGridProps) {
-  const key = productGridKey({ collectionHandle, query, limit });
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  // Empty until the shopper picks a sort, so the first-paint SWR key matches
+  // the server-rendered fallback (no extra query params) and avoids a refetch.
+  const [sort, setSort] = useState("");
+  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>({});
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const filters = useMemo(() => Object.values(activeFilters).flat(), [activeFilters]);
+
+  // `Collection.products` has no text-search argument in the Storefront API,
+  // so search only affects results for the root (non-collection) listing.
+  const supportsSearch = !collectionHandle;
+
+  const key = productGridKey({
+    collectionHandle,
+    query,
+    limit,
+    ...(enableControls
+      ? { search: supportsSearch ? debouncedSearch : undefined, sort, filters }
+      : {}),
+  });
 
   // In the Builder editor we revalidate freely so admins see real-time product
   // changes. In production an SWR fallback is hydrated from the server, so we
@@ -54,6 +84,16 @@ export default function ProductGridClient({
     return () => observer.disconnect();
   }, [data]);
 
+  function toggleFilter(facetId: string, valueInput: string) {
+    setActiveFilters((prev) => {
+      const current = prev[facetId] ?? [];
+      const next = current.includes(valueInput)
+        ? current.filter((v) => v !== valueInput)
+        : [...current, valueInput];
+      return { ...prev, [facetId]: next };
+    });
+  }
+
   return (
     <section className="flex flex-col gap-6">
       {heading && (
@@ -61,6 +101,20 @@ export default function ProductGridClient({
           <h2 className={`t-display ${styles.heading}`}>{heading}</h2>
           <div className={styles.headingRule} />
         </div>
+      )}
+
+      {enableControls && (
+        <ProductGridControls
+          showSearch={supportsSearch}
+          search={search}
+          onSearchChange={setSearch}
+          sortOptions={PRODUCT_SORT_OPTIONS}
+          sortValue={sort || PRODUCT_SORT_OPTIONS[0].id}
+          onSortChange={setSort}
+          facets={data?.facets ?? []}
+          activeFilters={activeFilters}
+          onToggleFilter={toggleFilter}
+        />
       )}
 
       {isLoading && (

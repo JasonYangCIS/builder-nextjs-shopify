@@ -9,5 +9,11 @@ export const productGridConfig: RegisteredComponent = {
     { name: "collectionHandle", type: "ShopifyCollectionHandle", helperText: "Pick a Shopify collection (optional)" },
     { name: "query", type: "string", helperText: "Storefront search query (optional)" },
     { name: "limit", type: "number", defaultValue: 12 },
+    {
+      name: "enableControls",
+      type: "boolean",
+      defaultValue: false,
+      helperText: "Show search, sort, and filter controls above the grid",
+    },
   ],
 };
