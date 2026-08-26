@@ -1,0 +1,25 @@
+.empty {
+  color: var(--ink-2);
+}
+
+.emptyGlyph {
+  font-size: 40px;
+  opacity: 0.3;
+}
+
+.emptyText {
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.gridItem {
+  position: relative;
+}
+
+.wishlistButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+}
