@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo } from "react";
 import useSWR from "swr";
+import { SELECTED_PRODUCTS_MAX_HANDLES } from "@/lib/shopify/types";
 
 const STORAGE_KEY = "wishlist:handles";
 const SWR_KEY = "wishlist";
@@ -35,13 +36,21 @@ export function useWishlist() {
 
   const toggle = useCallback(
     (handle: string) => {
-      const next = handles.includes(handle)
-        ? handles.filter((h) => h !== handle)
-        : [...handles, handle];
+      // Read fresh from localStorage rather than the hook's `handles` snapshot so a
+      // concurrent write from another tab isn't clobbered by a stale in-memory value.
+      const current = readHandles();
+      let next: string[];
+      if (current.includes(handle)) {
+        next = current.filter((h) => h !== handle);
+      } else if (current.length >= SELECTED_PRODUCTS_MAX_HANDLES) {
+        return;
+      } else {
+        next = [...current, handle];
+      }
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       mutate(next);
     },
-    [handles, mutate],
+    [mutate],
   );
 
   const isSaved = useCallback((handle: string) => handles.includes(handle), [handles]);

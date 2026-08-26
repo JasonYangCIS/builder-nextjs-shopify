@@ -18,9 +18,7 @@ export default function WishlistPage() {
     handles.length > 0 ? `/api/products?handles=${handles.map(encodeURIComponent).join(",")}` : null;
   const { data, isLoading: productsLoading } = useSWR(key, fetcher);
 
-  const products = (data?.results ?? [])
-    .filter((r) => !r.fetchError && r.product !== null)
-    .map((r) => r.product!);
+  const results = data?.results ?? [];
 
   const isLoading = handlesLoading || (key !== null && productsLoading);
 
@@ -39,19 +37,20 @@ export default function WishlistPage() {
         </div>
       )}
 
-      {!isLoading && handles.length > 0 && products.length === 0 && (
-        <div className={`flex flex-col items-center gap-4 py-12 ${styles.empty}`}>
-          <span className={styles.emptyGlyph}>◈</span>
-          <p className={`t-mono ${styles.emptyText}`}>Saved artifacts unavailable</p>
-        </div>
-      )}
-
-      {!isLoading && products.length > 0 && (
+      {!isLoading && results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => (
-            <li key={product.handle} className={styles.gridItem}>
-              <ProductCard product={product} />
-              <WishlistButton handle={product.handle} className={styles.wishlistButton} />
+          {results.map(({ handle, product, fetchError }) => (
+            <li key={handle} className={styles.gridItem}>
+              {product ? (
+                <ProductCard product={product} />
+              ) : (
+                <div className={`flex flex-col items-center justify-center gap-2 ${styles.notFoundSlot}`}>
+                  <span className={`t-mono ${styles.notFoundLabel}`}>
+                    {fetchError ? `⌁ ${handle} unavailable` : `⌁ ${handle} not found`}
+                  </span>
+                </div>
+              )}
+              <WishlistButton handle={handle} className={styles.wishlistButton} />
             </li>
           ))}
         </ul>

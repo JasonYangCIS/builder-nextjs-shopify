@@ -2,11 +2,9 @@ import "server-only";
 import { shopifyFetch } from "./storefront-client";
 import { GET_PRODUCT_BY_HANDLE, LIST_PRODUCTS, LIST_PRODUCT_HANDLES } from "./queries/product";
 import { GET_COLLECTION, LIST_COLLECTION_HANDLES } from "./queries/collection";
+import { SELECTED_PRODUCTS_MAX_HANDLES } from "./types";
 import type { Product, ProductFacet, SelectedProductResult } from "./types";
 import { PRODUCT_SORT_OPTIONS } from "./sort-options";
-
-/** Upper bound on handles resolved in a single selected-products request. */
-export const SELECTED_PRODUCTS_MAX_HANDLES = 24;
 
 interface RawProduct extends Omit<Product, "images" | "variants"> {
   images: { edges: { node: Product["images"][number] }[] };
