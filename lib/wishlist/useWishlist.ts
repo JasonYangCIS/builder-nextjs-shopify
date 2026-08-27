@@ -47,7 +47,13 @@ export function useWishlist() {
       } else {
         next = [...current, handle];
       }
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Storage disabled (e.g. Safari private browsing) or quota exceeded — leave
+        // the in-memory list untouched rather than mutating state we can't persist.
+        return false;
+      }
       mutate(next);
       return true;
     },
