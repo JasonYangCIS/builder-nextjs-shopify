@@ -1,0 +1,39 @@
+.empty {
+  color: var(--ink-2);
+}
+
+.emptyGlyph {
+  font-size: 40px;
+  opacity: 0.3;
+}
+
+.emptyText {
+  font-size: var(--t-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.gridItem {
+  position: relative;
+}
+
+.notFoundSlot {
+  min-height: 200px;
+  border: 1px dashed var(--border);
+}
+
+.notFoundLabel {
+  color: var(--ink-3);
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0 12px;
+}
+
+.wishlistButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+}

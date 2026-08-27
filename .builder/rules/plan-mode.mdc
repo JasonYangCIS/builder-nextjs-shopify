@@ -1,0 +1,12 @@
+---
+description: Commit the plan-mode plan file to the branch so it ships with the PR.
+globs: "**"
+alwaysApply: true
+---
+
+When operating in plan mode:
+
+- The plan file the planning tool writes (e.g. `.builder/plans/<name>.md`) lives at the **workspace root**, which is OUTSIDE the `code` git repo (it's a sibling of `code/` and `core-ui/`). It can never be `git add`-ed directly from inside `code/` — do not try.
+- Before calling `ExitPlanMode`, copy the plan file's contents into the repo at `docs/plans/<name>.md` (create `docs/plans/` if needed), then stage and commit that copy (e.g. `git add docs/plans/<name>.md && git commit -m "docs: add plan for <task>"`) so it is included in the eventual Pull Request diff.
+- Do not delete or gitignore the committed copy after the plan is approved — it should remain in the branch history as part of the PR.
+- If the plan is revised after user feedback, update the same `docs/plans/<name>.md` copy and commit a follow-up (or amend) rather than leaving the update uncommitted.

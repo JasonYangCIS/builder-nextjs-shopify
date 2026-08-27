@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import VariantPicker from "@/components/shopify/VariantPicker/VariantPicker";
 import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButton";
+import WishlistButton from "@/components/shopify/WishlistButton/WishlistButton";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import { sanitizeHtml } from "@/utils/sanitize-html";
@@ -76,11 +77,15 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         <VariantPicker product={product} onSelect={setVariant} />
 
         {variant && (
-          <AddToCartButton
-            variantId={variant.id}
-            availableForSale={variant.availableForSale}
-            label="Acquire artifact"
-          />
+          <div className="flex items-center gap-3">
+            <AddToCartButton
+              variantId={variant.id}
+              availableForSale={variant.availableForSale}
+              label="Acquire artifact"
+              className="flex-1"
+            />
+            <WishlistButton handle={product.handle} />
+          </div>
         )}
 
         <div className={styles.divider} />

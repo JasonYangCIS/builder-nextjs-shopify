@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CartDrawer from "@/components/shopify/CartDrawer/CartDrawer";
+import WishlistLink from "@/components/layout/WishlistLink/WishlistLink";
 import AccountMenu from "@/components/layout/AccountMenu/AccountMenu";
 import MobileMenu from "@/components/layout/MobileMenu/MobileMenu";
 import styles from "./Header.module.scss";
@@ -47,6 +48,7 @@ export default function Header() {
         {/* Actions */}
         <div className="flex items-center justify-end gap-1 justify-self-end">
           <AccountMenu />
+          <WishlistLink />
           <CartDrawer />
           <MobileMenu />
         </div>

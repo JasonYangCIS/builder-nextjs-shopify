@@ -80,6 +80,7 @@ docs/runbook.md           — dev-store, tokens, webhook setup
 | Rule | Globs |
 |---|---|
 | `secrets.mdc` (alwaysApply) | `**` |
+| `plan-mode.mdc` (alwaysApply) | `**` |
 | `builder-sdk.mdc` | `app/**/*.{ts,tsx}, components/builder/**, builder-registry.ts, config.ts` |
 | `component-structure.mdc` | `components/**` |
 | `design-system.mdc` | `components/**, styles/**, app/globals.css` |

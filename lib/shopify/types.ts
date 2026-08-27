@@ -1,3 +1,6 @@
+/** Upper bound on handles resolved in a single selected-products request (`/api/products?handles=`). */
+export const SELECTED_PRODUCTS_MAX_HANDLES = 24;
+
 export interface Money {
   amount: string;
   currencyCode: string;
