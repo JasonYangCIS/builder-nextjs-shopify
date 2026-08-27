@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import VariantPicker from "@/components/shopify/VariantPicker/VariantPicker";
 import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButton";
+import ExpressCheckoutButton from "@/components/shopify/ExpressCheckoutButton/ExpressCheckoutButton";
 import WishlistButton from "@/components/shopify/WishlistButton/WishlistButton";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
@@ -82,6 +83,11 @@ export default function ProductDetail({ product }: ProductDetailProps) {
               variantId={variant.id}
               availableForSale={variant.availableForSale}
               label="Acquire artifact"
+              className="flex-1"
+            />
+            <ExpressCheckoutButton
+              variantId={variant.id}
+              availableForSale={variant.availableForSale}
               className="flex-1"
             />
             <WishlistButton handle={product.handle} />
