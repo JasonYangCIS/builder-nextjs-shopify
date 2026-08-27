@@ -16,7 +16,7 @@ export default function WishlistPage() {
   const { handles, isLoading: handlesLoading } = useWishlist();
   const key =
     handles.length > 0 ? `/api/products?handles=${handles.map(encodeURIComponent).join(",")}` : null;
-  const { data, isLoading: productsLoading } = useSWR(key, fetcher);
+  const { data, error, isLoading: productsLoading, mutate } = useSWR(key, fetcher);
 
   const results = data?.results ?? [];
 
@@ -37,7 +37,17 @@ export default function WishlistPage() {
         </div>
       )}
 
-      {!isLoading && results.length > 0 && (
+      {!isLoading && error && (
+        <div className={`flex flex-col items-center gap-4 py-12 ${styles.empty}`}>
+          <span className={styles.emptyGlyph}>◈</span>
+          <p className={`t-mono ${styles.emptyText}`}>Failed to load your wishlist</p>
+          <button type="button" onClick={() => mutate()} className="t-mono underline">
+            Retry
+          </button>
+        </div>
+      )}
+
+      {!isLoading && !error && results.length > 0 && (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {results.map(({ handle, product, fetchError }) => (
             <li key={handle} className={styles.gridItem}>
