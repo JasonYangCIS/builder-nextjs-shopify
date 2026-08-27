@@ -5,8 +5,9 @@ import { useWishlist } from "@/lib/wishlist/useWishlist";
 import type { WishlistButtonProps } from "./WishlistButton.types";
 
 export default function WishlistButton({ handle, className }: WishlistButtonProps) {
-  const { isSaved, toggle } = useWishlist();
+  const { isSaved, toggle, atCapacity } = useWishlist();
   const saved = isSaved(handle);
+  const disabled = !saved && atCapacity;
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -19,8 +20,16 @@ export default function WishlistButton({ handle, className }: WishlistButtonProp
       type="button"
       variant={saved ? "default" : "outline"}
       size="icon"
+      disabled={disabled}
       aria-pressed={saved}
-      aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}
+      aria-label={
+        disabled
+          ? "Wishlist is full — remove an item to add more"
+          : saved
+            ? "Remove from wishlist"
+            : "Add to wishlist"
+      }
+      title={disabled ? "Wishlist is full — remove an item to add more" : undefined}
       onClick={handleClick}
       className={className}
     >

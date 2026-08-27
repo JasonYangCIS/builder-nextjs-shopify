@@ -35,7 +35,7 @@ export function useWishlist() {
   }, [mutate]);
 
   const toggle = useCallback(
-    (handle: string) => {
+    (handle: string): boolean => {
       // Read fresh from localStorage rather than the hook's `handles` snapshot so a
       // concurrent write from another tab isn't clobbered by a stale in-memory value.
       const current = readHandles();
@@ -43,17 +43,19 @@ export function useWishlist() {
       if (current.includes(handle)) {
         next = current.filter((h) => h !== handle);
       } else if (current.length >= SELECTED_PRODUCTS_MAX_HANDLES) {
-        return;
+        return false;
       } else {
         next = [...current, handle];
       }
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       mutate(next);
+      return true;
     },
     [mutate],
   );
 
   const isSaved = useCallback((handle: string) => handles.includes(handle), [handles]);
+  const atCapacity = handles.length >= SELECTED_PRODUCTS_MAX_HANDLES;
 
-  return { handles, isSaved, toggle, isLoading };
+  return { handles, isSaved, toggle, isLoading, atCapacity };
 }
