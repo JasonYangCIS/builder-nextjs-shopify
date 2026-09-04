@@ -17,6 +17,7 @@ const fetcher = async (url: string): Promise<{ results: SelectedProductResult[] 
 export default function ProductGridSelectedClient({
   handles,
   heading,
+  cardVariant,
 }: ProductGridSelectedProps) {
   const rawHandles = extractSelectedHandles(handles);
   const key = selectedProductsKey(rawHandles);
@@ -94,7 +95,7 @@ export default function ProductGridSelectedClient({
                 className={styles.gridItem}
                 style={{ "--delay": `${i * 70}ms` } as React.CSSProperties}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} cardVariant={cardVariant} />
               </li>
             ) : (
               <li

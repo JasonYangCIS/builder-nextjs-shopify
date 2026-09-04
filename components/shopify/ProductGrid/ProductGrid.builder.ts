@@ -15,5 +15,13 @@ export const productGridConfig: RegisteredComponent = {
       defaultValue: false,
       helperText: "Show search, sort, and filter controls above the grid",
     },
+    {
+      name: "cardVariant",
+      type: "string",
+      enum: ["static", "flip"],
+      defaultValue: "flip",
+      helperText:
+        "static=image, title, price, and stock badge shown up front. flip=image and title up front; hover flips the card to reveal price and an Add to Cart button.",
+    },
   ],
 };

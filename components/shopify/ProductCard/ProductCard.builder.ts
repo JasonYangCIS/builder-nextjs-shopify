@@ -11,5 +11,13 @@ export const productCardConfig: RegisteredComponent = {
       required: true,
       helperText: "Shopify product handle, e.g. obsidian-amulet",
     },
+    {
+      name: "cardVariant",
+      type: "string",
+      enum: ["static", "flip"],
+      defaultValue: "flip",
+      helperText:
+        "static=image, title, price, and stock badge shown up front (whole card links to the product). flip=image and title up front only; hover flips the card to reveal price, stock badge, and an Add to Cart button.",
+    },
   ],
 };

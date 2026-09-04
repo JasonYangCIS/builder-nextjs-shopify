@@ -24,6 +24,7 @@ export default function ProductGridClient({
   limit = 12,
   heading,
   enableControls,
+  cardVariant,
 }: ProductGridProps) {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -136,7 +137,7 @@ export default function ProductGridClient({
               className={styles.gridItem}
               style={{ "--delay": `${i * 70}ms` } as React.CSSProperties}
             >
-              <ProductCard product={p} />
+              <ProductCard product={p} cardVariant={cardVariant} />
             </li>
           ))}
         </ul>
