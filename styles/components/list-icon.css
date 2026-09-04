@@ -1,0 +1,61 @@
+/* ── core-ui ListIcon (styled via data-slot) ──────────────────── */
+[data-slot="list-icon"] {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: var(--s-8) 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+[data-slot="list-icon-item"] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25%;
+  max-width: 300px;
+  padding: 0 var(--s-3);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  [data-slot="list-icon-item"] {
+    width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  [data-slot="list-icon-item"] {
+    width: 100%;
+  }
+}
+
+[data-slot="list-icon-icon"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--void-3);
+  box-shadow: var(--inset-glow);
+  color: var(--cyan-2);
+  margin-bottom: var(--s-4);
+}
+
+[data-slot="list-icon-icon"] svg {
+  width: 40px;
+  height: 40px;
+  stroke-width: 1.5;
+}
+
+[data-slot="list-icon-label"] {
+  margin: 0;
+  font-family: var(--font-display), var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: var(--t-sm);
+  letter-spacing: 0.06em;
+  color: var(--ink-0);
+}

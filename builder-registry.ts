@@ -13,6 +13,7 @@ import { heroCenteredConfig } from "@/components/marketing/HeroCentered/HeroCent
 import { faqListConfig } from "@/components/marketing/FaqList/FaqList.builder";
 import { sigilForgeConfig } from "@/components/marketing/SigilForge/SigilForge.builder";
 import { announcementBarConfig } from "@jasonyangcis/core-ui/components/AnnouncementBar/AnnouncementBar.builder";
+import { listIconConfig } from "@jasonyangcis/core-ui/components/ListIcon/ListIcon.builder";
 import { createBlogEditorialBuilderConfigs } from "@jasonyangcis/core-ui/builder";
 import BlogRichText from "@/components/blog/BlogRichText/BlogRichText";
 import { config } from "@/config";
@@ -36,6 +37,7 @@ export const customComponents: RegisteredComponent[] = [
   heroCenteredConfig,
   announcementBarConfig,
   faqListConfig,
+  listIconConfig,
   productCardConfig,
   compareCardsConfig,
   inventoryBadgeConfig,

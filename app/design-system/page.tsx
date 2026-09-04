@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Button, Badge, Card, Input, Label, AnnouncementBar } from "@jasonyangcis/core-ui";
+import { Button, Badge, Card, Input, Label, AnnouncementBar, ListIcon } from "@jasonyangcis/core-ui";
 import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
 import FaqList from "@/components/marketing/FaqList/FaqList";
@@ -35,6 +35,7 @@ const SECTIONS = [
   { id: "compare-cards", num: "11", title: "CompareCards" },
   { id: "product-variants", num: "12", title: "Product Variants" },
   { id: "interactive-artifact", num: "13", title: "Interactive Artifact" },
+  { id: "list-icon", num: "14", title: "ListIcon" },
 ] as const;
 
 export const metadata: Metadata = {
@@ -478,6 +479,21 @@ export default async function DesignSystemPage() {
         <div className="flex flex-col gap-4">
           <p className="t-eyebrow">SigilForge</p>
           <SigilForge />
+        </div>
+      </Section>
+
+      {/* ── ListIcon ───────────────────────────────────────────── */}
+      <Section {...SECTIONS[13]}>
+        <div className="flex flex-col gap-4">
+          <p className="t-eyebrow">ListIcon — headless icon list, Lucide icons resolved by name</p>
+          <ListIcon
+            items={[
+              { icon: "orbit", label: "From deep orbit" },
+              { icon: "zap", label: "Zero-latency signal" },
+              { icon: "droplet", label: "Soft, smooth descent" },
+              { icon: "scale", label: "Perfectly calibrated" },
+            ]}
+          />
         </div>
       </Section>
 
