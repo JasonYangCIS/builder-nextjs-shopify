@@ -399,13 +399,13 @@ export default async function DesignSystemPage() {
             {exampleProduct ? (
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <p className={`t-mono mb-2 ${styles.typeLabel}`}>static</p>
+                  <p className={`t-mono mb-2 ${styles.typeLabel}`}>static (default)</p>
                   <div className="max-w-xs">
                     <ProductCard product={exampleProduct} cardVariant="static" />
                   </div>
                 </div>
                 <div>
-                  <p className={`t-mono mb-2 ${styles.typeLabel}`}>flip (default) — hover to flip</p>
+                  <p className={`t-mono mb-2 ${styles.typeLabel}`}>flip — hover to flip</p>
                   <div className="max-w-xs">
                     <ProductCard product={exampleProduct} cardVariant="flip" />
                   </div>

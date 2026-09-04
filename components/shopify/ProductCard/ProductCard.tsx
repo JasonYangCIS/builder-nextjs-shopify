@@ -6,7 +6,7 @@ import AddToCartButton from "@/components/shopify/AddToCartButton/AddToCartButto
 import type { ProductCardProps } from "./ProductCard.types";
 import styles from "./ProductCard.module.scss";
 
-export default function ProductCard({ product, cardVariant = "flip" }: ProductCardProps) {
+export default function ProductCard({ product, cardVariant = "static" }: ProductCardProps) {
   const img = product.featuredImage;
   const firstVariant = product.variants[0];
 
@@ -24,96 +24,96 @@ export default function ProductCard({ product, cardVariant = "flip" }: ProductCa
     </div>
   );
 
-  if (cardVariant === "static") {
+  if (cardVariant === "flip") {
     return (
-      <Link href={`/products/${product.handle}`} className={`group ${styles.card} ${styles.static}`}>
+      <div className={`group ${styles.card}`}>
         <span className="corner-tl" aria-hidden="true" />
         <span className="corner-br" aria-hidden="true" />
 
-        <div className={`relative overflow-hidden ${styles.imageWrap}`}>
-          {media}
-          <div
-            aria-hidden="true"
-            className={`absolute inset-0 pointer-events-none ${styles.scanlines}`}
-          />
-        </div>
+        <div className={styles.flipper}>
+          <Link href={`/products/${product.handle}`} className={`${styles.face} ${styles.faceFront}`}>
+            <div className={`relative overflow-hidden ${styles.imageWrap}`}>
+              {media}
+              <div
+                aria-hidden="true"
+                className={`absolute inset-0 pointer-events-none ${styles.scanlines}`}
+              />
+            </div>
 
-        <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
-          <div className={`t-mono ${styles.kicker}`}>
-            {product.productType || "ARTIFACT"}
+            <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
+              <div className={`t-mono ${styles.kicker}`}>
+                {product.productType || "ARTIFACT"}
+              </div>
+
+              <h3 className={`line-clamp-2 t-display ${styles.title}`}>{product.title}</h3>
+            </div>
+          </Link>
+
+          <div className={`${styles.face} ${styles.faceBack}`}>
+            <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
+              <div className={`t-mono ${styles.kicker}`}>
+                {product.productType || "ARTIFACT"}
+              </div>
+
+              <h3 className={`line-clamp-2 t-display ${styles.title}`}>{product.title}</h3>
+
+              <div className="flex items-center justify-between gap-2 mt-1">
+                <PriceDisplay
+                  price={product.priceRange.minVariantPrice}
+                  compareAtPrice={firstVariant?.compareAtPrice}
+                />
+                <InventoryBadge
+                  availableForSale={product.availableForSale}
+                  quantityAvailable={firstVariant?.quantityAvailable ?? null}
+                />
+              </div>
+
+              {firstVariant && (
+                <AddToCartButton
+                  variantId={firstVariant.id}
+                  availableForSale={product.availableForSale}
+                  className={styles.addToCart}
+                />
+              )}
+            </div>
           </div>
-
-          <h3 className={`line-clamp-2 t-display ${styles.title}`}>{product.title}</h3>
-
-          <div className="flex items-center justify-between gap-2 mt-1">
-            <PriceDisplay
-              price={product.priceRange.minVariantPrice}
-              compareAtPrice={firstVariant?.compareAtPrice}
-            />
-            <InventoryBadge
-              availableForSale={product.availableForSale}
-              quantityAvailable={firstVariant?.quantityAvailable ?? null}
-            />
-          </div>
         </div>
-      </Link>
+      </div>
     );
   }
 
   return (
-    <div className={`group ${styles.card}`}>
+    <Link href={`/products/${product.handle}`} className={`group ${styles.card} ${styles.static}`}>
       <span className="corner-tl" aria-hidden="true" />
       <span className="corner-br" aria-hidden="true" />
 
-      <div className={styles.flipper}>
-        <Link href={`/products/${product.handle}`} className={`${styles.face} ${styles.faceFront}`}>
-          <div className={`relative overflow-hidden ${styles.imageWrap}`}>
-            {media}
-            <div
-              aria-hidden="true"
-              className={`absolute inset-0 pointer-events-none ${styles.scanlines}`}
-            />
-          </div>
+      <div className={`relative overflow-hidden ${styles.imageWrap}`}>
+        {media}
+        <div
+          aria-hidden="true"
+          className={`absolute inset-0 pointer-events-none ${styles.scanlines}`}
+        />
+      </div>
 
-          <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
-            <div className={`t-mono ${styles.kicker}`}>
-              {product.productType || "ARTIFACT"}
-            </div>
+      <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
+        <div className={`t-mono ${styles.kicker}`}>
+          {product.productType || "ARTIFACT"}
+        </div>
 
-            <h3 className={`line-clamp-2 t-display ${styles.title}`}>{product.title}</h3>
-          </div>
-        </Link>
+        <h3 className={`line-clamp-2 t-display ${styles.title}`}>{product.title}</h3>
 
-        <div className={`${styles.face} ${styles.faceBack}`}>
-          <div className={`flex flex-col gap-2 p-4 ${styles.info}`}>
-            <div className={`t-mono ${styles.kicker}`}>
-              {product.productType || "ARTIFACT"}
-            </div>
-
-            <h3 className={`line-clamp-2 t-display ${styles.title}`}>{product.title}</h3>
-
-            <div className="flex items-center justify-between gap-2 mt-1">
-              <PriceDisplay
-                price={product.priceRange.minVariantPrice}
-                compareAtPrice={firstVariant?.compareAtPrice}
-              />
-              <InventoryBadge
-                availableForSale={product.availableForSale}
-                quantityAvailable={firstVariant?.quantityAvailable ?? null}
-              />
-            </div>
-
-            {firstVariant && (
-              <AddToCartButton
-                variantId={firstVariant.id}
-                availableForSale={product.availableForSale}
-                className={styles.addToCart}
-              />
-            )}
-          </div>
+        <div className="flex items-center justify-between gap-2 mt-1">
+          <PriceDisplay
+            price={product.priceRange.minVariantPrice}
+            compareAtPrice={firstVariant?.compareAtPrice}
+          />
+          <InventoryBadge
+            availableForSale={product.availableForSale}
+            quantityAvailable={firstVariant?.quantityAvailable ?? null}
+          />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
