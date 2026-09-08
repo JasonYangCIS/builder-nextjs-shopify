@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
-import ProductCard from "@/components/shopify/ProductCard/ProductCard";
+import ProductTile from "@/components/shopify/ProductTile/ProductTile";
 import type { Product, ProductFacet } from "@/lib/shopify/types";
 import { PRODUCT_SORT_OPTIONS } from "@/lib/shopify/sort-options";
 import type { ProductGridProps } from "./ProductGrid.types";
@@ -136,7 +136,7 @@ export default function ProductGridClient({
               className={styles.gridItem}
               style={{ "--delay": `${i * 70}ms` } as React.CSSProperties}
             >
-              <ProductCard product={p} />
+              <ProductTile product={p} />
             </li>
           ))}
         </ul>

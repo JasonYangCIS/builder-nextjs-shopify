@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import useSWR from "swr";
 import { useIsPreviewing } from "@/lib/builder/useIsPreviewing";
-import ProductCard from "@/components/shopify/ProductCard/ProductCard";
+import ProductTile from "@/components/shopify/ProductTile/ProductTile";
 import type { SelectedProductResult } from "@/lib/shopify/types";
 import type { ProductGridSelectedProps } from "./ProductGridSelected.types";
 import { extractSelectedHandles, selectedProductsKey } from "./ProductGridSelected.shared";
@@ -94,7 +94,7 @@ export default function ProductGridSelectedClient({
                 className={styles.gridItem}
                 style={{ "--delay": `${i * 70}ms` } as React.CSSProperties}
               >
-                <ProductCard product={product} />
+                <ProductTile product={product} />
               </li>
             ) : (
               <li
