@@ -4,6 +4,7 @@ import HeroSplit from "@/components/marketing/HeroSplit/HeroSplit";
 import HeroCentered from "@/components/marketing/HeroCentered/HeroCentered";
 import FaqList from "@/components/marketing/FaqList/FaqList";
 import SigilForge from "@/components/marketing/SigilForge/SigilForge";
+import ProductCard from "@/components/shopify/ProductCard/ProductCard";
 import PriceDisplay from "@/components/shopify/PriceDisplay/PriceDisplay";
 import InventoryBadge from "@/components/shopify/InventoryBadge/InventoryBadge";
 import LoginButton from "@/components/shopify/LoginButton/LoginButton";
@@ -390,6 +391,36 @@ export default async function DesignSystemPage() {
       {/* ── Commerce primitives ───────────────────────────────── */}
       <Section {...SECTIONS[9]}>
         <div className="flex flex-col gap-10">
+          <div>
+            <p className="t-eyebrow mb-4">
+              ProductCard — <code className={styles.cardCode}>cardVariant</code> (Publish-editable
+              on ProductCard, ProductGrid, and ProductGridSelected)
+            </p>
+            {exampleProduct ? (
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <p className={`t-mono mb-2 ${styles.typeLabel}`}>static (default)</p>
+                  <div className="max-w-xs">
+                    <ProductCard product={exampleProduct} cardVariant="static" />
+                  </div>
+                </div>
+                <div>
+                  <p className={`t-mono mb-2 ${styles.typeLabel}`}>flip — hover to flip</p>
+                  <div className="max-w-xs">
+                    <ProductCard product={exampleProduct} cardVariant="flip" />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className={styles.cardBody}>
+                Product not found in this store&apos;s catalog. Update{" "}
+                <code className={styles.cardCode}>EXAMPLE_PRODUCT_HANDLE</code> in{" "}
+                <code className={styles.cardCode}>app/design-system/page.tsx</code> to a product
+                handle that exists in the connected Shopify store.
+              </p>
+            )}
+          </div>
+
           <div>
             <p className="t-eyebrow mb-4">PriceDisplay</p>
             <div className="flex flex-wrap items-center gap-8">
