@@ -12,6 +12,7 @@ import { heroSplitConfig } from "@/components/marketing/HeroSplit/HeroSplit.buil
 import { heroCenteredConfig } from "@/components/marketing/HeroCentered/HeroCentered.builder";
 import { faqListConfig } from "@/components/marketing/FaqList/FaqList.builder";
 import { sigilForgeConfig } from "@/components/marketing/SigilForge/SigilForge.builder";
+import { featuredBlogsConfig } from "@/components/marketing/FeaturedBlogs/FeaturedBlogs.builder";
 import { announcementBarConfig } from "@jasonyangcis/core-ui/components/AnnouncementBar/AnnouncementBar.builder";
 import { createBlogEditorialBuilderConfigs } from "@jasonyangcis/core-ui/builder";
 import BlogRichText from "@/components/blog/BlogRichText/BlogRichText";
@@ -29,6 +30,8 @@ const blogEditorialConfigs = groupComponents(
   }),
 );
 
+const marketingConfigs = groupComponents("Marketing", [featuredBlogsConfig]);
+
 export const customComponents: RegisteredComponent[] = [
   productGridConfig,
   productGridSelectedConfig,
@@ -42,5 +45,6 @@ export const customComponents: RegisteredComponent[] = [
   loginButtonConfig,
   orderHistoryListConfig,
   sigilForgeConfig,
+  ...marketingConfigs,
   ...blogEditorialConfigs,
 ];

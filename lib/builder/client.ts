@@ -50,6 +50,7 @@ export async function getBuilderPage(urlPath: string) {
     model: config.models.page,
     apiKey: config.apiKey,
     userAttributes: { urlPath },
+    enrich: true,
   });
 }
 
