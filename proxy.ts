@@ -20,13 +20,13 @@ const PRODUCTION_CSP = [
 ].join("; ");
 
 const PREVIEW_CSP = [
-  "default-src 'self' https://*.builder.io",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.builder.io https://cdn.builder.io",
-  "style-src 'self' 'unsafe-inline' https://*.builder.io",
-  "img-src 'self' data: blob: https://cdn.shopify.com https://cdn.builder.io https://*.builder.io https://images.pexels.com",
-  "font-src 'self' data: https://*.builder.io",
-  "connect-src 'self' https://*.builder.io https://cdn.builder.io https://cdn.shopify.com https://*.myshopify.com",
-  "frame-ancestors https://*.builder.io",
+  "default-src 'self' https://*.builder.io https://*.projects.builder.my",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.builder.io https://cdn.builder.io https://*.projects.builder.my",
+  "style-src 'self' 'unsafe-inline' https://*.builder.io https://*.projects.builder.my",
+  "img-src 'self' data: blob: https://cdn.shopify.com https://cdn.builder.io https://*.builder.io https://*.projects.builder.my https://images.pexels.com",
+  "font-src 'self' data: https://*.builder.io https://*.projects.builder.my",
+  "connect-src 'self' https://*.builder.io https://cdn.builder.io https://cdn.shopify.com https://*.myshopify.com https://*.projects.builder.my",
+  "frame-ancestors https://*.builder.io https://*.projects.builder.my",
 ].join("; ");
 
 export function proxy(req: NextRequest) {
