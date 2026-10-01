@@ -7,6 +7,10 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const isDev = process.env.NODE_ENV !== "production";
 
+// Builder.io Fusion embeds the live app (not just /preview) in an iframe for the
+// in-editor preview, so these origins must be allowed to frame every route.
+const FRAME_ANCESTORS = "https://*.builder.io https://*.projects.builder.my";
+
 const PRODUCTION_CSP = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
@@ -14,7 +18,7 @@ const PRODUCTION_CSP = [
   "img-src 'self' data: blob: https://cdn.shopify.com https://cdn.builder.io https://images.pexels.com",
   "font-src 'self' data:",
   `connect-src 'self' https://cdn.shopify.com https://*.myshopify.com https://shopify.com https://*.builder.io${isDev ? " ws: wss:" : ""}`,
-  "frame-ancestors 'none'",
+  `frame-ancestors ${FRAME_ANCESTORS}`,
   "base-uri 'self'",
   "form-action 'self' https://*.myshopify.com https://shop.app",
 ].join("; ");
@@ -26,7 +30,7 @@ const PREVIEW_CSP = [
   "img-src 'self' data: blob: https://cdn.shopify.com https://cdn.builder.io https://*.builder.io https://*.projects.builder.my https://images.pexels.com",
   "font-src 'self' data: https://*.builder.io https://*.projects.builder.my",
   "connect-src 'self' https://*.builder.io https://cdn.builder.io https://cdn.shopify.com https://*.myshopify.com https://*.projects.builder.my",
-  "frame-ancestors https://*.builder.io https://*.projects.builder.my",
+  `frame-ancestors ${FRAME_ANCESTORS}`,
 ].join("; ");
 
 export function proxy(req: NextRequest) {
@@ -38,7 +42,6 @@ export function proxy(req: NextRequest) {
   res.headers.set("X-Content-Type-Options", "nosniff");
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-  if (!isPreview) res.headers.set("X-Frame-Options", "DENY");
   return res;
 }
 
