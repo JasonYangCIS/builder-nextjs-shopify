@@ -1,0 +1,50 @@
+import {
+  Atom,
+  Award,
+  Check,
+  Compass,
+  Droplet,
+  Flame,
+  Gem,
+  Globe,
+  Heart,
+  Leaf,
+  Lock,
+  Recycle,
+  Rocket,
+  Scale,
+  Shield,
+  Snowflake,
+  Sparkles,
+  Star,
+  Waves,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+
+export const LIST_ICON_MAP = {
+  atom: Atom,
+  award: Award,
+  check: Check,
+  compass: Compass,
+  droplet: Droplet,
+  flame: Flame,
+  gem: Gem,
+  globe: Globe,
+  heart: Heart,
+  leaf: Leaf,
+  lock: Lock,
+  recycle: Recycle,
+  rocket: Rocket,
+  scale: Scale,
+  shield: Shield,
+  snowflake: Snowflake,
+  sparkles: Sparkles,
+  star: Star,
+  waves: Waves,
+  zap: Zap,
+} as const satisfies Record<string, LucideIcon>;
+
+export type ListIconName = keyof typeof LIST_ICON_MAP;
+
+export const LIST_ICON_NAMES = Object.keys(LIST_ICON_MAP) as ListIconName[];
