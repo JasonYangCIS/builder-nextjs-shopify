@@ -94,12 +94,16 @@ export default async function DesignSystemPage() {
           <ColorGroup label="Ink — text" swatches={[
             { name: "--ink-0", hex: "#eaf6f5", label: "Primary" },
             { name: "--ink-1", hex: "#b8c8d4", label: "Secondary" },
-            { name: "--ink-2", hex: "#6e7e90", label: "Tertiary / meta" },
+            { name: "--ink-2", hex: "#7d8ea2", label: "Tertiary / meta" },
           ]} />
           <ColorGroup label="Signal" swatches={[
             { name: "--xenosphere-success", hex: "#4ee0a8", label: "Success" },
             { name: "--xenosphere-danger",  hex: "#ff5a7a", label: "Danger" },
             { name: "--amber-1",            hex: "#d97f3a", label: "Amber signal" },
+            { name: "--success-soft",        hex: "rgba(78, 224, 168, 0.14)", label: "Success tint" },
+            { name: "--success-line",        hex: "rgba(78, 224, 168, 0.35)", label: "Success border" },
+            { name: "--danger-soft",         hex: "rgba(255, 90, 122, 0.14)", label: "Danger tint" },
+            { name: "--danger-line",         hex: "rgba(255, 90, 122, 0.35)", label: "Danger border" },
           ]} />
         </div>
       </Section>
@@ -110,14 +114,14 @@ export default async function DesignSystemPage() {
           <div>
             <p className="t-eyebrow mb-4">Display — Orbitron</p>
             {[
-              { size: "var(--t-5xl)", label: "5XL / 72px" },
-              { size: "var(--t-4xl)", label: "4XL / 52px" },
-              { size: "var(--t-3xl)", label: "3XL / 40px" },
-              { size: "var(--t-2xl)", label: "2XL / 30px" },
-              { size: "var(--t-xl)",  label: "XL / 24px" },
+              { size: styles.size5xl, label: "5XL / 72px" },
+              { size: styles.size4xl, label: "4XL / 52px" },
+              { size: styles.size3xl, label: "3XL / 40px" },
+              { size: styles.size2xl, label: "2XL / 30px" },
+              { size: styles.sizeXl,  label: "XL / 24px" },
             ].map(({ size, label }) => (
-              <div key={size} className={`flex items-baseline gap-6 py-3 ${styles.typeRow}`}>
-                <span className={`t-display ${styles.typeDisplay}`} style={{ fontSize: size }}>
+              <div key={label} className={`flex items-baseline gap-6 ${styles.typeRow}`}>
+                <span className={`t-display ${styles.typeDisplay} ${size}`}>
                   Alien Terrain
                 </span>
                 <span className={`t-mono ${styles.typeLabel}`}>{label}</span>
@@ -128,13 +132,16 @@ export default async function DesignSystemPage() {
           <div>
             <p className="t-eyebrow mb-4">Body — Inter</p>
             {[
-              { size: "var(--t-lg)", weight: 400, label: "LG / 20px Regular" },
-              { size: "var(--t-md)", weight: 400, label: "MD / 16px Regular" },
-              { size: "var(--t-sm)", weight: 400, label: "SM / 14px Regular" },
-              { size: "var(--t-xs)", weight: 400, label: "XS / 12px Regular" },
+              { size: styles.sizeLg, weight: styles.weight400, label: "LG / 20px Regular" },
+              { size: styles.sizeMd, weight: styles.weight400, label: "MD / 16px Regular" },
+              { size: styles.sizeSm, weight: styles.weight400, label: "SM / 14px Regular" },
+              { size: styles.sizeXs, weight: styles.weight400, label: "XS / 12px Regular" },
+              { size: styles.sizeMd, weight: styles.weight500, label: "MD / 16px Medium 500" },
+              { size: styles.sizeMd, weight: styles.weight600, label: "MD / 16px Semibold 600" },
+              { size: styles.sizeMd, weight: styles.weight700, label: "MD / 16px Bold 700" },
             ].map(({ size, weight, label }) => (
-              <div key={label} className={`flex items-baseline gap-6 py-3 ${styles.typeRow}`}>
-                <span className={styles.typeBody} style={{ fontSize: size, fontWeight: weight }}>
+              <div key={label} className={`flex items-baseline gap-6 ${styles.typeRow}`}>
+                <span className={`${styles.typeBody} ${size} ${weight}`}>
                   The void whispers in frequencies beyond human range.
                 </span>
                 <span className={`t-mono ${styles.typeLabel}`}>{label}</span>
@@ -145,12 +152,12 @@ export default async function DesignSystemPage() {
           <div>
             <p className="t-eyebrow mb-4">Mono — JetBrains Mono</p>
             {[
-              { size: "var(--t-sm)", label: "SM / 14px" },
-              { size: "var(--t-xs)", label: "XS / 12px" },
-              { size: "var(--t-2xs)", label: "2XS / 11px" },
+              { size: styles.sizeSm, label: "SM / 14px" },
+              { size: styles.sizeXs, label: "XS / 12px" },
+              { size: styles.size2xs, label: "2XS / 11px — decorative only" },
             ].map(({ size, label }) => (
-              <div key={label} className={`flex items-baseline gap-6 py-3 ${styles.typeRow}`}>
-                <span className={`t-mono ${styles.typeMono}`} style={{ fontSize: size }}>
+              <div key={label} className={`flex items-baseline gap-6 ${styles.typeRow}`}>
+                <span className={`t-mono ${styles.typeMono} ${size}`}>
                   SYS-4471 ◈ XENOSPHERE ⌁ BIOLUMINESCENT SIGNAL ACTIVE
                 </span>
                 <span className={`t-mono ${styles.typeLabel}`}>{label}</span>
@@ -231,7 +238,7 @@ export default async function DesignSystemPage() {
       {/* ── Cards ─────────────────────────────────────────────── */}
       <Section {...SECTIONS[5]}>
         <div className="grid gap-4 sm:grid-cols-3">
-          <Card className="p-6">
+          <Card className={`p-6 ${styles.cardStandard}`}>
             <p className="t-eyebrow mb-2">Standard panel</p>
             <p className={styles.cardBody}>
               Default card using <code className={styles.cardCode}>--card</code> background with border.
@@ -260,44 +267,46 @@ export default async function DesignSystemPage() {
 
       {/* ── Shadows & glows ───────────────────────────────────── */}
       <Section {...SECTIONS[6]}>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {[
-            { label: "Cyan SM",   shadow: "var(--glow-cyan-sm)",   border: "var(--cyan-line)" },
-            { label: "Cyan MD",   shadow: "var(--glow-cyan-md)",   border: "var(--cyan-line)" },
-            { label: "Cyan LG",   shadow: "var(--glow-cyan-lg)",   border: "var(--cyan-line)" },
-            { label: "Violet SM", shadow: "var(--glow-violet-sm)", border: "var(--violet-line)" },
-            { label: "Violet MD", shadow: "var(--glow-violet-md)", border: "var(--violet-line)" },
-            { label: "Shadow LG", shadow: "var(--shadow-lg)",      border: "var(--border)" },
-          ].map(({ label, shadow, border }) => (
-            <div
-              key={label}
-              className={styles.glowTile}
-              style={{ border: `1px solid ${border}`, boxShadow: shadow }}
-            >
-              <p className={`t-eyebrow ${styles.glowTileLabel}`}>{label}</p>
-            </div>
-          ))}
+        <div className="flex flex-col gap-8">
+          <ShadowGroup label="Elevation — neutral" tiles={[
+            { label: "Shadow SM", className: styles.tileShadowSm },
+            { label: "Shadow MD", className: styles.tileShadowMd },
+            { label: "Shadow LG", className: styles.tileShadowLg },
+          ]} />
+          <ShadowGroup label="Glow — cyan (focus / active)" tiles={[
+            { label: "Cyan SM", className: styles.tileCyanSm },
+            { label: "Cyan MD", className: styles.tileCyanMd },
+            { label: "Cyan LG", className: styles.tileCyanLg },
+          ]} />
+          <ShadowGroup label="Glow — violet and inset" tiles={[
+            { label: "Violet SM", className: styles.tileVioletSm },
+            { label: "Violet MD", className: styles.tileVioletMd },
+            { label: "Inset glow", className: styles.tileInset },
+          ]} />
         </div>
       </Section>
 
       {/* ── Spacing ───────────────────────────────────────────── */}
       <Section {...SECTIONS[7]}>
+        <p className="t-eyebrow mb-4">Bars drawn at 2× scale</p>
         <div className="flex flex-col gap-2">
           {[
-            { token: "--s-1",  px: "4px" },
-            { token: "--s-2",  px: "8px" },
-            { token: "--s-3",  px: "12px" },
-            { token: "--s-4",  px: "16px" },
-            { token: "--s-6",  px: "24px" },
-            { token: "--s-8",  px: "32px" },
-            { token: "--s-10", px: "40px" },
-            { token: "--s-12", px: "48px" },
-            { token: "--s-16", px: "64px" },
+            { token: "--s-1",  px: 4 },
+            { token: "--s-2",  px: 8 },
+            { token: "--s-3",  px: 12 },
+            { token: "--s-4",  px: 16 },
+            { token: "--s-5",  px: 20 },
+            { token: "--s-6",  px: 24 },
+            { token: "--s-8",  px: 32 },
+            { token: "--s-10", px: 40 },
+            { token: "--s-12", px: 48 },
+            { token: "--s-16", px: 64 },
+            { token: "--s-20", px: 80 },
           ].map(({ token, px }) => (
             <div key={token} className="flex items-center gap-4">
               <span className={`t-mono ${styles.spaceToken}`}>{token}</span>
-              <div className={styles.spaceBar} style={{ width: px }} />
-              <span className={`t-mono ${styles.spacePx}`}>{px}</span>
+              <div className={styles.spaceBar} style={{ width: px * 2 }} />
+              <span className={`t-mono ${styles.spacePx}`}>{px}px</span>
             </div>
           ))}
         </div>
@@ -523,6 +532,22 @@ function ColorGroup({ label, swatches }: { label: string; swatches: { name: stri
             <p className={`t-mono ${styles.swatchName}`}>{name}</p>
             <p className={`t-mono ${styles.swatchMeta}`}>{hex}</p>
             <p className={`t-mono ${styles.swatchMeta}`}>{swatchLabel}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Shadow tile group ────────────────────────────────────── */
+function ShadowGroup({ label, tiles }: { label: string; tiles: { label: string; className: string }[] }) {
+  return (
+    <div>
+      <p className="t-eyebrow mb-4">{label}</p>
+      <div className="grid gap-6 sm:grid-cols-3">
+        {tiles.map((tile) => (
+          <div key={tile.label} className={`${styles.glowTile} ${tile.className}`}>
+            <p className={`t-eyebrow ${styles.glowTileLabel}`}>{tile.label}</p>
           </div>
         ))}
       </div>
