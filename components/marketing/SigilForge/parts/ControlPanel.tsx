@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Button } from "@jasonyangcis/core-ui";
 import { cn } from "@/utils/cn";
 import styles from "../SigilForge.module.scss";
 import {
@@ -104,23 +105,17 @@ export function ControlPanel({
       </PanelBlock>
 
       <div className={styles["sf__panel-actions"]}>
-        <button
+        <Button
           type="button"
-          className={cn(
-            styles.sfBtn,
-            autoSpin ? styles["sfBtn--primary"] : styles["sfBtn--ghost"],
-          )}
+          size="sm"
+          variant={autoSpin ? "default" : "outline"}
           onClick={() => setAutoSpin((s) => !s)}
         >
           {autoSpin ? "◉ Halt orbit" : "↻ Resume orbit"}
-        </button>
-        <button
-          type="button"
-          className={cn(styles.sfBtn, styles["sfBtn--ghost"])}
-          onClick={onRecenter}
-        >
+        </Button>
+        <Button type="button" size="sm" variant="outline" onClick={onRecenter}>
           ⌁ Recenter
-        </button>
+        </Button>
       </div>
     </aside>
   );

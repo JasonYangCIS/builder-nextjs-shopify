@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@jasonyangcis/core-ui";
 import { cn } from "@/utils/cn";
 import styles from "../SigilForge.module.scss";
 import type { Hue } from "../SigilForge.constants";
@@ -28,13 +29,9 @@ export function WreckageOverlay({
         <span>{String(discoveries).padStart(4, "0")} / DETONATIONS LOGGED</span>
         <span>⌁ {hueObj.name} BAND</span>
       </div>
-      <button
-        type="button"
-        className={cn(styles.sfBtn, styles["sfBtn--primary"], styles["sfBtn--lg"])}
-        onClick={onReboot}
-      >
+      <Button type="button" size="lg" onClick={onReboot}>
         ↻ Reconstitute the sigil
-      </button>
+      </Button>
       <div className={cn(styles["sf__wreckage-hint"], styles.tMono)}>
         [ keep dragging next time, pilot ]
       </div>

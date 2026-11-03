@@ -29,12 +29,16 @@
 
   --ink-0:        #eaf6f5;
   --ink-1:        #b8c8d4;
-  --ink-2:        #6e7e90;
+  --ink-2:        #7d8ea2;
   --ink-3:        #4a5668;
   --ink-glow:     #7af0ee;
 
   --xenosphere-success:  #4ee0a8;
   --xenosphere-danger:   #ff5a7a;
+  --success-soft: rgba(78, 224, 168, 0.14);
+  --success-line: rgba(78, 224, 168, 0.35);
+  --danger-soft:  rgba(255, 90, 122, 0.14);
+  --danger-line:  rgba(255, 90, 122, 0.35);
 
   /* ── Tailwind-mapped semantic tokens ───────────────────── */
   --background:             var(--void-1);

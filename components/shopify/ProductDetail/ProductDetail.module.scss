@@ -27,7 +27,7 @@
   border: 1px solid var(--cyan-line);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  font-size: 9px;
+  font-size: var(--t-xs);
 }
 
 .eyebrowRule {

@@ -41,7 +41,7 @@ export function ForgeHeader({
   return (
     <div className={styles.sf__head}>
       <div>
-        <span className={styles.tEyebrow}>{eyebrow}</span>
+        <span className="t-eyebrow">{eyebrow}</span>
         <h2 className={styles.sf__title}>{renderedHeading}</h2>
         <p className={styles.sf__sub}>
           {body.split("\n").map((line, i, arr) => (

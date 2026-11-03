@@ -5,9 +5,9 @@
 }
 
 .chip {
-  font-size: 9px;
+  font-size: var(--t-xs);
   letter-spacing: 0.14em;
-  padding: 3px 8px;
+  padding: var(--s-1) var(--s-2);
   border: 1px solid var(--cyan-line);
   background: var(--cyan-soft);
   color: var(--cyan-3);

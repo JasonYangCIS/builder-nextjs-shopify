@@ -1,10 +1,12 @@
 .amount {
-  font-size: var(--t-sm);
-  letter-spacing: 0.06em;
+  font-size: var(--t-lg);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   color: var(--cyan-3);
 }
 
 .compare {
-  font-size: var(--t-xs);
+  font-size: var(--t-sm);
   color: var(--ink-2);
 }
