@@ -4,17 +4,13 @@ Headless **Builder.io + Shopify** sandbox storefront for `builder-jason.myshopif
 
 ## Site overview
 
-**Xenosphere** is a sci-fi themed storefront ("Transmission / Vol. 01") that demonstrates **Builder Publish <> Fusion** on top of a Shopify sandbox store. The header navigation links to Catalogue, Blog, Design Codex, and Account.
+**Xenosphere** is a sci-fi storefront demoing **Builder Publish <> Fusion** on a Shopify sandbox store.
 
-### Features
-
-- **Catalogue** — product grid and product detail pages backed by the Shopify Storefront API, with variant selection, inventory badges, and wishlist.
-- **Cart and checkout** — cart drawer, discount codes, and Shopify-hosted checkout, all via server-only Route Handlers.
-- **Customer accounts** — Shopify Customer Account API login (PKCE OAuth), profile, and order history.
-- **Blog** — Builder-driven blog with authors, categories, SEO metadata, JSON-LD, and machine-readable `/blog/{slug}.md` output (see [Governed blog publishing](#governed-blog-publishing)).
-- **Design Codex** — live design system reference at `/design-system`, including the "See Design System" hero CTA.
-- **Sigil Forge** — interactive 3D-style sigil generator (`components/marketing/SigilForge`) with selectable hues and geometries, registered as a Builder component.
-- **Builder-managed pages** — marketing sections (hero, FAQ, announcement bar) editable in Builder and rendered through `RenderBuilderContent`.
+- **Catalogue and cart** — Storefront API products, variants, cart drawer, discounts, hosted checkout.
+- **Accounts** — Customer Account API (PKCE OAuth) with order history.
+- **Blog** — Builder-driven, with SEO/JSON-LD and `/blog/{slug}.md` output (see [Governed blog publishing](#governed-blog-publishing)).
+- **Design Codex** — design system reference at `/design-system`.
+- **Sigil Forge** — interactive sigil generator (`components/marketing/SigilForge`), registered in Builder.
 
 > **AI agents / Fusion:** start at [`AGENTS.md`](./AGENTS.md) — project map, skill/rule index, and hard architectural rules.
 
