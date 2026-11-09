@@ -2,6 +2,16 @@
 
 Headless **Builder.io + Shopify** sandbox storefront for `builder-jason.myshopify.com`, built on Next.js 16 (App Router) + React 19, running inside **Builder.io Fusion**.
 
+## Site overview
+
+**Xenosphere** is a sci-fi storefront demoing **Builder Publish <> Fusion** on a Shopify sandbox store.
+
+- **Catalogue and cart** — Storefront API products, variants, cart drawer, discounts, hosted checkout.
+- **Accounts** — Customer Account API (PKCE OAuth) with order history.
+- **Blog** — Builder-driven, with SEO/JSON-LD and `/blog/{slug}.md` output (see [Governed blog publishing](#governed-blog-publishing)).
+- **Design Codex** — design system reference at `/design-system`.
+- **Sigil Forge** — interactive sigil generator (`components/marketing/SigilForge`), registered in Builder.
+
 > **AI agents / Fusion:** start at [`AGENTS.md`](./AGENTS.md) — project map, skill/rule index, and hard architectural rules.
 
 ## Stack
