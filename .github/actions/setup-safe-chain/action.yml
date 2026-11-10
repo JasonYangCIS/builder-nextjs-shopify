@@ -11,6 +11,5 @@ runs:
         echo "$HOME/.safe-chain/bin" >> "$GITHUB_PATH"
         {
           echo "SAFE_CHAIN_LOGGING=normal"
-          echo "SAFE_CHAIN_NPM_CUSTOM_REGISTRIES=npm.pkg.github.com"
           echo "SAFE_CHAIN_MINIMUM_PACKAGE_AGE_EXCLUSIONS=@jasonyangcis/*,@builder.io/*"
         } >> "$GITHUB_ENV"
