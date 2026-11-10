@@ -55,9 +55,9 @@ docs/                 runbook + next-steps
 [Aikido Safe Chain](https://github.com/AikidoSec/safe-chain) scans npm installs for malware in CI and on Vercel.
 
 - **GitHub Actions:** the `.github/actions/setup-safe-chain` composite action runs before `npm ci` in every workflow.
-- **Vercel:** `vercel.json` sets an `installCommand` that installs Safe Chain, then runs `npm ci`. Don't set an Install Command override in the Vercel dashboard, because it would bypass this.
+- **Vercel:** `vercel.json` runs `scripts/vercel-install.sh`, which installs Safe Chain, sets its env vars, then runs `npm ci`. Don't set an Install Command override in the Vercel dashboard, because it would bypass this.
 - **Version:** the pinned version and checksum live only in `scripts/install-safe-chain.sh`. To upgrade, update both from the [release page](https://github.com/AikidoSec/safe-chain/releases).
-- **Config:** the private `npm.pkg.github.com` registry is scanned. `@jasonyangcis/*` and `@builder.io/*` are exempt from the 48h minimum package age. These env vars are set in both the action and `vercel.json`.
+- **Config:** the private `npm.pkg.github.com` registry is scanned. `@jasonyangcis/*` and `@builder.io/*` are exempt from the 48h minimum package age. These env vars are set in both the action and `scripts/vercel-install.sh`.
 - **New workflows:** add `uses: ./.github/actions/setup-safe-chain` before any `npm`/`npx` step.
 
 ## Environment
