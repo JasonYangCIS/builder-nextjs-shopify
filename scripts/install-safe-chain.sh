@@ -9,3 +9,7 @@ curl -fsSL "https://github.com/AikidoSec/safe-chain/releases/download/${VERSION}
 echo "${SHA256}  ${TMP}" | sha256sum -c -
 sh "$TMP" --ci
 rm -f "$TMP"
+
+for f in "$HOME/.safe-chain/bin/safe-chain" "$HOME/.safe-chain/shims/npm" "$HOME/.safe-chain/shims/npx"; do
+  [ -x "$f" ] || { echo "safe-chain install incomplete: missing $f" >&2; exit 1; }
+done

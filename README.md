@@ -58,7 +58,9 @@ docs/                 runbook + next-steps
 - **Vercel:** `vercel.json` runs `scripts/vercel-install.sh`, which installs Safe Chain, sets its env vars, then runs `npm ci`. Don't set an Install Command override in the Vercel dashboard, because it would bypass this.
 - **Version:** the pinned version and checksum live only in `scripts/install-safe-chain.sh`. To upgrade, update both from the [release page](https://github.com/AikidoSec/safe-chain/releases).
 - **Config:** Safe Chain's proxy breaks GitHub Packages tarball downloads (HTTP 400), so `scripts/prefetch-private-packages.sh` caches `@jasonyangcis/*` tarballs with plain npm before Safe Chain is active; `npm ci` then installs them from the cache. `@jasonyangcis/*` and `@builder.io/*` are exempt from the 48h minimum package age. These env vars are set in both the action and `scripts/vercel-install.sh`.
-- **New workflows:** add `uses: ./.github/actions/setup-safe-chain` before any `npm`/`npx` step.
+- **No npm cache:** workflows deliberately omit `setup-node`'s `cache: npm`, since `npm ci` installs cached tarballs without a registry request, so Safe Chain can't scan them.
+- **Known gap:** `@jasonyangcis/*` is first-party and is not scanned (Safe Chain 1.5.27 doesn't recognize GitHub Packages tarball URLs).
+- **New workflows:** add `uses: ./.github/actions/setup-safe-chain` with `github-token: ${{ secrets.GITHUB_TOKEN }}` before any `npm`/`npx` step, and don't enable npm caching.
 
 ## Environment
 

@@ -2,8 +2,8 @@ name: Setup Aikido Safe Chain
 description: Installs Aikido Safe Chain in CI mode so npm/npx installs are scanned for malware. Run before any package-manager command.
 inputs:
   github-token:
-    description: Token used to prefetch private GitHub Packages (read:packages).
-    default: ${{ github.token }}
+    description: Token used to prefetch private GitHub Packages (read:packages). Pass secrets.GITHUB_TOKEN.
+    required: true
 runs:
   using: composite
   steps:
