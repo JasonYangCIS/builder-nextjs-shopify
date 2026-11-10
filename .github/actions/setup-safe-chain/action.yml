@@ -6,10 +6,7 @@ runs:
     - name: Install safe-chain
       shell: bash
       run: |
-        curl -fsSL https://github.com/AikidoSec/safe-chain/releases/download/1.5.27/install-safe-chain.sh -o /tmp/install-safe-chain.sh
-        echo "600ebddcb3aaf1fd53653a8d7985df44528722c0f5ee7eb9fff86f26a1a4e5a8  /tmp/install-safe-chain.sh" | sha256sum -c -
-        sh /tmp/install-safe-chain.sh --ci
-        rm /tmp/install-safe-chain.sh
+        sh scripts/install-safe-chain.sh
         echo "$HOME/.safe-chain/shims" >> "$GITHUB_PATH"
         echo "$HOME/.safe-chain/bin" >> "$GITHUB_PATH"
         {

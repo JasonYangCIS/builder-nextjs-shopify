@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "sh scripts/install-safe-chain.sh && export PATH=\"$HOME/.safe-chain/shims:$HOME/.safe-chain/bin:$PATH\" SAFE_CHAIN_LOGGING=normal SAFE_CHAIN_NPM_CUSTOM_REGISTRIES=npm.pkg.github.com SAFE_CHAIN_MINIMUM_PACKAGE_AGE_EXCLUSIONS='@jasonyangcis/*,@builder.io/*' && npm ci"
+}
