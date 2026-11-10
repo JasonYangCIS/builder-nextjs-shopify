@@ -1,0 +1,19 @@
+name: Setup Aikido Safe Chain
+description: Installs Aikido Safe Chain in CI mode so npm/npx installs are scanned for malware. Run before any package-manager command.
+runs:
+  using: composite
+  steps:
+    - name: Install safe-chain
+      shell: bash
+      run: |
+        curl -fsSL https://github.com/AikidoSec/safe-chain/releases/download/1.5.27/install-safe-chain.sh -o /tmp/install-safe-chain.sh
+        echo "600ebddcb3aaf1fd53653a8d7985df44528722c0f5ee7eb9fff86f26a1a4e5a8  /tmp/install-safe-chain.sh" | sha256sum -c -
+        sh /tmp/install-safe-chain.sh --ci
+        rm /tmp/install-safe-chain.sh
+        echo "$HOME/.safe-chain/shims" >> "$GITHUB_PATH"
+        echo "$HOME/.safe-chain/bin" >> "$GITHUB_PATH"
+        {
+          echo "SAFE_CHAIN_LOGGING=normal"
+          echo "SAFE_CHAIN_NPM_CUSTOM_REGISTRIES=npm.pkg.github.com"
+          echo "SAFE_CHAIN_MINIMUM_PACKAGE_AGE_EXCLUSIONS=@jasonyangcis/*,@builder.io/*"
+        } >> "$GITHUB_ENV"
