@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 
+sh scripts/prefetch-private-packages.sh
 sh scripts/install-safe-chain.sh
 
 export PATH="$HOME/.safe-chain/shims:$HOME/.safe-chain/bin:$PATH"
