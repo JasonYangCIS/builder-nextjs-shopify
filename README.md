@@ -46,9 +46,12 @@ docs/                 runbook + next-steps
 |---|---|
 | `npm run dev` | Start local dev server |
 | `npm run build` | Production build |
+| `npm start` | Serve the production build |
 | `npm run lint` / `npm run typecheck` | ESLint / tsc |
-| `npm test` | Vitest unit tests |
+| `npm run format` | Prettier (writes changes) |
+| `npm test` / `npm run test:watch` | Vitest unit tests (single run / watch) |
 | `npm run e2e` | Playwright + axe smoke tests |
+| `npm run blog:validate` | Validate blog content (see [Governed blog publishing](#governed-blog-publishing)) |
 
 ## Supply-chain security
 
@@ -101,7 +104,7 @@ The `blog-publishing` Fusion skill turns a structured brief and approved source 
 2. Normalize the source into the structured input contract and retain source/page/URL provenance.
 3. Load the draft `editorial-profile`, author, category, existing posts, and approved Media Library assets.
 4. Draft original copy with citations and approved editorial blocks.
-5. Run `scripts/blog/validate-blog.ts` for required fields, links, headings, taxonomy, SEO, dates, citations, and publication state.
+5. Run `npm run blog:validate` (`scripts/blog/validate-blog-cli.ts`) for required fields, links, headings, taxonomy, SEO, dates, citations, and publication state.
 6. Save to Builder as a draft first. Publish or schedule only when every required gate passes.
 
 Copyright/originality checks reduce risk but are not legal clearance. Missing sources, unsupported claims, or unapproved assets fail closed and cannot be overridden.
